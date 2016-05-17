@@ -17,8 +17,7 @@ $(function() {
 
           if (usd_prev <= response.btc_last * response.usd_price) {
             $('span.stats-lastprice')
-              .html('$' + usd_last + '<i class="fa fa-long-arrow-up"></i>')
-              .css('color', '#64A537');
+              .html('$' + usd_last + '<span class="up">▴</span>');
           } else {
             $('span.stats-lastprice')
               .html('$' + usd_last + '<i class="fa fa-long-arrow-down"></i>')
@@ -33,8 +32,7 @@ $(function() {
 
           if (response.prev_day <= response.btc_last) {
             $('span.stats-btc')
-              .html(response.btc_last + '<i class="fa fa-long-arrow-up"></i>')
-              .css('color', '#64A537');
+              .html(response.btc_last + '<span class="up">▴</span>');
           } else {
             $('span.stats-btc')
               .html(response.btc_last + '<i class="fa fa-long-arrow-down"></i>')
@@ -208,6 +206,7 @@ $(function () {
       var ticker = $this.data('ticker');
       var chart = $this.data('chart');
 
+      $('.price-chart-title').text('Decred Price, ' + ticker.toUpperCase());
       $this.parent().find('button').each(function(item) { $(this).removeClass('active'); });
       $this.addClass('active');
       updatePricesChart(ticker);

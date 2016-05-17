@@ -223,6 +223,9 @@ router.get('/estimated_ticket_price', function (req, res) {
 });
 
 router.get('/get_stats', function (req, res) {
+  if (req.query.origin) {
+    console.log('[API]: get_stats request from ' + req.query.origin);
+  }
   Stats.findOne({where : {id : 1}}).then(function(stats) {
 
     if (!stats) {

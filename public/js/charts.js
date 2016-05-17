@@ -1,92 +1,35 @@
 function drawPrice(data, ticker) {
+  var valueDecimals = ticker == 'usd' ? 2 : 8;
+
   $('#price-chart').highcharts({
-    chart: {
-        zoomType: 'x'
-    },
-    title: {
-        text: 'DCR price in ' + ticker.toUpperCase()
-    },
-    credits: {
-          enabled: false
-    },
-    exporting: {
-          enabled: false
-    },
+    chart: {backgroundColor: null},
+    title: {text: ''},
+    credits: {enabled: false},
+    exporting: {enabled: false},
+    navigator: {enabled: false},
+    legend: {enabled: false},
     xAxis: {
-        type: 'datetime'
+        type: 'datetime',
+        gridLineWidth: 0,
+        labels: {style: {color: '#e2e2e2'}}
     },
     yAxis: {
-        title: {
-            text: ticker.toUpperCase() + ' Exchange rate'
-        }
+        title: {text: ''},
+        gridLineWidth: 0,
+        labels: {style: {color: '#e2e2e2', fill: '#e2e2e2'}}
     },
-    legend: {
-        enabled: false
-    },
-    plotOptions: {
-        area: {
-            fillColor: {
-                linearGradient: {
-                    x1: 0,
-                    y1: 0,
-                    x2: 0,
-                    y2: 1
-                },
-                stops: [
-                    [0, Highcharts.getOptions().colors[0]],
-                    [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
-                ]
-            },
-            marker: {
-                radius: 2
-            },
-            lineWidth: 1,
-            states: {
-                hover: {
-                    lineWidth: 1
-                }
-            },
-            threshold: null
-        }
-    },
+    series: [{
+      name: 'Price',
+      data: data,
+      type: 'spline',
+      color: '#ffffff',
+      lineWidth: 2,
+      tooltip: {valueDecimals: valueDecimals},
+      marker: {enabled: false},
+      states: {hover: {lineWidth: 2}}
+    }]
+  });
 
-        series: [
-            {
-                name: 'Price',
-                data: data,
-                type: 'areaspline',
-                color: "#a0ceff",
-                dataGrouping: {
-                    approximation: "average",
-                    smoothed: true,
-                    groupPixelWidth: 30
-                },
-
-                tooltip: {
-                    valueDecimals: 8
-                },
-                states: {
-                    hover: {
-                        enabled: false
-                    }
-                },
-                lineWidth: 1,
-                fillColor: {
-                    linearGradient: {
-                        x1: 0,
-                        y1: 0,
-                        x2: 0,
-                        y2: 1
-                    },
-                    stops: [
-                        [0, Highcharts.Color("#CFF0F7").setOpacity(0.5).get("rgba")],
-                        [1, Highcharts.Color("#a0ceff").get("rgba")]//.setOpacity(0).get('rgba')]
-                    ]
-                }
-            }
-        ]
-
-});
 }
 
 function drawTicketsHistory(data) {

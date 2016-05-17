@@ -3,44 +3,80 @@ html(lang='en')
   head
     include ./includes/head.jade
   body
-    include ./includes/navigation.jade
-    .container
+    .container-fluid.price-block
+      .row
+        include ./includes/navigation.jade
       .row
         .col-xs-6.col-md-3
           p.stats-block
-            span.glyphicon.glyphicon-question-sign(title="Price based on data from Bittrex + BTC-E")
-            span.stats-title Last price:
+            span.stats-title(title="Price based on data from Bittrex + BTC-E") Last price
             span.stats-content.stats-lastprice -
+        .col-xs-6.col-md-3.hidden-xs
+          p.stats-block
+            span.stats-title Day Low
+            span.stats-content.stats-daylow -
+        .col-xs-6.col-md-3.hidden-xs
+          p.stats-block
+            span.stats-title Day High
+            span.stats-content.stats-dayhigh -
         .col-xs-6.col-md-3
           p.stats-block
-            span.stats-title Day Low:
-            span.stats-content.stats-daylow.text-black -
-        .col-xs-6.col-md-3
-          p.stats-block
-            span.stats-title Day High:
-            span.stats-content.stats-dayhigh.text-black -
-        .col-xs-6.col-md-3
-          p.stats-block
-            span.glyphicon.glyphicon-question-sign(title="Last price on Bittrex")
-            span.stats-title DCR / BTC
+            span.stats-title(title="Last price on Bittrex") DCR / BTC
             span.stats-content.stats-btc -
       .row
+        .col-xs-12.col-sm-12
+          .container.chart-toolbar(role='toolbar')
+            .chart-title
+              h2.main-title.price-chart-title Decred price, USD
+            .line
+            .btn-group.price-group
+              button.btn-chart.btn.btn-default(type='button', data-ticker="btc", data-chart="price")
+                span BTC
+              button.btn-chart.btn.btn-default.active(type='button', data-ticker="usd", data-chart="price")
+                span USD
+          #price-chart.chart-container
+    .container-fluid
+      .row
+        .col-xs-12.col-sm-12
+          .container.chart-toolbar(role='toolbar')
+            .chart-title
+              h2.main-title.price-chart-title Decred Network Stats
+          .line
+        .col-xs-12.col-md-6
+          #supply.chart-container
         .col-xs-6.col-md-3
           p.stats-block
-            span.stats-title Best block:
+            span.stats-title.text-black Last block:
             span.stats-content.stats-blocks.text-black -
         .col-xs-6.col-md-3
           p.stats-block
-            span.stats-title Hashrate:
+            span.stats-title.text-black Avg block time:
+            span.stats-content.stats-time.text-black -
+        .col-xs-6.col-md-3
+          p.stats-block
+            span.stats-title.text-black Hashrate:
             span.stats-content.stats-hashrate.text-black -
         .col-xs-6.col-md-3
           p.stats-block
-            span.stats-title Difficulty
+            span.stats-title.text-black Difficulty
             span.stats-content.stats-difficulty.text-black -
         .col-xs-6.col-md-3
-          p.stats-block
-            span.stats-title Avg block time:
-            span.stats-content.stats-time.text-black -
+          .hint.hint-red.hint-md
+            span.stats-title Block reward
+            ins.block-reward
+            p.pow-block-reward
+            p.pos-block-reward
+            p.dev-block-reward
+        .col-xs-6.col-md-3
+          .hint.hint-red.hint-md
+            span.stats-title.hidden-xs Reward adjustment
+            span.stats-title.visible-xs-block Next reward
+            ins.est-block-reward
+            ins.est-reward-time
+            ins.est-reward-blocks
+    .container
+      .row
+
 
       .row
         .col-xs-6.col-md-3
@@ -77,26 +113,12 @@ html(lang='en')
             p.small-text
               b Max:&nbsp;
               span.max-est-pos
-        .col-xs-6.col-md-3
-          .hint.hint-red.hint-md
-            span.stats-title Block reward
-            ins.block-reward
-            p.pow-block-reward
-            p.pos-block-reward
-            p.dev-block-reward
-        .col-xs-6.col-md-3
-          .hint.hint-red.hint-md
-            span.stats-title.hidden-xs Reward adjustment
-            span.stats-title.visible-xs-block Next reward
-            ins.est-block-reward
-            ins.est-reward-time
-            ins.est-reward-blocks
+
 
       .row
         .col-xs-12.col-md-6.mobile-top-chart
           #voters.chart-container
-        .col-xs-12.col-md-6
-          #supply.chart-container
+
       .row
         .col-xs-12.col-md-6.hint-pos
         .col-xs-12.col-md-6
@@ -112,15 +134,6 @@ html(lang='en')
               | Average ticket price in the pool is&nbsp;
               span.avg-price-in-pos-pool - DCR
               | .
-      .row
-        .col-xs-12.col-sm-12
-          .btn-toolbar(role='toolbar')
-            .btn-group.price-group
-              button.btn-chart.btn.btn-default(type='button', data-ticker="btc", data-chart="price")
-                span BTC
-              button.btn-chart.btn.btn-default.active(type='button', data-ticker="usd", data-chart="price")
-                span USD
-          #price-chart.chart-container
       .row
         .col-xs-12.col-sm-12
           #pos-tickets-history.chart-container
