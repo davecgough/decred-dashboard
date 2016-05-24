@@ -3,150 +3,182 @@ html(lang='en')
   head
     include ./includes/head.jade
   body
-    .container-fluid.price-block
+    .container
       .row
         include ./includes/navigation.jade
-      .row
-        .col-xs-6.col-md-3
-          p.stats-block
-            span.stats-title(title="Price based on data from Bittrex + BTC-E") Last price
-            span.stats-content.stats-lastprice -
-        .col-xs-6.col-md-3.hidden-xs
-          p.stats-block
-            span.stats-title Day Low
-            span.stats-content.stats-daylow -
-        .col-xs-6.col-md-3.hidden-xs
-          p.stats-block
-            span.stats-title Day High
-            span.stats-content.stats-dayhigh -
-        .col-xs-6.col-md-3
-          p.stats-block
-            span.stats-title(title="Last price on Bittrex") DCR / BTC
-            span.stats-content.stats-btc -
+
       .row
         .col-xs-12.col-sm-12
-          .container.chart-toolbar(role='toolbar')
-            .chart-title
-              h2.main-title.price-chart-title Decred price, USD
-            .line
+          h1.decred-title Decred Stats
+          h2.decred-subtitle Decred Network Dashboard
+        .col-xs-12.col-sm-12
+          .container.chart-toolbar.text-center(role='toolbar')
             .btn-group.price-group
               button.btn-chart.btn.btn-default(type='button', data-ticker="btc", data-chart="price")
                 span BTC
               button.btn-chart.btn.btn-default.active(type='button', data-ticker="usd", data-chart="price")
                 span USD
+          h3.price-chart-title Decred Price, USD
           #price-chart.chart-container
-    .container-fluid
-      .row
-        .col-xs-12.col-sm-12
-          .container.chart-toolbar(role='toolbar')
-            .chart-title
-              h2.main-title.price-chart-title Decred Network Stats
-          .line
-        .col-xs-12.col-md-6
-          #supply.chart-container
+      .row.price-block-end
         .col-xs-6.col-md-3
           p.stats-block
-            span.stats-title.text-black Last block:
-            span.stats-content.stats-blocks.text-black -
+            span.stats-title(title="Price based on data from Bittrex + BTC-E") 
+              span &nbsp;LAST PRICE&nbsp;
+            span.stats-content.stats-lastprice -
+            span.price-change.hidden-xs +3.21% change
+        .col-xs-6.col-md-3.hidden-xs
+          p.stats-block
+            span.stats-title 
+              span &nbsp;DAY LOW&nbsp;
+            span.stats-content.stats-daylow -
+        .col-xs-6.col-md-3.hidden-xs
+          p.stats-block
+            span.stats-title 
+              span &nbsp;DAY HIGH&nbsp;
+            span.stats-content.stats-dayhigh -
         .col-xs-6.col-md-3
           p.stats-block
-            span.stats-title.text-black Avg block time:
-            span.stats-content.stats-time.text-black -
-        .col-xs-6.col-md-3
-          p.stats-block
-            span.stats-title.text-black Hashrate:
-            span.stats-content.stats-hashrate.text-black -
-        .col-xs-6.col-md-3
-          p.stats-block
-            span.stats-title.text-black Difficulty
-            span.stats-content.stats-difficulty.text-black -
-        .col-xs-6.col-md-3
-          .hint.hint-red.hint-md
-            span.stats-title Block reward
-            ins.block-reward
-            p.pow-block-reward
-            p.pos-block-reward
-            p.dev-block-reward
-        .col-xs-6.col-md-3
-          .hint.hint-red.hint-md
-            span.stats-title.hidden-xs Reward adjustment
-            span.stats-title.visible-xs-block Next reward
-            ins.est-block-reward
-            ins.est-reward-time
-            ins.est-reward-blocks
+            span.stats-title(title="Last price on Bittrex") 
+              span &nbsp;DCR / BTC&nbsp;
+            span.stats-content.stats-btc -
     .container
       .row
-
-
+        .col-xs-12.col-sm-12
+          h2.main-color Decred Network Statistic
+        .col-xs-12.col-md-6
+          .col-xs-12.col-md-12.supply-chart-wrapper
+            span.network-stats-title Decred Supply
+            #supply.supply-chart-container
+            .supply-chart-footer
+              .supply-title 
+                b.percent_mined %
+                | &nbsp;mined so far
+              .supply-numbers 
+                b.mined_coins x
+                | &nbsp;of total&nbsp;
+                b 21 000 000
+              .supply-progress
+                .progress
+                  .progress-bar(role="progressbar", aria-valuenow="0", aria-valuemin="0", aria-valuemax="100", style="width: 0%")
+        .col-xs-12.col-md-6
+          .col-xs-6.col-md-6
+            p.network-stats-block
+              span.network-stats-title Last block
+              span.network-stats-content.stats-blocks -
+              span.stats-subinfo.stats-lastblock-time
+          .col-xs-6.col-md-6
+            p.network-stats-block
+              span.network-stats-title Average block time
+              span.network-stats-content.stats-time -
+          .col-xs-6.col-md-6
+            p.network-stats-block
+              span.network-stats-title Hashrate
+              span.network-stats-content.stats-hashrate -
+              span.stats-subinfo Thash/s
+          .col-xs-6.col-md-6
+            p.network-stats-block
+              span.network-stats-title Difficulty
+              span.network-stats-content.stats-difficulty -
+              span.stats-subinfo 
+                a(href="https://dcrstats.com/pow", target="_blank") show chart
+          .col-xs-6.col-md-6
+            p.network-stats-block.stats-main-color.big
+              span.network-stats-title Block reward
+              span.network-stats-content.main-color.block-reward
+              span.stats-subinfo.pow-block-reward
+              span.stats-subinfo.pos-block-reward
+              span.stats-subinfo.dev-block-reward
+          .col-xs-6.col-md-6
+            p.network-stats-block.big
+              span.network-stats-title.hidden-xs Reward adjustment
+              span.network-stats-title.visible-xs-block Next reward
+              span.network-stats-content.est-block-reward
+              span.stats-subinfo.est-reward-time
+              span.stats-subinfo.est-reward-blocks
+    .container
+      .row
+        .col-xs-12.col-sm-12
+          h2.pos-color Proof of Stake Stats
       .row
         .col-xs-6.col-md-3
-          p.stats-block
-            span.stats-title Ticket Price:
-            span.stats-content.stats-ticketprice -
+          p.pos-stats-block
+            span.pos-stats-title Ticket Price
+            span.pos-stats-content.stats-ticketprice -
         .col-xs-6.col-md-3
-          p.stats-block
-            span.stats-title PoS Poolsize:
-            span.stats-content.stats-poolsize -
+          p.pos-stats-block
+            span.pos-stats-title PoS Poolsize
+            span.pos-stats-content.stats-poolsize -
         .col-xs-6.col-md-3
-          p.stats-block
-            span.stats-title Mempool
-            span.stats-content.stats-mempool -
+          p.pos-stats-block
+            span.pos-stats-title Mempool
+            span.pos-stats-content.stats-mempool -
         .col-xs-6.col-md-3
-          p.stats-block
-            span.stats-title.hidden-xs Avg Fees In Mempool:
-            span.stats-title.visible-xs-block Avg Fees
-            span.stats-content.stats-fees -
+          p.pos-stats-block
+            span.pos-stats-title.hidden-xs Average Fee
+            span.pos-stats-title.visible-xs-block Avg Fee
+            span.pos-stats-content.stats-fees -
       .row.reward-hints
-        .col-xs-6.col-md-3
-          .hint.hint-blue.hint-sm
-            span.stats-title.hidden-xs Ticket price adjustment
-            span.stats-title.visible-xs-block Ticket price change
-            ins.est-pos-time
-            ins.est-pos-blocks
-        .col-xs-6.col-md-3
-          .hint.hint-blue.hint-sm
-            span.stats-title Estimated ticket price
-            ins.est-pos-price
-            p.small-text
-              b Min:&nbsp;
-              span.min-est-pos
-            p.small-text
-              b Max:&nbsp;
-              span.max-est-pos
-
-
-      .row
-        .col-xs-12.col-md-6.mobile-top-chart
-          #voters.chart-container
-
+        .col-xs-6.col-md-6
+          p.pos-stats-block.big.stats-main-color
+            span.pos-stats-title Ticket price adjustment
+            span.pos-stats-content.main-color.est-pos-time 
+            span.pos-stats-subinfo.est-pos-blocks
+        .col-xs-6.col-md-6
+          p.pos-stats-block.big.stats-second-color
+            span.pos-stats-title Estimated ticket price
+            span.pos-stats-content.second-color.est-pos-price
+            span.pos-stats-subinfo
+              span
+                span Min:&nbsp;
+                span.min-est-pos
+              &nbsp;&nbsp;&nbsp;
+              span
+                span Max:&nbsp;
+                span.max-est-pos
       .row
         .col-xs-12.col-md-6.hint-pos
-        .col-xs-12.col-md-6
-          .hint.hint-blue
-            h4 Locked DCR in PoS-mining
-            p
+          .stats-block(style="height: 200px;")
+            span.stats-title
+              span &nbsp;30-days volume-weighted average price&nbsp;
+            span.pos-stats-content.main-color.avg-price
+            h4.hint-title
+            p.hint-content
+        .col-xs-12.col-md-6.hint-pos
+          .stats-block(style="height: 200px;")
+            span.stats-title
+              span &nbsp;Locked DCR in PoS-mining&nbsp;
+            span.pos-stats-content
+            p.poolvalue-stats
               | Current PoS pool value is&nbsp;
               b.poolvalue - DCR
-              | . It is&nbsp;
+              | ,
+              br
+              | &nbsp;it's&nbsp;
               b.poolvalue-percent x%
               |  of total available supply.
               br
-              | Average ticket price in the pool is&nbsp;
-              span.avg-price-in-pos-pool - DCR
-              | .
+            p.avg-pool-price
+              i.fa.fa-ticket
+              | Average ticket price 
+              br
+              | in the pool is&nbsp;
+              b.avg-price-in-pos-pool - DCR
       .row
         .col-xs-12.col-sm-12
-          #pos-tickets-history.chart-container
-      .row
-        .col-xs-12.col-sm-12
-          .btn-toolbar(role='toolbar')
-            .btn-group.pos-group
-              button.btn-chart.btn.btn-default(type='button', data-period="7", data-chart="sbits")
-                span Week
-              button.btn-chart.btn.btn-default(type='button', data-period="30", data-chart="sbits")
-                span Month
-              button.btn-chart.btn.btn-default.active(type='button', data-period="365", data-chart="sbits")
-                span Year
-          #pos-sbits.chart-container
+          .col-xs-12.col-sm-12.pos-chart-wrapper
+            .chart-title PoS Ticket Price, DCR
+            .btn-toolbar(role='toolbar')
+              .btn-group.pos-group
+                button.btn-chart.btn.btn-default(type='button', data-period="7", data-chart="sbits")
+                  span Week
+                button.btn-chart.btn.btn-default(type='button', data-period="30", data-chart="sbits")
+                  span Month
+                button.btn-chart.btn.btn-default.active(type='button', data-period="365", data-chart="sbits")
+                  span Year
+            #pos-sbits.chart-container
+      //.row
+        //.col-xs-12.col-md-6.mobile-top-chart
+          //#voters.chart-container
     footer
       include ./includes/footer.jade

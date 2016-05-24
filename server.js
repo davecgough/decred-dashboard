@@ -68,6 +68,8 @@ var peersInterval = setInterval(function() {
         console.log(e); return;
       }
       console.log(data);
+      if (!data || !data.length) { return; }
+
       var peers = data.map(function (val) {
         val.geo = geoip.lookup(val.ip.split(':')[0]);
         val.sync = val.best_block < BEST_HEIGHT ? 'behind' : 'ok';
@@ -116,13 +118,31 @@ new CronJob('*/15 * * * * *', function() {
       return;
     } else if (result) {
       Stats.findOrCreate({where : {id : 1}, defaults : result }).spread(function(stats, created) {
-        let timestamp = Math.floor(new Date() / 1000) - 30 * 24 * 60 * 60;
-        let query = 'SELECT AVG(DISTINCT(sbits)) as sbits FROM blocks WHERE datetime >= ' + timestamp;
-        sequelize.query(query, { model: Blocks }).then(function(data) {
-          result.avg_sbits = data[0].dataValues.sbits;
-          stats.update(result).catch(function(err) {
-            console.error(err);
-          });
+        var datetime = moment().subtract(30, 'days').unix();
+        let query = {
+          attributes: ['sbits',[sequelize.fn('SUM', sequelize.col('num_tickets')), 'num_tickets']],
+          where: {
+            height: {$gt : 4895},
+            datetime: {$gt : datetime}
+          },
+          group: ['sbits'],
+          order: 'sbits ASC'
+        };
+
+        Blocks.findAll(query).then(function(all_blocks) {
+            /* Calculate 30-days volume-weighted average ticket price */
+            var q = 0;
+            var pq = 0;
+            for (let item of all_blocks) {
+              pq += item.sbits * parseInt(item.num_tickets, 10);
+            	q  += parseInt(item.num_tickets, 10);
+            }
+            result.avg_sbits = pq / q;
+            stats.update(result).catch(function(err) {
+              console.error(err);
+            });
+        }).catch(function(err) {
+          console.error(err);
         });
       }).catch(function(err) {
         console.error(err);
@@ -399,7 +419,7 @@ function getAverageMempoolFees() {
     if (data) {
       Stats.findOne({where : {id : 1}}).then(function(stats) {
 
-        stats.update({fees : data.feeinfomempool.median, max_fees: data.feeinfomempool.max})
+        stats.update({fees : data.feeinfomempool.mean, max_fees: data.feeinfomempool.max})
         .then(function(row) {
           console.log('Average fees: ' + row.fees);
         }).catch(function(err) {

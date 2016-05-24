@@ -2,6 +2,7 @@
 
 var fs = require('fs');
 var path = require('path');
+var moment = require('moment');
 var express = require('express');
 var router = express.Router();
 
@@ -50,39 +51,6 @@ router.get('/pos', function (req, res) {
     result.sbits = sbits;
     res.status(200).json(result);
     return;
-  }).catch(function(err) {
-    console.log(err);
-    res.status(500).json({error : true});
-  });
-});
-
-router.get('/popular_ticket_prices', function(req, res) {
-  var raw = req.query.raw || false;
-  let query = {
-    attributes: ['sbits',[sequelize.fn('SUM', sequelize.col('num_tickets')), 'num_tickets']],
-    where: {
-      height: {$gt : 4895}
-    },
-    group: ['sbits'],
-    order: 'sbits ASC'
-  };
-
-  Blocks.findAll(query).then(function(result) {
-    if (raw) {
-      return res.status(200).json(result);
-    }
-    var processed = [];
-    for (let item of result) {
-      let sbits = Math.ceil(item.sbits);
-      let key = sbits - 1;
-      let num_tickets = parseInt(item.num_tickets, 10);
-      processed[key] = processed[key] ? processed[key] + num_tickets : num_tickets;
-    }
-    var output = [];
-    for (let row in processed) {
-      output.push([parseInt(row,10), processed[row] ]);
-    }
-    return res.status(200).json(output);
   }).catch(function(err) {
     console.log(err);
     res.status(500).json({error : true});
@@ -235,6 +203,7 @@ router.get('/get_stats', function (req, res) {
 
     Blocks.findOne({order: 'height DESC'}).then(function(block) {
       stats = stats.dataValues;
+      stats.last_block_datetime = block.datetime;
       stats.average_time = Math.floor((block.datetime - FIRST_BLOCK_TIME) / block.height);
       stats.average_minutes = Math.floor(stats.average_time / 60);
       stats.average_seconds = Math.floor(stats.average_time % 60);

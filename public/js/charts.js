@@ -3,6 +3,7 @@ function drawPrice(data, ticker) {
 
   $('#price-chart').highcharts({
     chart: {backgroundColor: null},
+    tooltip: {backgroundColor: "#242424", borderColor: '#242424', style: {"color": "#fff"}},
     title: {text: ''},
     credits: {enabled: false},
     exporting: {enabled: false},
@@ -11,7 +12,7 @@ function drawPrice(data, ticker) {
     xAxis: {
         type: 'datetime',
         gridLineWidth: 0,
-        labels: {style: {color: '#e2e2e2'}}
+        labels: {style: {color: '#9aa2a9', fill: '#9aa2a9'}}
     },
     yAxis: {
         title: {text: ''},
@@ -22,7 +23,7 @@ function drawPrice(data, ticker) {
       name: 'Price',
       data: data,
       type: 'spline',
-      color: '#ffffff',
+      color: '#e0b47d',
       lineWidth: 2,
       tooltip: {valueDecimals: valueDecimals},
       marker: {enabled: false},
@@ -32,134 +33,36 @@ function drawPrice(data, ticker) {
 
 }
 
-function drawTicketsHistory(data) {
-  $('#pos-tickets-history').highcharts({
-        chart: {
-            type: 'column'
-        },
-        title: {
-            text: 'All time purchased tickets grouped by price'
-        },
-        subtitle: {
-            text: 'Each price represents interval, eg: 8 means all tickets within interval 8-9 DCR'
-        },
-        credits: {
-         enabled: false
-        },
-        legend: {
-        enabled: false
-        },
-        exporting: {
-         enabled: false
-        },
-        xAxis: {
-        	title: {
-            text: 'Price, DCR'
-        	}
-        },
-        yAxis: {
-        	title: {
-            text: 'Total amount of tickets'
-        	}
-        },
-        plotOptions: {
-            column: {
-                pointPadding: 0.2,
-                borderWidth: 0
-            }
-        },
-        series: [{
-            name: 'Tickets',
-            pointWidth: 10,
-            data: data
-        }]
-    });
-}
-
 function drawSbits(data) {
   $('#pos-sbits').highcharts({
-    chart: {
-        zoomType: 'x'
-    },
-    credits: {
-          enabled: false
-    },
-    exporting: {
-          enabled: false
-    },
-    title: {
-        text: 'PoS Ticket Price (in DCR)'
-    },
+    chart: {backgroundColor: null},
+    tooltip: {backgroundColor: "#2a4762", borderColor: '#242424', style: {"color": "#fff"}},
+    title: {text: ''},
+    credits: {enabled: false},
+    exporting: {enabled: false},
+    navigator: {enabled: false},
+    legend: {enabled: false},
     xAxis: {
-        type: 'datetime'
+        type: 'datetime',
+        gridLineWidth: 0,
+        labels: {style: {color: '#9aa2a9', fill: '#9aa2a9'}}
     },
-    legend: {
-        enabled: false
+    yAxis: {
+        title: {text: ''},
+        gridLineWidth: 0,
+        labels: {style: {color: '#e2e2e2', fill: '#e2e2e2'}}
     },
-    plotOptions: {
-        area: {
-            fillColor: {
-                linearGradient: {
-                    x1: 0,
-                    y1: 0,
-                    x2: 0,
-                    y2: 1
-                },
-                stops: [
-                    [0, Highcharts.getOptions().colors[0]],
-                    [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
-                ]
-            },
-            marker: {
-                radius: 2
-            },
-            lineWidth: 1,
-            states: {
-                hover: {
-                    lineWidth: 1
-                }
-            },
-            threshold: null
-        }
-    },
-
-        series: [
-            {
+    series: [{
                 name: 'Price',
                 data: data,
-                type: 'areaspline',
-                color: "#a0ceff",
-                dataGrouping: {
-                    approximation: "average",
-                    smoothed: true,
-                    groupPixelWidth: 30
-                },
-
-                tooltip: {
-                    valueDecimals: 8
-                },
-                states: {
-                    hover: {
-                        enabled: false
-                    }
-                },
-                lineWidth: 1,
-                fillColor: {
-                    linearGradient: {
-                        x1: 0,
-                        y1: 0,
-                        x2: 0,
-                        y2: 1
-                    },
-                    stops: [
-                        [0, Highcharts.Color("#CFF0F7").setOpacity(0.5).get("rgba")],
-                        [1, Highcharts.Color("#a0ceff").get("rgba")]//.setOpacity(0).get('rgba')]
-                    ]
-                }
-            }
-        ]
-
-});
+                type: 'spline',
+                color: '#4bc6b9',
+                lineWidth: 2,
+                tooltip: {valueDecimals: 2},
+                marker: {enabled: true},
+                states: {hover: {lineWidth: 2}}
+            }]
+  });
 }
 
 function drawPow(data, chart, title) {
@@ -314,72 +217,63 @@ function drawVotersChart(data, missed, total) {
 
 function drawSupplyChart(data) {
 $(function () {
+  $(document).ready(function () {
+    var total = Math.floor(1680000 + data.pow + data.pos + data.devs);
+    var percent_mined = (total / 21000000 * 100).toString().substr(0,4) + '%';
 
-    $(document).ready(function () {
-
-        var total = Math.floor(1680000 + data.pow + data.pos + data.devs);
-        var percent_mined = (total / 21000000 * 100).toString().substr(0,4) + '%';
-
-        // Build the chart
-        $('#supply').highcharts({
-            chart: {
-                plotBackgroundColor: null,
-                plotBorderWidth: null,
-                plotShadow: false,
-                type: 'pie'
-            },
-            credits: {
-                  enabled: false
-            },
-            exporting: {
-                  enabled: false
-            },
-            title: {
-                text: 'Decred supply'
-            },
-            subtitle: {
-                text: "<b>"+percent_mined+"</b> DCR mined so far: "+numberFormat(total)+" of total 21 000 000"
-            },
-            tooltip: {
-                pointFormat: '<b>{point.y} DCR</b>'
-            },
-            plotOptions: {
-                pie: {
-                    allowPointSelect: false,
-                    cursor: 'pointer',
-                    dataLabels: {
-                        enabled: true,
-                    format: '<b>{point.name}</b>: {point.percentage:.1f} %'
-                    },
-                    showInLegend: false
-                }
-            },
-            series: [{
-                name: 'Votes',
-                colorByPoint: true,
-                data: [{
-                    name: 'Dev Premine',
-                    y: 840000,
-                    color: '#3498DB'
-                }, {
-                    name: 'Airdrop',
-                    y: 840000,
-                    color: '#31BDB4'
-                }, {
-                    name: 'PoW-mined',
-                    y: Math.floor(data.pow),
-                    color: '#E74C3C'
-                }, {
-                    name: 'PoS-mined',
-                    y: Math.floor(data.pos),
-                    color: '#E7A03C'
-                }, {
-                    name: 'Dev subsidy',
-                    y: Math.floor(data.devs),
-                    color: '#67B8D6'
-                }]
+    $('#supply').highcharts({
+        chart: {
+            backgroundColor: "#172a3b",
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotBorderColor: '#000000',
+            plotShadow: false,
+            type: 'pie'
+        },
+        credits: {enabled: false},
+        exporting: {enabled: false},
+        title: {text: ''},
+        tooltip: {pointFormat: '<b>{point.y} DCR</b>'},
+        plotOptions: {
+            pie: {
+                allowPointSelect: false,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    color: "#9EACB9",
+                    format: '<b>{point.name}</b>: <span style="color: #fff; font-size: 14px;">{point.percentage:.1f} %</span>',
+                    style: {textShadow: false}
+                },
+                borderColor: "#2e3245",
+                showInLegend: false
+            }
+        },
+        series: [{
+            name: 'Votes',
+            colorByPoint: true,
+            data: [{
+                name: 'Dev Premine',
+                y: 840000,
+                color: '#2b8893'
+            }, {
+                name: 'Airdrop',
+                y: 840000,
+                color: '#b65b85'
+            }, {
+                name: 'PoW-mined',
+                y: Math.floor(data.pow),
+                color: '#7a4c68'
+            }, {
+                name: 'PoS-mined',
+                y: Math.floor(data.pos),
+                color: '#4e637a'
+            }, {
+                name: 'Dev subsidy',
+                y: Math.floor(data.devs),
+                color: '#43a8b3'
             }]
-        });
+        }]
+      });
     });
 });
 }
