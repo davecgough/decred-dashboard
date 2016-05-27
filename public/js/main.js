@@ -24,11 +24,11 @@ $(function() {
               .html('$' + usd_last + '<span class="down">▾</span>');
           }
 
-          var usd_low = (response.btc_low * response.usd_price).toString().substr(0,4);
-          $('span.stats-daylow').text('$' + usd_low);
+          var btc_low = (response.btc_low).toString().substr(0,8);
+          $('span.stats-daylow').text(btc_low);
 
-          var usd_high = (response.btc_high * response.usd_price).toString().substr(0,4);
-          $('span.stats-dayhigh').text('$' + usd_high);
+          var btc_high = (response.btc_high).toString().substr(0,8);
+          $('span.stats-dayhigh').text(btc_high);
 
           if (response.prev_day <= response.btc_last) {
             $('span.stats-btc')
@@ -234,7 +234,7 @@ $(function () {
     });
 
     $.ajax({
-      url: '/api/v1/pos?'+nonce,
+      url: '/api/v1/pos?time=30&nonce='+nonce,
       type: 'GET',
       dataType: "json",
       success: function (data) {

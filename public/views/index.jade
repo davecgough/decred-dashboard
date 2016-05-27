@@ -9,7 +9,7 @@ html(lang='en')
 
       .row
         .col-xs-12.col-sm-12
-          h1.decred-title Decred Stats
+          //h1.decred-title Decred Stats
           h2.decred-subtitle Decred Network Dashboard
         .col-xs-12.col-sm-12
           .container.chart-toolbar.text-center(role='toolbar')
@@ -27,6 +27,11 @@ html(lang='en')
               span &nbsp;LAST PRICE&nbsp;
             span.stats-content.stats-lastprice -
             span.price-change.hidden-xs +3.21% change
+        .col-xs-6.col-md-3
+          p.stats-block
+            span.stats-title(title="Last price on Bittrex") 
+              span &nbsp;DCR / BTC&nbsp;
+            span.stats-content.stats-btc -
         .col-xs-6.col-md-3.hidden-xs
           p.stats-block
             span.stats-title 
@@ -37,11 +42,6 @@ html(lang='en')
             span.stats-title 
               span &nbsp;DAY HIGH&nbsp;
             span.stats-content.stats-dayhigh -
-        .col-xs-6.col-md-3
-          p.stats-block
-            span.stats-title(title="Last price on Bittrex") 
-              span &nbsp;DCR / BTC&nbsp;
-            span.stats-content.stats-btc -
     .container
       .row
         .col-xs-12.col-sm-12
@@ -164,6 +164,8 @@ html(lang='en')
               br
               | in the pool is&nbsp;
               b.avg-price-in-pos-pool - DCR
+        .col-xs-12.col-md-12(style="text-align: center;")
+          img(src="/img/be-the-lion.png",style="width: 100%; max-width: 750px;")
       .row
         .col-xs-12.col-sm-12
           .col-xs-12.col-sm-12.pos-chart-wrapper
@@ -172,9 +174,9 @@ html(lang='en')
               .btn-group.pos-group
                 button.btn-chart.btn.btn-default(type='button', data-period="7", data-chart="sbits")
                   span Week
-                button.btn-chart.btn.btn-default(type='button', data-period="30", data-chart="sbits")
+                button.btn-chart.btn.btn-default.active(type='button', data-period="30", data-chart="sbits")
                   span Month
-                button.btn-chart.btn.btn-default.active(type='button', data-period="365", data-chart="sbits")
+                button.btn-chart.btn.btn-default(type='button', data-period="365", data-chart="sbits")
                   span Year
             #pos-sbits.chart-container
       //.row

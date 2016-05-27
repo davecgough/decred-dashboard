@@ -575,12 +575,18 @@ function parsePoolsHashrate() {
 
 function updateTicketpoolvalue() {
   exec("dcrctl getticketpoolvalue", function(error, stdout, stderr) {
+    if (error || stderr) {
+      console.error('Update of ticketpoolvalue failed.');
+      return;
+    }
     try {
       var price = parseInt(stdout, 10);
     } catch(e) {
       console.error("Error getticketpoolvalue", e);
       return;
     }
+
+    if (price == NaN) return;
 
     Stats.findOne({where : {id : 1}}).then(function(stats) {
       stats.update({ticketpoolvalue : price}).catch(function(err) {

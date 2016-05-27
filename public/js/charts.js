@@ -11,19 +11,21 @@ function drawPrice(data, ticker) {
     legend: {enabled: false},
     xAxis: {
         type: 'datetime',
-        gridLineWidth: 0,
+        gridLineWidth: 1,
+        gridLineColor: '#fff',
         labels: {style: {color: '#9aa2a9', fill: '#9aa2a9'}}
     },
     yAxis: {
         title: {text: ''},
-        gridLineWidth: 0,
-        labels: {style: {color: '#e2e2e2', fill: '#e2e2e2'}}
+        gridLineWidth: 1,
+        gridLineColor: '#fff',
+        labels: {style: {color: '#9aa2a9', fill: '#9aa2a9'}}
     },
     series: [{
       name: 'Price',
       data: data,
       type: 'spline',
-      color: '#e0b47d',
+      color: '#3c4ba6',
       lineWidth: 2,
       tooltip: {valueDecimals: valueDecimals},
       marker: {enabled: false},
@@ -36,7 +38,7 @@ function drawPrice(data, ticker) {
 function drawSbits(data) {
   $('#pos-sbits').highcharts({
     chart: {backgroundColor: null},
-    tooltip: {backgroundColor: "#2a4762", borderColor: '#242424', style: {"color": "#fff"}},
+    tooltip: {backgroundColor: "#e2e2e2", borderColor: '#fff', style: {"color": "#2f2f2f"}},
     title: {text: ''},
     credits: {enabled: false},
     exporting: {enabled: false},
@@ -44,19 +46,21 @@ function drawSbits(data) {
     legend: {enabled: false},
     xAxis: {
         type: 'datetime',
-        gridLineWidth: 0,
+        gridLineWidth: 1,
+        gridLineColor: '#fff',
         labels: {style: {color: '#9aa2a9', fill: '#9aa2a9'}}
     },
     yAxis: {
         title: {text: ''},
-        gridLineWidth: 0,
-        labels: {style: {color: '#e2e2e2', fill: '#e2e2e2'}}
+        gridLineWidth: 1,
+        gridLineColor: '#fff',
+        labels: {style: {color: '#9aa2a9', fill: '#9aa2a9'}}
     },
     series: [{
                 name: 'Price',
                 data: data,
                 type: 'spline',
-                color: '#4bc6b9',
+                color: '#ac2334',
                 lineWidth: 2,
                 tooltip: {valueDecimals: 2},
                 marker: {enabled: true},
@@ -223,7 +227,7 @@ $(function () {
 
     $('#supply').highcharts({
         chart: {
-            backgroundColor: "#172a3b",
+            backgroundColor: "#f2f2f2",
             plotBackgroundColor: null,
             plotBorderWidth: null,
             plotBorderColor: '#000000',
@@ -240,8 +244,8 @@ $(function () {
                 cursor: 'pointer',
                 dataLabels: {
                     enabled: true,
-                    color: "#9EACB9",
-                    format: '<b>{point.name}</b>: <span style="color: #fff; font-size: 14px;">{point.percentage:.1f} %</span>',
+                    color: "#9d9d9d",
+                    format: '<b>{point.name}</b>: <span style="color: #333; font-size: 14px;">{point.percentage:.1f} %</span>',
                     style: {textShadow: false}
                 },
                 borderColor: "#2e3245",
@@ -254,23 +258,23 @@ $(function () {
             data: [{
                 name: 'Dev Premine',
                 y: 840000,
-                color: '#2b8893'
+                color: '#ddc38c'
             }, {
                 name: 'Airdrop',
                 y: 840000,
-                color: '#b65b85'
+                color: '#c6a55e'
             }, {
                 name: 'PoW-mined',
                 y: Math.floor(data.pow),
-                color: '#7a4c68'
+                color: '#3c4ba6'
             }, {
                 name: 'PoS-mined',
                 y: Math.floor(data.pos),
-                color: '#4e637a'
+                color: '#8c93c0'
             }, {
                 name: 'Dev subsidy',
                 y: Math.floor(data.devs),
-                color: '#43a8b3'
+                color: '#b8ada3'
             }]
         }]
       });
