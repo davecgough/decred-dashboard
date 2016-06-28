@@ -11,3 +11,4 @@ bin/node_cache.json
 test.js
 public/articles
 publish_article.sh
+uploads

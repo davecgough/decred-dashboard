@@ -3,7 +3,7 @@ function drawPrice(data, ticker) {
 
   $('#price-chart').highcharts({
     chart: {backgroundColor: null},
-    tooltip: {backgroundColor: "#242424", borderColor: '#242424', style: {"color": "#fff"}},
+    tooltip: {backgroundColor: "#e2e2e2", borderColor: '#fff', style: {"color": "#2f2f2f"}},
     title: {text: ''},
     credits: {enabled: false},
     exporting: {enabled: false},
@@ -35,7 +35,8 @@ function drawPrice(data, ticker) {
 
 }
 
-function drawSbits(data) {
+function drawSbits(data, time) {
+  var markerStatus = time > 30 ? false : true;
   $('#pos-sbits').highcharts({
     chart: {backgroundColor: null},
     tooltip: {backgroundColor: "#e2e2e2", borderColor: '#fff', style: {"color": "#2f2f2f"}},
@@ -60,35 +61,28 @@ function drawSbits(data) {
                 name: 'Price',
                 data: data,
                 type: 'spline',
-                color: '#ac2334',
+                color: '#3c4ba6',
                 lineWidth: 2,
                 tooltip: {valueDecimals: 2},
-                marker: {enabled: true},
+                marker: {enabled: markerStatus},
                 states: {hover: {lineWidth: 2}}
             }]
   });
 }
 
 function drawPow(data, chart, title) {
+  var valueDecimals = 2;
+  var name = 'Thash/s';
+  if (chart == 'difficulty') { valueDecimals = 0; var name = 'Difficulty'; }
   $('#pow-'+chart).highcharts({
-    chart: {
-        zoomType: 'x'
-    },
-    credits: {
-          enabled: false
-    },
-    exporting: {
-          enabled: false
-    },
-    title: {
-        text: title
-    },
-    xAxis: {
-        type: 'datetime'
-    },
-    legend: {
-        enabled: false
-    },
+    chart: {backgroundColor: null},
+    credits: {enabled: false},
+    exporting: {enabled: false},
+    navigator: {enabled: false},
+    legend: {enabled: false},
+    title: {text: ""},
+    xAxis: {type: 'datetime'},
+    yAxis: {title: ''},
     plotOptions: {
         area: {
             fillColor: {
@@ -99,15 +93,15 @@ function drawPow(data, chart, title) {
                     y2: 1
                 },
                 stops: [
-                    [0, '#FFD285'],
-                    [1, '#FF733F']
+                    [0, '#8c93c0'],
+                    [1, '#4a58ad']
                 ]
             },
             marker: {
                 radius: 2
             },
-            lineWidth: 1,
-            color: '#FFD285',
+            lineWidth: 0,
+            color: '#8c93c0',
             states: {
                 hover: {
                     lineWidth: 1
@@ -116,7 +110,7 @@ function drawPow(data, chart, title) {
             threshold: null
         }
     },
-    series: [{type: 'area', data: data}]
+    series: [{type: 'area', data: data, name : name, tooltip: {valueDecimals: valueDecimals}}]
 });
 }
 
@@ -127,9 +121,9 @@ function drawHashrate(data) {
         // Build the chart
         $('#hashrate-distribution').highcharts({
             chart: {
-                plotBackgroundColor: null,
-                plotBorderWidth: null,
-                plotShadow: false,
+                backgroundColor: null,
+                borderWidth: null,
+                shadow: false,
                 type: 'pie'
             },
             credits: {

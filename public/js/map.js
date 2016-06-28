@@ -10,6 +10,7 @@ $(function() {
       //   console.error(e);
       //   return;
       // }
+      $('h2.decred-subtitle').text(peers.length + ' active nodes on the map');
       drawMap(peers);
       fillTable(peers);
     }

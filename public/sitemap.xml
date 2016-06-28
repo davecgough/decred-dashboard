@@ -6,47 +6,12 @@
   <changefreq>hourly</changefreq>
 </url>
 <url>
-  <loc>https://dcrstats.com/map</loc>
-  <priority>0.80</priority>
-  <changefreq>hourly</changefreq>
-</url>
-<url>
   <loc>https://dcrstats.com/pow</loc>
-  <priority>0.80</priority>
+  <priority>0.75</priority>
   <changefreq>hourly</changefreq>
 </url>
 <url>
-  <loc>https://dcrstats.com/articles</loc>
-  <priority>0.65</priority>
-  <changefreq>hourly</changefreq>
-</url>
-<url>
-  <loc>https://dcrstats.com/articles/write-decred-tutorial</loc>
-  <priority>0.65</priority>
-  <changefreq>hourly</changefreq>
-</url>
-<url>
-  <loc>https://dcrstats.com/articles/how-to-mine-decred-in-the-pool-using-nvidia-gpu</loc>
-  <priority>0.50</priority>
-  <changefreq>hourly</changefreq>
-</url>
-<url>
-  <loc>https://dcrstats.com/articles/decred-solo-pos-mining</loc>
-  <priority>0.50</priority>
-  <changefreq>hourly</changefreq>
-</url>
-<url>
-  <loc>https://dcrstats.com/articles/understanding-the-value-of-the-decred-dcr-system</loc>
-  <priority>0.50</priority>
-  <changefreq>hourly</changefreq>
-</url>
-<url>
-  <loc>https://dcrstats.com/articles/running-local-decred-wallet</loc>
-  <priority>0.50</priority>
-  <changefreq>hourly</changefreq>
-</url>
-<url>
-  <loc>https://dcrstats.com/articles/how-to-buy-decred-with-usd-euro</loc>
+  <loc>https://dcrstats.com/map</loc>
   <priority>0.50</priority>
   <changefreq>hourly</changefreq>
 </url>

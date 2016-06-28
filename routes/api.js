@@ -21,6 +21,8 @@ const PREMINE = 1680000;
 const MINED_DCR_BEFORE_POS = 89401;
 const DCR_TOTAL = PREMINE + MINED_DCR_BEFORE_POS;
 
+const colors = ['#3c4ba6','#8c93c0','#ddc38c','#c6a55e','#b8ada3'];
+
 router.get('/pos', function (req, res) {
   var result = {};
   var sbits = [];
@@ -116,10 +118,12 @@ router.get('/pools', function(req, res) {
       var result = [];
       var total = 0;
       var hashrate = 0;
+      var index = 0;
       for (let pool of pools) {
         total += pool.hashrate;
         hashrate = Math.round(pool.hashrate * 100) / 100;
-        result.push({workers: pool.workers, name : pool.name, y : hashrate, network: networkTotal});
+        result.push({workers: pool.workers, name : pool.name, y : hashrate, network: networkTotal, color : colors[index]});
+        index++;
       }
       var soloMiners = Math.round((stats.networkhashps / 1000 / 1000 / 1000 - total) * 100) / 100;
       if (soloMiners > 0) {
@@ -142,6 +146,11 @@ router.get('/pools', function(req, res) {
 
 router.get('/prices', function (req, res) {
   var ticker = req.query.ticker;
+  var time = req.query.time;
+  if (!time || time < 7 || time > 365) {
+    time = 365;
+  }
+  var min_time = new Date().getTime() - time * 24 * 60 * 60 * 1000;
 
   if (ticker != 'btc' && ticker != 'usd') {
     res.status(500).json({error : true});
@@ -160,10 +169,14 @@ router.get('/prices', function (req, res) {
       return;
     }
     if (ticker === 'usd') {
-      res.status(200).json(result.usd_price);
+      result = result.usd_price;
     } else {
-      res.status(200).json(result.btc_price);
+      result = result.btc_price;
     }
+    result = result.filter(function(item) {
+      return (item[0] > min_time) ? true : false;
+    });
+    res.status(200).json(result);
   });
 });
 

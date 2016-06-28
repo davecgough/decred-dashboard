@@ -1,5 +1,32 @@
 $(function() {
 
+/* Lion Banner Start */
+  function lsTest(){
+      var test = 'test';
+      try {
+          localStorage.setItem(test, test);
+          localStorage.removeItem(test);
+          return true;
+      } catch(e) {
+          return false;
+      }
+  }
+
+  if(lsTest() === true) {
+    if (localStorage.getItem("already_the_lion") != "true") {
+      $('#stakepool_block').show();
+    }
+  }
+
+  $('#meet_the_stakepool').on('click', function(e) {
+    e.preventDefault();
+    if(lsTest() === true) {
+      localStorage.setItem("already_the_lion", "true");
+      $('#stakepool_block').hide();
+    }
+  });
+/* Lion Banner End */
+
   var lastBlockInterval;
   updateStats(true);
   setInterval(updateStats, 15000);
@@ -25,17 +52,21 @@ $(function() {
           }
 
           var btc_low = (response.btc_low).toString().substr(0,8);
-          $('span.stats-daylow').text(btc_low);
+          var usd_low = (response.btc_low * response.usd_price).toString().substr(0,4);
+          $('span.stats-daylow').text('$' + usd_low);
+          $('span.btc-low').text(btc_low + ' BTC');
 
           var btc_high = (response.btc_high).toString().substr(0,8);
-          $('span.stats-dayhigh').text(btc_high);
+          var usd_high= (response.btc_high* response.usd_price).toString().substr(0,4);
+          $('span.stats-dayhigh').text('$' + usd_high);
+          $('span.btc-high').text(btc_high + ' BTC');
 
           if (response.prev_day <= response.btc_last) {
             $('span.stats-btc')
-              .html(response.btc_last + '<span class="up">▴</span>');
+              .html(response.btc_last.toString().substr(0,8) + '<span class="up">▴</span>');
           } else {
             $('span.stats-btc')
-              .html(response.btc_last + '<span class="down">▾</span>');
+              .html(response.btc_last.toString().substr(0,8) + '<span class="down">▾</span>');
           }
 
           $('span.stats-btc-usd').text('$' + response.usd_price);
@@ -71,7 +102,7 @@ $(function() {
           }
 
           //$('span.real-pos-price').attr('title', response.sbits + ' DCR');
-          $('span.stats-ticketprice').html(ticket_price + ' <span class="hidden-xs">DCR</span>');
+          $('span.stats-ticketprice').html(ticket_price + ' DCR');
           $('span.stats-poolsize').html(numberFormat(response.poolsize));
           $('span.stats-mempool').html(numberFormat(response.pooledtx));
           var avg_fee = response.fees ? response.fees.toString().substr(0,6) : 0;
@@ -93,9 +124,9 @@ $(function() {
 
           var block_reward = getEstimatedBlockReward(Math.ceil(response.blocks / 6144) - 1, response.reward);
           $('.block-reward').html(block_reward.toString().substr(0,5) + ' DCR');
-          $('.pow-block-reward').html('<span class="hidden-xs"><b>PoW-reward</b> </span><span class="visible-xs-block"><b>PoW</b> </span>' + (block_reward * 0.6).toString().substr(0,6) + ' DCR');
+          $('.pow-block-reward').html('<span class="hidden-xs"><b>PoW-reward</b> </span><span class="visible-xs-inline"><b>PoW</b> </span>' + (block_reward * 0.6).toString().substr(0,6) + ' DCR');
           $('.pos-block-reward').html('<span><b>PoS vote</span></b> ' + (block_reward * 0.3 / 5).toString().substr(0,6) + ' DCR');
-          $('.dev-block-reward').html('<span class="hidden-xs"><b>Dev subsidy</b> </span><span class="visible-xs-block"><b>Devs</b> </span>' + (block_reward * 0.1).toString().substr(0,6) + ' DCR');
+          $('.dev-block-reward').html('<span class="hidden-xs"><b>Dev subsidy</b> </span><span class="visible-xs-inline"><b>Devs</b> </span>' + (block_reward * 0.1).toString().substr(0,6) + ' DCR');
 
           var next_block_subsidy = getEstimatedBlockReward(Math.ceil(response.blocks / 6144), response.reward);
           $('.est-block-reward').html(next_block_subsidy.toString().substr(0,5) + ' DCR');
@@ -196,6 +227,7 @@ $(function() {
 $(function () {
 
     $('.glyphicon-question-sign').tooltip();
+    $('span.fa-trophy').tooltip();
     var nonce = (new Date()).getTime();
 
     $('.pos-group .btn-chart').on('click', function(e) {
@@ -215,7 +247,7 @@ $(function () {
         dataType: "json",
         success: function (data) {
           if (chart == 'sbits') {
-            drawSbits(data.sbits);
+            drawSbits(data.sbits, time);
           }
         }
       });
@@ -225,12 +257,22 @@ $(function () {
       e.preventDefault();
       var $this = $(this);
       var ticker = $this.data('ticker');
+      var time = $this.data('time');
       var chart = $this.data('chart');
 
-      $('.price-chart-title').text('Decred Price, ' + ticker.toUpperCase());
+      /* Change chart title only if we change currency */
+      if (ticker) {
+        $('.price-chart-title').text('Decred Price, ' + ticker.toUpperCase());
+      } else {
+        ticker = $('.price-group .price-ticker.active').data('ticker');
+      }
+      if (!time) {
+        time = $('.price-group .price-time.active').data('time');
+      }
       $this.parent().find('button').each(function(item) { $(this).removeClass('active'); });
       $this.addClass('active');
-      updatePricesChart(ticker);
+      console.log(ticker, time);
+      updatePricesChart(ticker, time);
     });
 
     $.ajax({
@@ -238,21 +280,24 @@ $(function () {
       type: 'GET',
       dataType: "json",
       success: function (data) {
-        drawSbits(data.sbits);
+        drawSbits(data.sbits, 30);
       }
     });
 
-    updatePricesChart('usd');
+    updatePricesChart('usd', 365);
 });
 
-function updatePricesChart(ticker) {
+function updatePricesChart(ticker, time) {
   if (ticker != 'usd' && ticker != 'btc') {
     ticker = 'usd';
+  }
+  if (!time || time < 7 || time > 365) {
+    time = 365;
   }
   $.ajax({
     url: '/api/v1/prices',
     type: 'GET',
-    data: {ticker : ticker},
+    data: {ticker : ticker, time : time},
     dataType: "json",
     success: function (data) {
       if (!data.error) {

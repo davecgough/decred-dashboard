@@ -7,34 +7,38 @@ html(lang='en')
     .container
       .row
         .col-xs-12.col-md-6.mobile-top-chart
-          table#pools-table.table.chart-container
+          table#pools-table.table.table-striped.chart-container
             tr
               th Pool
               th Workers
               th Hashrate
-        .col-xs-12.col-md-6
+        .col-xs-12.col-md-6.row.hidden-xs
           #hashrate-distribution.chart-container
-      .row
+      .row.pow
         .col-xs-12.col-sm-12
-          .btn-toolbar(role='toolbar')
-            .btn-group.pow-group
-              button.btn-chart.btn.btn-default(type='button', data-period="7", data-chart="hashrate")
-                span Week
-              button.btn-chart.btn.btn-default(type='button', data-period="30", data-chart="hashrate")
-                span Month
-              button.btn-chart.btn.btn-default.active(type='button', data-period="365", data-chart="hashrate")
-                span Year
-          #pow-hashrate.chart-container
-      .row
+          .col-xs-12.col-sm-12.pos-chart-wrapper
+            .chart-title Decred Network Hashrate, Thash/s
+            .btn-toolbar(role='toolbar')
+              .btn-group.pow-group
+                button.btn-chart.btn.btn-default(type='button', data-period="7", data-chart="hashrate")
+                  span Week
+                button.btn-chart.btn.btn-default.active(type='button', data-period="30", data-chart="hashrate")
+                  span Month
+                button.btn-chart.btn.btn-default(type='button', data-period="365", data-chart="hashrate")
+                  span Year
+            #pow-hashrate.chart-container
+      .row.pow
         .col-xs-12.col-sm-12
-          .btn-toolbar(role='toolbar')
-            .btn-group.pow-group
-              button.btn-chart.btn.btn-default(type='button', data-period="7", data-chart="difficulty")
-                span Week
-              button.btn-chart.btn.btn-default(type='button', data-period="30", data-chart="difficulty")
-                span Month
-              button.btn-chart.btn.btn-default.active(type='button', data-period="365", data-chart="difficulty")
-                span Year
-          #pow-difficulty.chart-container
+          .col-xs-12.col-sm-12.pos-chart-wrapper
+            .chart-title PoW Mining Difficulty
+            .btn-toolbar(role='toolbar')
+              .btn-group.pow-group
+                button.btn-chart.btn.btn-default(type='button', data-period="7", data-chart="difficulty")
+                  span Week
+                button.btn-chart.btn.btn-default.active(type='button', data-period="30", data-chart="difficulty")
+                  span Month
+                button.btn-chart.btn.btn-default(type='button', data-period="365", data-chart="difficulty")
+                  span Year
+            #pow-difficulty.chart-container
     footer
       include ./includes/footer.jade
