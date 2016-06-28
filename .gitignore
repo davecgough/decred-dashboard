@@ -2,7 +2,7 @@ node_modules
 config/config.json
 public/js/metrics.js
 public/robots.txt
-uploads/usd_price.json
+uploads/prices.json
 uploads/peers.json
 snippets.js
 .DS_Store
@@ -11,3 +11,4 @@ bin/node_cache.json
 test.js
 public/articles
 publish_article.sh
+uploads

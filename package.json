@@ -14,7 +14,7 @@
       ],
       "env": {
         "COMMON_ENV_VAR": "true",
-        "NODE_ENV": "production"
+        "NODE_ENV": "development"
       }
     }
   ],

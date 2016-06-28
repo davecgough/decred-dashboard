@@ -2,6 +2,7 @@
 
 var fs = require('fs');
 var path = require('path');
+var moment = require('moment');
 var express = require('express');
 var router = express.Router();
 
@@ -19,6 +20,8 @@ const PREMINE = 1680000;
 /* (4095 - 1) blocks * 21.83707864 DCR ~ 89401 */
 const MINED_DCR_BEFORE_POS = 89401;
 const DCR_TOTAL = PREMINE + MINED_DCR_BEFORE_POS;
+
+const colors = ['#3c4ba6','#8c93c0','#ddc38c','#c6a55e','#b8ada3'];
 
 router.get('/pos', function (req, res) {
   var result = {};
@@ -50,39 +53,6 @@ router.get('/pos', function (req, res) {
     result.sbits = sbits;
     res.status(200).json(result);
     return;
-  }).catch(function(err) {
-    console.log(err);
-    res.status(500).json({error : true});
-  });
-});
-
-router.get('/popular_ticket_prices', function(req, res) {
-  var raw = req.query.raw || false;
-  let query = {
-    attributes: ['sbits',[sequelize.fn('SUM', sequelize.col('num_tickets')), 'num_tickets']],
-    where: {
-      height: {$gt : 4895}
-    },
-    group: ['sbits'],
-    order: 'sbits ASC'
-  };
-
-  Blocks.findAll(query).then(function(result) {
-    if (raw) {
-      return res.status(200).json(result);
-    }
-    var processed = [];
-    for (let item of result) {
-      let sbits = Math.ceil(item.sbits);
-      let key = sbits - 1;
-      let num_tickets = parseInt(item.num_tickets, 10);
-      processed[key] = processed[key] ? processed[key] + num_tickets : num_tickets;
-    }
-    var output = [];
-    for (let row in processed) {
-      output.push([parseInt(row,10), processed[row] ]);
-    }
-    return res.status(200).json(output);
   }).catch(function(err) {
     console.log(err);
     res.status(500).json({error : true});
@@ -148,10 +118,12 @@ router.get('/pools', function(req, res) {
       var result = [];
       var total = 0;
       var hashrate = 0;
+      var index = 0;
       for (let pool of pools) {
         total += pool.hashrate;
         hashrate = Math.round(pool.hashrate * 100) / 100;
-        result.push({workers: pool.workers, name : pool.name, y : hashrate, network: networkTotal});
+        result.push({workers: pool.workers, name : pool.name, y : hashrate, network: networkTotal, color : colors[index]});
+        index++;
       }
       var soloMiners = Math.round((stats.networkhashps / 1000 / 1000 / 1000 - total) * 100) / 100;
       if (soloMiners > 0) {
@@ -174,6 +146,11 @@ router.get('/pools', function(req, res) {
 
 router.get('/prices', function (req, res) {
   var ticker = req.query.ticker;
+  var time = req.query.time;
+  if (!time || time < 7 || time > 365) {
+    time = 365;
+  }
+  var min_time = new Date().getTime() - time * 24 * 60 * 60 * 1000;
 
   if (ticker != 'btc' && ticker != 'usd') {
     res.status(500).json({error : true});
@@ -192,10 +169,14 @@ router.get('/prices', function (req, res) {
       return;
     }
     if (ticker === 'usd') {
-      res.status(200).json(result.usd_price);
+      result = result.usd_price;
     } else {
-      res.status(200).json(result.btc_price);
+      result = result.btc_price;
     }
+    result = result.filter(function(item) {
+      return (item[0] > min_time) ? true : false;
+    });
+    res.status(200).json(result);
   });
 });
 
@@ -223,6 +204,9 @@ router.get('/estimated_ticket_price', function (req, res) {
 });
 
 router.get('/get_stats', function (req, res) {
+  if (req.query.origin) {
+    console.log('[API]: get_stats request from ' + req.query.origin);
+  }
   Stats.findOne({where : {id : 1}}).then(function(stats) {
 
     if (!stats) {
@@ -232,6 +216,7 @@ router.get('/get_stats', function (req, res) {
 
     Blocks.findOne({order: 'height DESC'}).then(function(block) {
       stats = stats.dataValues;
+      stats.last_block_datetime = block.datetime;
       stats.average_time = Math.floor((block.datetime - FIRST_BLOCK_TIME) / block.height);
       stats.average_minutes = Math.floor(stats.average_time / 60);
       stats.average_seconds = Math.floor(stats.average_time % 60);

@@ -3,7 +3,6 @@
 var express = require('express');
 var request = require('request');
 var moment  = require('moment');
-var bodyParser = require('body-parser');
 var exec    = require('child_process').exec;
 var CronJob = require('cron').CronJob;
 var fs = require('fs');
@@ -22,14 +21,13 @@ var rpc_password = config.rpc_password;
 var app = express();
 app.set('views', './public/views');
 app.set('view engine', 'jade');
+app.locals.moment = moment;
 
 console.log('Starting app in ' + env + ' environment.');
 // in production we are using Nginx to deliver static files
 if (env == 'development') {
   app.use(express.static('public'));
 }
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
 
 var sequelize = require('./models').sequelize;
 var Blocks = require('./models').Blocks;
@@ -68,6 +66,8 @@ var peersInterval = setInterval(function() {
         console.log(e); return;
       }
       console.log(data);
+      if (!data || !data.length) { return; }
+
       var peers = data.map(function (val) {
         val.geo = geoip.lookup(val.ip.split(':')[0]);
         val.sync = val.best_block < BEST_HEIGHT ? 'behind' : 'ok';
@@ -98,6 +98,8 @@ new CronJob('0 */1 * * * *', function() {
   /* Count total missed tickets */
   checkMissedTickets();
 
+  getStakepoolsStats();
+
 }, null, true, 'Europe/Rome');
 
 new CronJob('0 */5 * * * *', function() {
@@ -116,13 +118,31 @@ new CronJob('*/15 * * * * *', function() {
       return;
     } else if (result) {
       Stats.findOrCreate({where : {id : 1}, defaults : result }).spread(function(stats, created) {
-        let timestamp = Math.floor(new Date() / 1000) - 30 * 24 * 60 * 60;
-        let query = 'SELECT AVG(DISTINCT(sbits)) as sbits FROM blocks WHERE datetime >= ' + timestamp;
-        sequelize.query(query, { model: Blocks }).then(function(data) {
-          result.avg_sbits = data[0].dataValues.sbits;
-          stats.update(result).catch(function(err) {
-            console.error(err);
-          });
+        var datetime = moment().subtract(30, 'days').unix();
+        let query = {
+          attributes: ['sbits',[sequelize.fn('SUM', sequelize.col('num_tickets')), 'num_tickets']],
+          where: {
+            height: {$gt : 4895},
+            datetime: {$gt : datetime}
+          },
+          group: ['sbits'],
+          order: 'sbits ASC'
+        };
+
+        Blocks.findAll(query).then(function(all_blocks) {
+            /* Calculate 30-days volume-weighted average ticket price */
+            var q = 0;
+            var pq = 0;
+            for (let item of all_blocks) {
+              pq += item.sbits * parseInt(item.num_tickets, 10);
+            	q  += parseInt(item.num_tickets, 10);
+            }
+            result.avg_sbits = pq / q;
+            stats.update(result).catch(function(err) {
+              console.error(err);
+            });
+        }).catch(function(err) {
+          console.error(err);
         });
       }).catch(function(err) {
         console.error(err);
@@ -150,6 +170,42 @@ new CronJob('0 */30 * * * *', function() {
 
   parsePoolsHashrate();
 }, null, true, 'Europe/Rome');
+
+function getStakepoolsStats() {
+   request("https://decred.org/api/?c=gsd", function (error, response, body) {
+      if (!error && response.statusCode == 200) {
+        try {
+          var stakepools = JSON.parse(body);
+        } catch(e) {
+           console.log('Bad response from https://decred.org/api/?c=gsd');
+           console.log(e);
+           return;
+        }
+        if (!stakepools) return;
+
+        var result = [];
+        for (let item in stakepools) {
+           result.push(stakepools[item]);
+        }
+        // sort DESC by live tickets
+        result.sort(function(a,b) {return (parseInt(a["Live"],10) < parseInt(b["Live"],10)) ? 1 : ((parseInt(b["Live"],10) < parseInt(a["Live"],10)) ? -1 : 0)});
+
+        fs.writeFile("./uploads/stakepools.json", JSON.stringify(result), function(err) {
+          if(err) {
+            console.error(err);
+            return;
+          }
+          console.log("Stakepools list updated.");
+          return;
+        });
+      } else {
+        console.log('Bad response from https://decred.org/api/?c=gsd');
+        console.log('Status: ' + response.statusCode);
+        if (error) console.log(error);
+      }
+      return;
+  });
+}
 
 function getPrices(next) {
   exec("dcrctl getmininginfo", function(error, stdout, stderr) {
@@ -399,7 +455,7 @@ function getAverageMempoolFees() {
     if (data) {
       Stats.findOne({where : {id : 1}}).then(function(stats) {
 
-        stats.update({fees : data.feeinfomempool.median, max_fees: data.feeinfomempool.max})
+        stats.update({fees : data.feeinfomempool.mean, max_fees: data.feeinfomempool.max})
         .then(function(row) {
           console.log('Average fees: ' + row.fees);
         }).catch(function(err) {
@@ -555,12 +611,18 @@ function parsePoolsHashrate() {
 
 function updateTicketpoolvalue() {
   exec("dcrctl getticketpoolvalue", function(error, stdout, stderr) {
+    if (error || stderr) {
+      console.error('Update of ticketpoolvalue failed.');
+      return;
+    }
     try {
       var price = parseInt(stdout, 10);
     } catch(e) {
       console.error("Error getticketpoolvalue", e);
       return;
     }
+
+    if (price == NaN) return;
 
     Stats.findOne({where : {id : 1}}).then(function(stats) {
       stats.update({ticketpoolvalue : price}).catch(function(err) {

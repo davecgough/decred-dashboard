@@ -9,11 +9,11 @@ $(function () {
       $this.parent().find('button').each(function(item) { $(this).removeClass('active'); });
       $this.addClass('active');
 
-      updatePowChart(time, chart);     
+      updatePowChart(time, chart);
     });
     updateHashrateDistribution();
-    updatePowChart(365, 'difficulty');
-    updatePowChart(365, 'hashrate');
+    updatePowChart(30, 'difficulty');
+    updatePowChart(30, 'hashrate');
 
     setTimeout(function() {
       $('.highcharts-button').remove();
@@ -30,9 +30,12 @@ function updateHashrateDistribution() {
       if (data && !data.error) {
         drawHashrate(data);
         data.forEach(function(item) {
-          var html  = '<tr><td>'+item.name+'</td>';
-              html += '<td>'+item.workers+'</td>';
-              html += '<td>'+item.y+' Ghash/s</td></tr>';
+          var html  = '<tr><td><a href="http://'+item.name+'" rel="nofollow" target="_blank">'+item.name+'</a></td>';
+          if (item.name == 'Solo miners') {
+            var html  = '<tr><td><b>'+item.name+'</b></td>';
+          }
+          html += '<td>'+item.workers+'</td>';
+          html += '<td>'+item.y+' Ghash/s</td></tr>';
           $('#pools-table').append(html);
         });
       }
