@@ -330,8 +330,6 @@ function findNewBlock(height) {
             updateEstimatedTicketPrice(row.hash);
 
             findNewBlock(height + 1);
-          }).catch(function(err) {
-            console.log(err);
           });
         } else {
           console.log('No new blocks found');

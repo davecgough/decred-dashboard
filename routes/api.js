@@ -246,7 +246,7 @@ router.get('/price', function(req, res) {
       dcr_usd : price.dcr_usd,
       datetime : price.datetime
     };
-    res.status(200).json(stats);
+    res.status(200).json(result);
   }).catch(function(err) {
     console.error(err);
   });
