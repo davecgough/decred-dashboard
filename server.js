@@ -31,10 +31,10 @@ if (env == 'development') {
 
 var sequelize = require('./models').sequelize;
 var Blocks = require('./models').Blocks;
-var PosAvg = require('./models').PosAvg;
 var Stats = require('./models').Stats;
 var Hashrate = require('./models').Hashrate;
 var Pools = require('./models').Pools;
+var Prices = require('./models').Prices;
 
 var PRICE_SOURCE = 'poloniex';
 
@@ -161,6 +161,9 @@ new CronJob('0 */15 * * * *', function() {
 
   /* Update coinsupply */
   updateCoinSupply();
+
+  /* Save market price */
+  saveMarketPrice();
 }, null, true, 'Europe/Rome');
 
 /* Save network hashrate each 30 mins */
@@ -276,7 +279,6 @@ function getPrices(next) {
             }
 
             result.usd_price = data.last;
-            // console.log('Step 3', result);
 
             return next(null, result);
           } else {
@@ -316,23 +318,20 @@ function findNewBlock(height) {
       .spread(function(row, created) {
         if (created) {
           console.log('New block was added, height: ' + height);
-          updateDailyAveragePoS(row.datetime, row.poolsize, row.sbits, function(err, updated) {
+          parseSStx(data.stx, function(err, yes_votes) {
             if (err) {
               console.error(err);
             }
-            parseSStx(data.stx, function(err, yes_votes) {
-              if (err) {
-                console.error(err);
-              }
 
-              row.update({yes_votes : yes_votes}).catch(function(err) {
-                console.log(err);
-              });
-
-              updateEstimatedTicketPrice(row.hash);
-
-              findNewBlock(height + 1);
+            row.update({yes_votes : yes_votes}).catch(function(err) {
+              console.log(err);
             });
+
+            updateEstimatedTicketPrice(row.hash);
+
+            findNewBlock(height + 1);
+          }).catch(function(err) {
+            console.log(err);
           });
         } else {
           console.log('No new blocks found');
@@ -340,65 +339,6 @@ function findNewBlock(height) {
       }).catch(function(err) {
         console.log(err);
       });
-  });
-}
-
-function updateDailyAveragePoS (timestamp, new_poolsize, new_sbits, next) {
-  timestamp = timestamp * 1000;
-  var day = moment(timestamp).format('MM-DD-YYYY');
-  console.log('Calculating average PoS stats for ' + day);
-
-  var next_day = moment(timestamp).add(1, 'days').format('MM-DD-YYYY');
-
-  var fromdate = new Date(day).getTime();
-  fromdate = parseInt(fromdate / 1000, 10);
-  var untildate = new Date(next_day).getTime();
-  untildate = parseInt(untildate / 1000, 10);
-
-  PosAvg.findOrCreate({where : {day : day}}).spread(function(average, created) {
-    Blocks.findAll({where : {datetime: {
-      $lt: untildate,
-      $gt: fromdate
-    }}}).then(function(rows) {
-
-    var count = rows.length;
-    var poolsize = 0;
-    var sbits = 0;
-
-    for (let row of rows) {
-      poolsize += row.poolsize;
-      sbits += row.sbits;
-    }
-
-    poolsize = parseInt(poolsize / count, 10);
-    sbits = sbits / count;
-
-    var update = {
-      poolsize : poolsize,
-      sbits : sbits,
-      timestamp : fromdate
-    };
-
-    if (!average.poolsize_min || average.poolsize_min > new_poolsize ) {
-      update.poolsize_min = new_poolsize;
-    }
-    if (!average.poolsize_max || average.poolsize_max < new_poolsize ) {
-      update.poolsize_max = new_poolsize;
-    }
-    if (!average.sbits_min || average.sbits_min > new_sbits ) {
-      update.sbits_min = new_sbits;
-    }
-    if (!average.sbits_max || average.sbits_max < new_sbits ) {
-      update.sbits_max = new_sbits;
-    }
-
-    average.update(update)
-      .then(function(updated) {
-         next(null, updated);
-      }).catch(function(err) {
-        next(err, null);
-      });
-  });
   });
 }
 
@@ -683,6 +623,26 @@ function updateEstimatedTicketPrice(hash) {
       });
     }
 
+  });
+}
+
+function saveMarketPrice() {
+  Stats.findOne({where : {id : 1}}).then(function(stats) {
+    var data = {
+      dcr_btc : stats.btc_last,
+      btc_usd : stats.usd_price,
+      dcr_usd : (stats.btc_last * stats.usd_price),
+      datetime : Math.floor(new Date().getTime() / 1000)
+    };
+
+    Prices.create(data).then(function(row) {
+      console.log('Saved 15-mins market price');
+    }).catch(function(err) {
+      console.error(err);
+    });
+
+  }).catch(function(err) {
+    console.error(err);
   });
 }
 

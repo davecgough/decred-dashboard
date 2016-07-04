@@ -8,10 +8,10 @@ var router = express.Router();
 
 var sequelize = require('../models').sequelize;
 var Blocks = require('../models').Blocks;
-var PosAvg = require('../models').PosAvg;
 var Stats = require('../models').Stats;
 var Hashrate = require('../models').Hashrate;
 var Pools = require('../models').Pools;
+var Prices = require('../models').Prices;
 
 const SUPPLY = 21000000;
 const FIRST_BLOCK_TIME = 1454954535;
@@ -236,6 +236,20 @@ router.get('/get_stats', function (req, res) {
 
 router.get('/peerinfo', function(req, res) {
   res.sendFile(path.normalize(__dirname + '/../uploads/peers.json'));
+});
+
+router.get('/price', function(req, res) {
+  Prices.findOne({order : 'datetime DESC'}).then(function(price) {
+    let result = {
+      dcr_btc : price.dcr_btc,
+      btc_usd : price.btc_usd,
+      dcr_usd : price.dcr_usd,
+      datetime : price.datetime
+    };
+    res.status(200).json(stats);
+  }).catch(function(err) {
+    console.error(err);
+  });
 });
 
 module.exports = router;

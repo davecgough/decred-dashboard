@@ -150,7 +150,8 @@ p.pos-stats-block.big {
   padding: 5px 0 5px 15px;
   font-weight: bold;
   width: 100%;
-  text-align: left;
+  text-align: center;
+  text-transform: uppercase;
   display: block;
   border-bottom: 1px solid #e0e0e0;
   color: #727272;
@@ -160,7 +161,7 @@ p.pos-stats-block.big {
 .pos-stats-content {
     display: block;
     font-weight: 600;
-    font-size: 38px;
+    font-size: 32px;
     line-height: 54px;
     letter-spacing: 0px;
     color: #3f3f3f;
@@ -250,12 +251,13 @@ span.down {
   border-bottom: 1px solid #e0e0e0;
   color: #727272;
   font-family: "Proxima Nova Bold", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  text-transform: uppercase;
 }
 
 .stats-content {
   display: block;
   font-weight: 600;
-  font-size: 38px;
+  font-size: 32px;
   line-height: 82px;
   letter-spacing: 0px;
   color: #3f3f3f;
@@ -264,7 +266,7 @@ span.down {
 .network-stats-content {
   display: block;
   font-weight: 600;
-  font-size: 38px;
+  font-size: 32px;
   line-height: 54px;
   letter-spacing: 0px;
   color: #3f3f3f;

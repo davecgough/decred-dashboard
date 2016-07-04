@@ -110,7 +110,7 @@ html(lang='en')
         .col-xs-6.col-md-3
           p.pos-stats-block
             span.pos-stats-title Ticket Price
-            span.pos-stats-content.stats-ticketprice -
+            span.pos-stats-content.stats-ticketprice(style="color: #c6a55e;") -
         .col-xs-6.col-md-3
           p.pos-stats-block
             span.pos-stats-title PoS Poolsize
@@ -126,11 +126,6 @@ html(lang='en')
             span.pos-stats-content.stats-fees -
       .row.reward-hints
         .col-xs-6.col-md-6
-          p.pos-stats-block.big.stats-main-color
-            span.pos-stats-title Ticket price adjustment
-            span.pos-stats-content.main-color.est-pos-time 
-            span.pos-stats-subinfo.est-pos-blocks
-        .col-xs-6.col-md-6
           p.pos-stats-block.big.stats-second-color
             span.pos-stats-title Estimated ticket price
             span.pos-stats-content.second-color.est-pos-price
@@ -142,6 +137,11 @@ html(lang='en')
               span.inline-block
                 span Max:&nbsp;
                 span.max-est-pos
+        .col-xs-6.col-md-6
+          p.pos-stats-block.big.stats-main-color
+            span.pos-stats-title Ticket price adjustment
+            span.pos-stats-content.main-color.est-pos-time 
+            span.pos-stats-subinfo.est-pos-blocks
       .row
         .col-xs-12.col-md-6.hint-pos
           .stats-block(style="height: 200px;")
