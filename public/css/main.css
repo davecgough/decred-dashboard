@@ -182,6 +182,14 @@ p.pos-stats-block.big {
     font-size: 22px;
 }
 
+span.stats-fees {
+  font-size: 22px;
+}
+
+span.pos-stats-content.main-color.est-pos-time {
+  font-size: 26px;
+}
+
 p.network-stats-block {
   padding: 0;
   color: #3f3f3f;
