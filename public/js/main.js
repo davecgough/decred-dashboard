@@ -200,16 +200,15 @@ $(function() {
 
           /* Draw supply chart on page load */
           if (isStartup) {
-            var max_reward = (response.blocks - 4095) * response.reward;
-            // TODO: omg, check this math 10 times more
+            var mined = coinsupply - 1680000;
             var supply = {
               premine: 1680000,
-              pow: response.mined_before_pos - (response.reward * 0.1 * 4095) + 0.6 * (response.blocks - 4095) * response.reward - 0.2 * 0.6 * missed * response.reward,
-              pos: 0.06 * (total - missed) * response.reward,
-              devs: (response.reward * 0.1 * 4095) + 0.1 * (response.blocks - 4095) * response.reward - 0.2 * 0.1 * missed * response.reward
+              pow: mined * 0.6,
+              pos: mined * 0.3,
+              devs: mined * 0.1
             };
             drawSupplyChart(supply);
-            var supply_total = Math.floor(1680000 + supply.pow + supply.pos + supply.devs);
+            var supply_total = Math.floor(coinsupply);
             var percent_mined = (supply_total / 21000000 * 100).toString().substr(0,4);
             $('.mined_coins').html(numberFormat(supply_total));
             $('.percent_mined').html(percent_mined + '% ');
