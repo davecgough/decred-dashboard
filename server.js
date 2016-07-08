@@ -36,10 +36,8 @@ var Hashrate = require('./models').Hashrate;
 var Pools = require('./models').Pools;
 var Prices = require('./models').Prices;
 
-var PRICE_SOURCE = 'poloniex';
-
 const POLONIEX = 'https://poloniex.com/public?command=returnTicker';
-const BITTREX = 'https://bittrex.com/api/v1.1/public/getmarketsummary?market=btc-dcr';
+//const BITTREX = 'https://bittrex.com/api/v1.1/public/getmarketsummary?market=btc-dcr';
 const BTCE = 'https://btc-e.com/api/3/ticker/btc_usd';
 const MARKET_CAP = 'https://api.coinmarketcap.com/v1/datapoints/decred/';
 const GET_TX = 'https://mainnet.decred.org/api/tx/';
@@ -227,8 +225,7 @@ function getPrices(next) {
       networkhashps: data.networkhashps
     };
 
-    var price_source = PRICE_SOURCE == 'poloniex' ? POLONIEX : BITTREX;
-    request(price_source, function (error, response, body) {
+    request(POLONIEX, function (error, response, body) {
       if (!error && response.statusCode == 200) {
 
         try {
@@ -237,31 +234,16 @@ function getPrices(next) {
           return next(e,null);
         }
 
-        if (PRICE_SOURCE == 'poloniex') {
-          data = data['BTC_DCR'];
-          if (!data) {
-            console.log('Poloniex error');
-            return next(body,null);
-          }
-          result.btc_high = data['high24hr'];
-          result.btc_low = data['low24hr'];
-          result.btc_last = data['last'];
-          result.btc_volume = data['baseVolume'];
-          result.prev_day = data['percentChange'] < 0 ? 9999 : 0;
-        } else {
-
-          data = data.result[0];
-          if (!data) {
-            console.log('Bittrex error');
-            return next(body,null);
-          }
-
-          result.btc_high = data['High'];
-          result.btc_low = data['Low'];
-          result.btc_last = data['Last'];
-          result.btc_volume = data['Volume'];
-          result.prev_day = data['PrevDay'];
+        data = data['BTC_DCR'];
+        if (!data) {
+          console.log('Poloniex error');
+          return next(body,null);
         }
+        result.btc_high = data['high24hr'];
+        result.btc_low = data['low24hr'];
+        result.btc_last = data['last'];
+        result.btc_volume = data['baseVolume'];
+        result.prev_day = (parseFloat(data['percentChange']) * 100).toFixed(2);
 
         request(BTCE, function (error, response, body) {
           if (!error && response.statusCode == 200) {

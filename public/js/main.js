@@ -41,15 +41,16 @@ $(function() {
 
         if (!response.error) {
           var usd_last = (response.btc_last * response.usd_price).toString().substr(0,4);
-          var usd_prev = response.prev_day * response.usd_price;
 
-          if (usd_prev <= response.btc_last * response.usd_price) {
+          if (response.prev_day > 0) {
             $('span.stats-lastprice')
               .html('$' + usd_last + '<span class="up">▴</span>');
           } else {
             $('span.stats-lastprice')
               .html('$' + usd_last + '<span class="down">▾</span>');
           }
+          $('span.price-change.percent').text(response.prev_day + "% change");
+          $('span.price-change.volume').text("Volume " + parseFloat(response.btc_volume).toFixed(2) + " BTC");
 
           var btc_low = (response.btc_low).toString().substr(0,8);
           var usd_low = (response.btc_low * response.usd_price).toString().substr(0,4);
@@ -61,7 +62,7 @@ $(function() {
           $('span.stats-dayhigh').text('$' + usd_high);
           $('span.btc-high').text(btc_high + ' BTC');
 
-          if (response.prev_day <= response.btc_last) {
+          if (response.prev_day > 0) {
             $('span.stats-btc')
               .html(response.btc_last.toString().substr(0,8) + '<span class="up">▴</span>');
           } else {

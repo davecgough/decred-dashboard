@@ -224,11 +224,16 @@ span.price-change {
   padding: 0 10px;
 }
 
+span.price-change.percent,
+span.price-change.volume {
+  bottom: 12px;
+}
+
 span.up {
   color: #73af44;
   font-size: 22px;
   vertical-align: middle;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   display: inline-block;
   margin-left: 5px;
 }
@@ -237,7 +242,7 @@ span.down {
   color: red;
   font-size: 22px;
   vertical-align: middle;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   display: inline-block;
   margin-left: 5px;
 }
@@ -904,10 +909,12 @@ body.not-found-page {
     letter-spacing: 0;
     font-size: 20px;
   }
-  span.price-change {
+  span.price-change,
+  span.price-change.percent,
+  span.price-change.volume {
     font-size: 12px;
     line-height: 12px;
-    bottom: 15px;
+    bottom: 16px;
   }
   h2.main-color {
     display: none;
