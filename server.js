@@ -186,6 +186,7 @@ function getStakepoolsStats() {
 
         var result = [];
         for (let item in stakepools) {
+           if (stakepools[item]['Live'] == 'N/A') continue;
            result.push(stakepools[item]);
         }
         // sort DESC by live tickets

@@ -208,29 +208,27 @@ html(lang='en')
                       th Missed
                       th Pool Fees
                       th Users
-                      th Pool Status
                       th Last Updated
                   tbody
-                    - var totalLive = 0
                     each row in stakepools
-                     tr
-                      td
-                        if row['url'] == 'https://stakepool.dcrstats.com'
-                          span.fa.fa-trophy(data-original-title="Our choice!")
-                      td
-                        a(href="#{row['url']}",target="_blank",rel="nofollow")= row['url']
-                      td(style="color: #66a833;")= row['Live']
-                        | &nbsp;
-                        span(style="font-size: 12px; color: #BBBBBB;")= ((row['Live'] / stats.poolsize * 100).toString().substr(0,4) + "%")
-                      td= row['Immature']
-                      td(style="color: #00b4ff;")= row['Voted']
-                      td= row['Missed']
-                        | &nbsp;
-                        span(style="font-size: 12px; color: #BBBBBB;")= (((parseFloat(row['Missed']) / (parseFloat(row['Voted']) + parseFloat(row['Missed'])))  * 100).toString().substr(0,4) + "%")
-                      td= (row['PoolFees'].replace('%','') + '%')
-                      td= row['UserCount']
-                      td= row['PoolStatus']
-                      td= moment(row['lastUpdated'] * 1000).fromNow()
+                     if (row['Live'] != 'N/A')
+                       tr
+                        td
+                          if row['url'] == 'https://stakepool.dcrstats.com'
+                            span.fa.fa-trophy(data-original-title="Our choice!")
+                        td
+                          a(href="#{row['url']}",target="_blank",rel="nofollow")= row['url']
+                        td(style="color: #66a833;")= row['Live']
+                          | &nbsp;
+                          span(style="font-size: 12px; color: #BBBBBB;")= ((row['Live'] / stats.poolsize * 100).toString().substr(0,4) + "%")
+                        td= row['Immature']
+                        td(style="color: #00b4ff;")= row['Voted']
+                        td= row['Missed']
+                          | &nbsp;
+                          span(style="font-size: 12px; color: #BBBBBB;")= (((parseFloat(row['Missed']) / (parseFloat(row['Voted']) + parseFloat(row['Missed'])))  * 100).toString().substr(0,4) + "%")
+                        td= (row['PoolFees'] + '%')
+                        td= row['UserCount']
+                        td= moment(row['lastUpdated'] * 1000).fromNow()
                 p.notice Notice: Missed stakepool tickets can be caused by a poorly connected Proof-of-work (PoW) miner and may not necessarily be the fault of the pool.
     footer
       include ./includes/footer.jade
