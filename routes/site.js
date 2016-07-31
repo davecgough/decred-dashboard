@@ -62,6 +62,13 @@ router.get('/map', function(req, res) {
 });
 
 router.get('/subsidy', function(req, res) {
+  let response = {
+    env : env,
+    page: 'subsidy',
+    title: strings.subsidy_title,
+    desc: strings.subsidy_desc
+  };
+
   var total = 840000 * 2;
   var data = [];
   for (let i = 0; i <= 400; i++) {
@@ -78,7 +85,8 @@ router.get('/subsidy', function(req, res) {
     };
     data.push(row);
   }
-  res.render('subsidy', {result : data});
+  response.result = data;
+  res.render('subsidy', response);
 });
 
 function getEstimatedBlockReward(cycles, reward) {
