@@ -227,6 +227,7 @@ router.get('/get_stats', function (req, res) {
       stats.mined_before_pos = MINED_DCR_BEFORE_POS;
       stats.reward = SUBSIDY;
 
+      res.setHeader('Access-Control-Allow-Origin', '*');
       res.status(200).json(stats);
     });
   }).catch(function(err) {
