@@ -645,6 +645,12 @@ table#nodes-table th {
   color: #E83C3C;
 }
 
+/* Subsidy table */
+tr.table-center th {
+  font-weight: bold;
+  text-align: center;
+}
+
 /* blog */
 .articles-header {
   background: url('/img/articles_bg.png');

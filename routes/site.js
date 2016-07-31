@@ -61,4 +61,33 @@ router.get('/map', function(req, res) {
   res.render('map', data);
 });
 
+router.get('/subsidy', function(req, res) {
+  var total = 840000 * 2;
+  var data = [];
+  for (let i = 0; i <= 400; i++) {
+    var reward = getEstimatedBlockReward(i, 31.19582664);
+    if(i > 0) { total += 6144 * reward; }
+    var row = {
+      block: (i * 6144),
+      date: (1454954400 + i * 6144 * 295),
+      block_reward : reward,
+      pow_reward : (0.6 * reward),
+      pos_reward : (0.06 * reward),
+      dev_reward : (0.1 * reward),
+      total : total
+    };
+    data.push(row);
+  }
+  res.render('subsidy', {result : data});
+});
+
+function getEstimatedBlockReward(cycles, reward) {
+  if (cycles) {
+    reward = reward * 100/101;
+    return getEstimatedBlockReward(cycles - 1, reward);
+  } else {
+    return reward;
+  }
+}
+
 module.exports = router;
