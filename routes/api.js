@@ -253,4 +253,17 @@ router.get('/price', function(req, res) {
   });
 });
 
+router.get('/app_notifications', function(req, res) {
+  let json = {
+    'start_date' : '1470062077',
+    'end_date' : '1470252001',
+    'image' : 'https://decred.dcrstats.com/img/be-the-lion.png',
+    'url' : 'https://stakepool.dcrstats.com/',
+    'text' : ''
+  };
+  //res.setHeader('Access-Control-Allow-Origin', '*');
+  //res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.status(200).json(json);
+});
+
 module.exports = router;
