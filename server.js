@@ -537,7 +537,8 @@ function updateTicketpoolvalue() {
       return;
     }
     try {
-      var price = parseInt(stdout, 10);
+      var price = Number(stdout);
+      price = parseInt(price, 10);
     } catch(e) {
       console.error("Error getticketpoolvalue", e);
       return;
