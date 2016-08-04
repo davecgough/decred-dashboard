@@ -61,6 +61,16 @@ router.get('/map', function(req, res) {
   res.render('map', data);
 });
 
+router.get('/app', function(req, res) {
+  let data = {
+    env : env,
+    page: 'app',
+    title: strings.app_title,
+    desc: strings.app_desc
+  };
+  res.render('app', data);
+});
+
 router.get('/subsidy', function(req, res) {
   let response = {
     env : env,
