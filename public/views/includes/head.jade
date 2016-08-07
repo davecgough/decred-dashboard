@@ -12,16 +12,16 @@ link(rel='apple-touch-icon',href='https://dcrstats.com/img/apple-touch-favicon.p
 link(href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400', rel='stylesheet')
 link(href='/css/bootstrap.min.css', rel='stylesheet')
 link(href='/css/font-awesome.min.css', rel='stylesheet')
-link(href='/css/main.css?v101', rel='stylesheet')
+link(href='/css/main.css?v110', rel='stylesheet')
 script(src='/js/jquery.min.js')
 script(src='/js/highcharts.js')
 script(src='/js/exporting.js')
-script(src='/js/charts.js?v100')
+script(src='/js/charts.js?v110')
 if page == 'index'
   script(src='/js/moment.min.js')
-  script(src='/js/main.js?v101')
+  script(src='/js/main.js?v110')
 if page == 'pow'
-  script(src='/js/pow.js?v100')
+  script(src='/js/pow.js?v110')
 if page == 'map'
   script(src='/js/underscore-min.js')
   script(src='/js/d3.min.js')
@@ -29,3 +29,8 @@ if page == 'map'
   script(src='/js/datamaps.world.min.js')
   script(src='/js/moment.min.js')
   script(src='/js/map.js')
+if page == 'converter'
+  link(href='/css/bootstrap-select.min.css', rel='stylesheet')
+  script(src='/js/bootstrap-select.min.js')
+  script(src='/js/converter.js')
+  

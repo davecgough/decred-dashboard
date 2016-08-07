@@ -282,27 +282,43 @@ $(function () {
       }
     });
 
-    updatePricesChart('usd', 365);
+    updatePricesChart('usd', 30);
 });
 
 function updatePricesChart(ticker, time) {
   if (ticker != 'usd' && ticker != 'btc') {
     ticker = 'usd';
   }
-  if (!time || time < 7 || time > 365) {
+  if (!time || time > 365) {
     time = 365;
   }
-  $.ajax({
-    url: '/api/v1/prices',
-    type: 'GET',
-    data: {ticker : ticker, time : time},
-    dataType: "json",
-    success: function (data) {
-      if (!data.error) {
-        drawPrice(data, ticker);
+  if (time < 1) { time = 1; }
+  if (time > 7) {
+    if (time > 365) { time = 365; }
+    $.ajax({
+      url: '/api/v1/prices',
+      type: 'GET',
+      data: {ticker : ticker, time : time},
+      dataType: "json",
+      success: function (data) {
+        if (!data.error) {
+          drawPrice(data, ticker);
+        }
       }
-    }
-  });
+    });
+  } else {
+    $.ajax({
+      url: '/api/v1/day_price',
+      type: 'GET',
+      data: {ticker : ticker, time : time},
+      dataType: "json",
+      success: function (data) {
+        if (!data.error) {
+          drawPrice(data, ticker);
+        }
+      }
+    });
+  }
 }
 
 function getEstimatedBlockReward(cycles, reward) {

@@ -37,10 +37,11 @@ var Pools = require('./models').Pools;
 var Prices = require('./models').Prices;
 
 const POLONIEX = 'https://poloniex.com/public?command=returnTicker';
-//const BITTREX = 'https://bittrex.com/api/v1.1/public/getmarketsummary?market=btc-dcr';
+const BITTREX = 'https://bittrex.com/api/v1.1/public/getmarketsummary?market=btc-dcr';
 const BTCE = 'https://btc-e.com/api/3/ticker/btc_usd';
 const MARKET_CAP = 'https://api.coinmarketcap.com/v1/datapoints/decred/';
 const GET_TX = 'https://mainnet.decred.org/api/tx/';
+const APILAYER = 'http://apilayer.net/api/live?access_key=';
 
 const SUPPLY = 21000000;
 const FIRST_BLOCK_TIME = 1454954535;
@@ -106,6 +107,9 @@ new CronJob('0 */5 * * * *', function() {
 
   /* Get PoS mempool */
   getStakepoolInfo();
+
+  /* parse DCR-BTC volume from bittrex */
+  getBittrexVolume();
 }, null, true, 'Europe/Rome');
 
 new CronJob('*/15 * * * * *', function() {
@@ -172,6 +176,13 @@ new CronJob('0 */30 * * * *', function() {
   parsePoolsHashrate();
 }, null, true, 'Europe/Rome');
 
+/* Save network hashrate each 30 mins */
+/* Parse PoW-pools */
+new CronJob('5 */60 * * * *', function() {
+  console.log('Updating exchange rates');
+  updateExchangeRates();
+}, null, true, 'Europe/Rome');
+
 function getStakepoolsStats() {
    request("https://decred.org/api/?c=gsd", function (error, response, body) {
       if (!error && response.statusCode == 200) {
@@ -202,7 +213,7 @@ function getStakepoolsStats() {
         });
       } else {
         console.log('Bad response from https://decred.org/api/?c=gsd');
-        console.log('Status: ' + response.statusCode);
+        console.log('Status: ', response);
         if (error) console.log(error);
       }
       return;
@@ -625,6 +636,60 @@ function saveMarketPrice() {
 
   }).catch(function(err) {
     console.error(err);
+  });
+}
+
+function getBittrexVolume() {
+  request(BITTREX, function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+      var json = {};
+      var volume = 0;
+      try {
+        json = JSON.parse(body);
+        volume = json.result[0].BaseVolume.toFixed(2);
+      } catch(e) {
+        console.error('Bad response from Bittrex. Cannot update bittrex_volume.', e);
+        return;
+      }
+
+      Stats.findOne({where : {id : 1}}).then(function(stats) {
+        return stats;
+      })
+      .then(function(stats) {
+        return stats.update({bittrex_volume : volume});
+      })
+      .catch(function(err) {
+        console.error(err);
+      });
+    } else {
+      console.log('Bad response from bittrex', response);
+    }
+  });
+}
+
+function updateExchangeRates() {
+  request(APILAYER + config.currencylayer_key, function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+      var json = {};
+      try {
+        json = JSON.parse(body);
+        if (!json.quotes) throw new Error('Empty quotes');
+        json = JSON.stringify(json.quotes);
+      } catch(e) {
+        console.error('Bad response from apilayer.net', e);
+        return;
+      }
+
+      fs.writeFile("./uploads/rates.json", json, function(err) {
+          if(err) {
+              return console.error(err);
+          }
+          return console.log("Exchange rates updated.");
+      });
+
+    } else {
+      console.log('Bad response from apilayer.net', response);
+    }
   });
 }
 

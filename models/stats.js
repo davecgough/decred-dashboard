@@ -75,6 +75,10 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.DOUBLE,
       allowNull: false
     },
+    bittrex_volume: {
+      type: DataTypes.DOUBLE,
+      allowNull: false
+    },
     usd_price: {
       type: DataTypes.DOUBLE,
       allowNull: false

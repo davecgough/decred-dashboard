@@ -11,9 +11,13 @@ html(lang='en')
         .col-xs-12.col-sm-12
           .container.chart-toolbar.text-center(role='toolbar')
             .btn-group.price-group.pull-right
-              button.price-time.btn-chart.btn.btn-default(type='button', data-time="30", data-chart="price")
+              button.price-time.btn-chart.btn.btn-default(type='button', data-time="1", data-chart="price")
+                span Day
+              button.price-time.btn-chart.btn.btn-default(type='button', data-time="7", data-chart="price")
+                span Week
+              button.price-time.btn-chart.btn.btn-default.active(type='button', data-time="30", data-chart="price")
                 span Month
-              button.price-time.btn-chart.btn.btn-default.active(type='button', data-time="365", data-chart="price")
+              button.price-time.btn-chart.btn.btn-default(type='button', data-time="365", data-chart="price")
                 span Year
             .btn-group.price-group.pull-right
               button.price-ticker.btn-chart.btn.btn-default(type='button', data-ticker="btc", data-chart="price")
@@ -173,7 +177,7 @@ html(lang='en')
               br
               | in the pool is&nbsp;
               b.avg-price-in-pos-pool - DCR
-        #stakepool_block.col-xs-12.col-md-12(style="text-align: center;")
+        //#stakepool_block.col-xs-12.col-md-12(style="text-align: center;")
           a(href="https://dcrstats.com/app", target="_blank")
             img(src="/img/mobile_app_released.png",style="width: 100%; max-width: 800px; margin-top: 25px;")
           //a#meet_the_stakepool(href="javascript:;", style="display: block; color: #444;") [x] I am already the lion. Do not show me this banner again.
@@ -213,7 +217,7 @@ html(lang='en')
                       th Last Updated
                   tbody
                     each row in stakepools
-                     if (row['Live'] != 'N/A')
+                     if (row['Live'] != 'N/A' && row['Live'])
                        tr
                         td
                           if row['url'] == 'https://stakepool.dcrstats.com'

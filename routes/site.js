@@ -11,6 +11,7 @@ var router = express.Router();
 var strings = require('../public/strings/seo.json');
 var env = process.env.NODE_ENV || 'development';
 var config = require('../config/config.json')[env];
+var currencies = require('../uploads/currencies.json');
 
 var Blocks = require('../models').Blocks;
 var Stats = require('../models').Stats;
@@ -69,6 +70,20 @@ router.get('/app', function(req, res) {
     desc: strings.app_desc
   };
   res.render('app', data);
+});
+
+router.get('/converter', function(req, res) {
+  fs.readFile('./uploads/currencies.json', 'utf8', function(err, currencies) {
+    if (err) { console.error(err); }
+    let data = {
+      env : env,
+      page: 'converter',
+      title: strings.converter_title,
+      desc: strings.converter_desc
+    };
+    try { data.currencies = JSON.parse(currencies); } catch (e) {}
+    res.render('converter', data);
+  });
 });
 
 router.get('/subsidy', function(req, res) {

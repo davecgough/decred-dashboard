@@ -8,5 +8,7 @@
   "subsidy_title" : "Decred Subsidy Forecast | Dcrstats",
   "subsidy_desc" : "Here you can see forecast of Decred block reward: PoW-miner reward, PoS vote reward and estimated subsidy forward up to 23 years.",
   "app_title" : "Decred Mobile App, Stakepool Mining | Dcrstats",
+  "app_desc" : "Install Dcrstats mobile application and get easy access to Decred Network Statistic, PoS ticket prices and increase your stakepool mining profit.",
+  "app_title" : "Decred Price, Decred Exchange Rate, Decred Converter | Dcrstats",
   "app_desc" : "Install Dcrstats mobile application and get easy access to Decred Network Statistic, PoS ticket prices and increase your stakepool mining profit."
 }

@@ -180,6 +180,31 @@ router.get('/prices', function (req, res) {
   });
 });
 
+router.get('/day_price', function(req, res) {
+  var ticker = req.query.ticker;
+  var time = req.query.time;
+
+  if (ticker != 'btc' && ticker != 'usd') {
+    res.status(500).json({error : true});
+    return;
+  }
+  if (!time || time < 1 || time > 7) {
+    time = 1;
+  }
+
+  Prices.findAll({order : 'datetime DESC', limit : (96 * time)}).then(function(rows) {
+    let result = [];
+
+    for (let row of rows) {
+      result.push([row.datetime * 1000, row['dcr_' + ticker]]);
+    }
+    result.reverse();
+    res.status(200).json(result);
+  }).catch(function(err) {
+    console.error(err);
+  });
+});
+
 router.get('/estimated_ticket_price', function (req, res) {
   res.status(404).json({error : true, message: "Feature disabled"});
   return;
@@ -216,6 +241,9 @@ router.get('/get_stats', function (req, res) {
 
     Blocks.findOne({order: 'height DESC'}).then(function(block) {
       stats = stats.dataValues;
+      if (stats.bittrex_volume) {
+        stats.btc_volume += stats.bittrex_volume;
+      }
       stats.last_block_datetime = block.datetime;
       stats.average_time = Math.floor((block.datetime - FIRST_BLOCK_TIME) / block.height);
       stats.average_minutes = Math.floor(stats.average_time / 60);
@@ -251,6 +279,50 @@ router.get('/price', function(req, res) {
   }).catch(function(err) {
     console.error(err);
   });
+});
+
+var USD = 0;
+var RATES = {};
+
+function updatePriceCache() {
+  fs.readFile('./uploads/rates.json', 'utf8', function (err, data) {
+    if (err) {
+      console.log(err);
+      res.status(500).json({error : true}); return;
+    }
+    var result = {};
+    try {
+      result = JSON.parse(data);
+    } catch(e) {
+      console.log(e);
+      res.status(500).json({error : true});
+      return;
+    }
+    Stats.findOne({where : {id : 1}}).then(function(stats) {
+      USD = parseFloat(stats.usd_price) * parseFloat(stats.btc_last);
+      RATES = result;
+    }).catch(function(err) { console.log(err); });
+  });
+}
+
+var updateCacheInterval = setInterval(updatePriceCache, 60000);
+updatePriceCache();
+
+router.get('/convert', function(req, res) {
+
+  if (!req.query) {
+    res.status(500).json({error : true}); return;
+  }
+  var dcr = 0;
+  var pair = 0;
+  if (req.query.from == 'dcr') {
+    dcr = parseFloat(req.query.dcr);
+    pair = (dcr * USD * parseFloat(RATES[req.query.to])).toFixed(2);
+  } else {
+    pair = req.query.pair;
+    dcr = (req.query.pair / parseFloat(RATES[req.query.to]) / USD).toFixed(2);
+  }
+  res.json({dcr : dcr, result : pair});
 });
 
 router.get('/app_notifications', function(req, res) {
