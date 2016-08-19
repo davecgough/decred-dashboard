@@ -22,7 +22,7 @@ html(lang='en')
                 th Maximum total DCR subsidy
               each row in result
                 tr
-                  td #{row.block}
+                  td.height #{row.block}
                   td #{moment.unix(row.date).format('LL')}
                   td #{row.block_reward.toFixed(2)}
                   td #{row.pow_reward.toFixed(2)}
