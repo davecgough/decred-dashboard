@@ -217,7 +217,7 @@ html(lang='en')
                       th Last Updated
                   tbody
                     each row in stakepools
-                     if (row['Live'] != 'N/A' && row['Live'])
+                     if (row['Live'] != 'N/A' && row['Live'] && row['PoolFees'] != 'N/A')
                        tr
                         td
                           if row['url'] == 'https://stakepool.dcrstats.com'
