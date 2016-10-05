@@ -138,8 +138,12 @@ p.pos-stats-block {
     border: 1px solid #e0e0e0;
     height: 90px;
     border-radius: 4px;
-    text-align: left;
+    text-align: center;
     margin-bottom: 33px;
+}
+
+p.pos-stats-block span.price-change {
+    bottom: 6px;
 }
 
 p.pos-stats-block.big {
@@ -188,6 +192,11 @@ span.stats-fees {
 
 span.pos-stats-content.main-color.est-pos-time {
   font-size: 26px;
+}
+
+.fees-table th,
+.fees-table tr {
+  text-align: center;
 }
 
 p.network-stats-block {
@@ -929,6 +938,11 @@ body.not-found-page {
     font-size: 12px;
     line-height: 12px;
     bottom: 16px;
+  }
+  p.pos-stats-block span.price-change {
+    font-size: 12px;
+    line-height: 12px;
+    bottom: 4px;
   }
   h2.main-color {
     display: none;

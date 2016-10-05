@@ -31,6 +31,34 @@
       a(href="https://itunes.apple.com/us/app/dcrstats/id1141383230", target="_blank")
         img.center(src="/img/appstore.png", width="125", style="padding: 0 3px;")
 
+.modal.fade.bd-example-modal-lg(tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
+  .modal-dialog.modal-lg
+    .modal-content(style="padding: 25px;")
+      .modal-header
+        button.close(type='button', data-dismiss='modal', aria-label='Close')
+          span(aria-hidden='true') ×
+        h4.modal-title Tickets Fee Explorer
+      .modal-body
+        table.fees-table.table.table-striped
+          thead
+            tr
+              th 
+                span Block
+              th.hidden-xs 
+                span Age
+              th.hidden-xs 
+                span Tickets
+              th.hidden-xs 
+                span Min Fee
+              th 
+                span.hidden-xs Average Fee
+                span.visible-xs Avg Fee
+              th 
+                span Max Fee
+          tbody.blocks-fee-info
+            tr(data-best="0")
+              td(colspan="5", style="text-align: center;") Retrieving data...
+
 script(src='/js/bootstrap.min.js')
 script.
   ((window.gitter = {}).chat = {}).options = {

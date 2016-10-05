@@ -228,6 +228,20 @@ router.get('/estimated_ticket_price', function (req, res) {
   });
 });
 
+router.get('/fees', function (req, res) {
+  let query = {
+    attributes: ['height', 'datetime', 'num_tickets', 'min_fee', 'avg_fee', 'max_fee', 'median_fee'],
+    order: 'height DESC',
+    limit: 16
+  };
+  Blocks.findAll(query).then(function(blocks) {
+    res.status(200).json(blocks);
+  }).catch(function(err) {
+    console.log(err);
+    res.status(500).json({error : true});
+  });
+});
+
 router.get('/get_stats', function (req, res) {
   if (req.query.origin) {
     console.log('[API]: get_stats request from ' + req.query.origin);

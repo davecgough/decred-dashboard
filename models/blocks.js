@@ -48,6 +48,22 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.DOUBLE,
       allowNull: true
     },
+    min_fee: {
+      type: DataTypes.DOUBLE,
+      allowNull: true
+    },
+    avg_fee: {
+      type: DataTypes.DOUBLE,
+      allowNull: true
+    },
+    max_fee: {
+      type: DataTypes.DOUBLE,
+      allowNull: true
+    },
+    median_fee: {
+      type: DataTypes.DOUBLE,
+      allowNull: true
+    },
     createdAt: {
       type: DataTypes.DATE
     },

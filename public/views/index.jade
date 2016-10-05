@@ -128,9 +128,10 @@ html(lang='en')
             span.pos-stats-content.stats-mempool -
         .col-xs-6.col-md-3
           p.pos-stats-block
-            span.pos-stats-title.hidden-xs Avg / Max fee
-            span.pos-stats-title.visible-xs-block Avg / Max fee
+            span.pos-stats-title Max fee
             span.pos-stats-content.stats-fees -
+            span.price-change
+              a.fee-explorer(href="#",data-toggle="modal",data-target=".bd-example-modal-lg") Open Fees Explorer
       .row.reward-hints
         .col-xs-6.col-md-6
           p.pos-stats-block.big.stats-second-color
@@ -177,10 +178,10 @@ html(lang='en')
               br
               | in the pool is&nbsp;
               b.avg-price-in-pos-pool - DCR
-        #stakepool_block.col-xs-12.col-md-12(style="text-align: center;")
-          a(href="https://dcrstats.com/app", target="_blank")
-            img(src="/img/mobile_app_released.png",style="width: 100%; max-width: 800px; margin-top: 25px;")
-          //a#meet_the_stakepool(href="javascript:;", style="display: block; color: #444;") [x] I am already the lion. Do not show me this banner again.
+        #stakepool_block.col-xs-12.col-md-12(style="text-align: center; display: none;")
+          a(href="https://stakepool.dcrstats.com", target="_blank")
+            img(src="/img/be-the-lion.png",style="width: 100%; max-width: 600px;")
+          a#meet_the_stakepool(href="javascript:;", style="display: block; color: #444;") [x] I am already the lion. Do not show me this banner again.
       .row.hidden-xs
         .col-xs-12.col-sm-12
           .col-xs-12.col-sm-12.pos-chart-wrapper

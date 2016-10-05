@@ -30,6 +30,8 @@ $(function() {
   var lastBlockInterval;
   updateStats(true);
   setInterval(updateStats, 15000);
+  updateFeesInfo();
+  setInterval(updateFeesInfo, 15000);
 
   function updateStats(isStartup) {
 
@@ -40,8 +42,14 @@ $(function() {
       success: function(response) {
 
         if (!response.error) {
-          var usd_last = (response.btc_last * response.usd_price).toString().substr(0,4);
 
+          /* If there is a new block, then update ticket fees info */
+          var oldBlockHeight = parseInt($('.fees-table tr:first').data('best'), 10);
+          if (response.blocks > oldBlockHeight) {
+            updateFeesInfo();
+          }
+
+          var usd_last = (response.btc_last * response.usd_price).toString().substr(0,4);
           if (response.prev_day > 0) {
             $('span.stats-lastprice')
               .html('$' + usd_last + '<span class="up">▴</span>');
@@ -107,7 +115,7 @@ $(function() {
           $('span.stats-mempool').html(numberFormat(response.pooledtx));
           var avg_fee = response.fees ? response.fees.toFixed(4) : 0;
           var max_fee = response.max_fees ? response.max_fees.toFixed(4) : 0;
-          $('span.stats-fees').html(avg_fee + ' / ' + max_fee + ' <span class="hidden-xs">DCR</span>');
+          $('span.stats-fees').html(max_fee + ' <span class="hidden-xs">DCR</span>');
 
           var est_pos_blocks = 144 - (response.blocks % 144);
           var est_pos_time = secondsToTime(est_pos_blocks * response.average_time);
@@ -319,6 +327,45 @@ function updatePricesChart(ticker, time) {
       }
     });
   }
+}
+
+function updateFeesInfo() {
+  $.ajax({
+    url: '/api/v1/fees',
+    type: 'GET',
+    data: {},
+    dataType: "json",
+    success: function (data) {
+      if (!data.error) {
+        fillFeesTable(data);
+      }
+    }
+  });
+}
+
+function fillFeesTable(data) {
+  if(Object.prototype.toString.call( data ) != '[object Array]') {
+    return;
+  }
+  var html = "";
+  for (var i = 0; i < data.length; i++) {
+    if (i > 9) continue; // let's show only last 10 blocks
+    var block = data[i];
+    html += '<tr '+(i == 0 ? 'data-best="'+block.height+'"' : '')+'>';
+
+    html += '<td>'+numberFormat(block.height)+'</td>';
+    html += '<td class="hidden-xs">'+moment(block.datetime * 1000).fromNow()+'</td>';
+    html += '<td class="hidden-xs">'+block.num_tickets+'</td>';
+    if (block.min_fee > 0) block.min_fee = block.min_fee.toFixed(5)
+    html += '<td class="hidden-xs">'+block.min_fee+'</td>';
+    if (block.avg_fee > 0) block.avg_fee = block.avg_fee.toFixed(5)
+    html += '<td>'+block.avg_fee+'</td>';
+    if (block.max_fee > 0) block.max_fee = block.max_fee.toFixed(5)
+    html += '<td>'+block.max_fee+'</td>';
+
+    html += '</tr>';
+  }
+  $('.blocks-fee-info').html(html);
 }
 
 function getEstimatedBlockReward(cycles, reward) {

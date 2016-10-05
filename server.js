@@ -312,6 +312,9 @@ function findNewBlock(height) {
       .spread(function(row, created) {
         if (created) {
           console.log('New block was added, height: ' + height);
+
+          getAverageMempoolFees(); // update ticket fees
+
           parseSStx(data.stx, function(err, yes_votes) {
             if (err) {
               console.error(err);
@@ -376,7 +379,7 @@ function parseSStx(sstx, next) {
 }
 
 function getAverageMempoolFees() {
-  exec("dcrctl ticketfeeinfo 1 1", function(error, stdout, stderr) {
+  exec("dcrctl ticketfeeinfo 5 1", function(error, stdout, stderr) {
     try {
       var data = JSON.parse(stdout);
     } catch(e) {
@@ -389,7 +392,23 @@ function getAverageMempoolFees() {
 
         stats.update({fees : data.feeinfomempool.mean, max_fees: data.feeinfomempool.max})
         .then(function(row) {
-          console.log('Average fees: ' + row.fees);
+          if (data['feeinfoblocks']) {
+            if (data['feeinfoblocks'][0]) {
+              for (let row of data['feeinfoblocks']) {
+                Blocks.findOne({where : {'height' : row.height}}).then(function(block) {
+                  let update = {
+                    min_fee : row.min,
+                    avg_fee : row.mean,
+                    max_fee : row.max,
+                    median_fee : row.median
+                  };
+                  return block.update(update);
+                }).catch(function(err) {
+                  console.error(err);
+                });
+              }
+            }
+          }
         }).catch(function(err) {
           console.error(err);
         });
@@ -415,7 +434,7 @@ function getStakepoolInfo() {
       data = null;
       Stats.findOne({where : {id : 1}}).then(function(stats) {
        stats.update({pooledtx : pooledtx}).then(function(row) {
-         console.log('Mempool size is ' + pooledtx);
+         //console.log('Mempool size is ' + pooledtx);
        }).catch(function(err) {
           console.error(err);
         });
