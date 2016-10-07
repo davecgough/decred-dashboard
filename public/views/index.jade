@@ -30,25 +30,25 @@ html(lang='en')
       .row.price-block-end
         .col-xs-6.col-md-3
           p.stats-block
-            span.stats-title(title="Price based on data from Bittrex + BTC-E") 
+            span.stats-title(title="Price based on data from Bittrex + BTC-E")
               span &nbsp;DCR / USD&nbsp;
             span.stats-content.stats-lastprice -
-            span.price-change.percent 
+            span.price-change.percent
         .col-xs-6.col-md-3
           p.stats-block
-            span.stats-title(title="Last price on Bittrex") 
+            span.stats-title(title="Last price on Bittrex")
               span &nbsp;DCR / BTC&nbsp;
             span.stats-content.stats-btc -
             span.price-change.volume
         .col-xs-6.col-md-3
           p.stats-block
-            span.stats-title 
+            span.stats-title
               span &nbsp;DAY LOW&nbsp;
             span.stats-content.stats-daylow -
             span.price-change.btc-low -
         .col-xs-6.col-md-3
           p.stats-block
-            span.stats-title 
+            span.stats-title
               span &nbsp;DAY HIGH&nbsp;
             span.stats-content.stats-dayhigh -
             span.price-change.btc-high -
@@ -61,10 +61,10 @@ html(lang='en')
             span.network-stats-title Decred Supply
             #supply.supply-chart-container
             .supply-chart-footer
-              .supply-title 
+              .supply-title
                 b.percent_mined %
                 | &nbsp;mined so far
-              .supply-numbers 
+              .supply-numbers
                 b.mined_coins x
                 | &nbsp;of total&nbsp;
                 b 21 000 000
@@ -91,7 +91,7 @@ html(lang='en')
             p.network-stats-block
               span.network-stats-title Difficulty
               span.network-stats-content.stats-difficulty -
-              span.stats-subinfo 
+              span.stats-subinfo
                 a(href="https://dcrstats.com/pow", target="_blank") show chart
           .col-xs-6.col-md-6
             p.network-stats-block.stats-main-color.big
@@ -107,7 +107,7 @@ html(lang='en')
               span.network-stats-content.est-block-reward
               span.stats-subinfo.est-reward-time
               span.stats-subinfo.est-reward-blocks
-              span.stats-subinfo 
+              span.stats-subinfo
                 a(href="https://dcrstats.com/subsidy", target="_blank") show forecast
     .container
       .row
@@ -128,7 +128,7 @@ html(lang='en')
             span.pos-stats-content.stats-mempool -
         .col-xs-6.col-md-3
           p.pos-stats-block
-            span.pos-stats-title Max fee
+            span.pos-stats-title Average fee
             span.pos-stats-content.stats-fees -
             span.price-change
               a.fee-explorer(href="#",data-toggle="modal",data-target=".bd-example-modal-lg") Open Fees Explorer
@@ -148,7 +148,7 @@ html(lang='en')
         .col-xs-6.col-md-6
           p.pos-stats-block.big.stats-main-color
             span.pos-stats-title Ticket price adjustment
-            span.pos-stats-content.main-color.est-pos-time 
+            span.pos-stats-content.main-color.est-pos-time
             span.pos-stats-subinfo.est-pos-blocks
       .row
         .col-xs-12.col-md-6.hint-pos
@@ -174,7 +174,7 @@ html(lang='en')
               br
             p.avg-pool-price
               i.fa.fa-ticket
-              | Average ticket price 
+              | Average ticket price
               br
               | in the pool is&nbsp;
               b.avg-price-in-pos-pool - DCR

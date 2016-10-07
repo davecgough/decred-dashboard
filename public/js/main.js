@@ -113,9 +113,12 @@ $(function() {
           $('span.stats-ticketprice').html(ticket_price + ' DCR');
           $('span.stats-poolsize').html(numberFormat(response.poolsize));
           $('span.stats-mempool').html(numberFormat(response.pooledtx));
+
+          /*
           var avg_fee = response.fees ? response.fees.toFixed(4) : 0;
           var max_fee = response.max_fees ? response.max_fees.toFixed(4) : 0;
-          $('span.stats-fees').html(max_fee + ' <span class="hidden-xs">DCR</span>');
+          $('span.stats-fees').html(avg_fee + ' <span class="hidden-xs">DCR</span>');
+          */
 
           var est_pos_blocks = 144 - (response.blocks % 144);
           var est_pos_time = secondsToTime(est_pos_blocks * response.average_time);
@@ -351,16 +354,22 @@ function fillFeesTable(data) {
   for (var i = 0; i < data.length; i++) {
     if (i > 9) continue; // let's show only last 10 blocks
     var block = data[i];
-    html += '<tr '+(i == 0 ? 'data-best="'+block.height+'"' : '')+'>';
 
+    /* Update Average Fee in the Main Dashboard */
+    if (i == 0 && block.avg_fee >= 0) {
+      var avg_fee = block.avg_fee ? parseFloat(block.avg_fee).toFixed(4) : 0;
+      $('span.stats-fees').html(avg_fee + ' <span class="hidden-xs">DCR</span>');
+    }
+
+    html += '<tr '+(i == 0 ? 'data-best="'+block.height+'"' : '')+'>';
     html += '<td>'+numberFormat(block.height)+'</td>';
     html += '<td class="hidden-xs">'+moment(block.datetime * 1000).fromNow()+'</td>';
     html += '<td class="hidden-xs">'+block.num_tickets+'</td>';
-    if (block.min_fee > 0) block.min_fee = block.min_fee.toFixed(5)
+    if (block.min_fee > 0) block.min_fee = parseFloat(block.min_fee).toFixed(5)
     html += '<td class="hidden-xs">'+block.min_fee+'</td>';
-    if (block.avg_fee > 0) block.avg_fee = block.avg_fee.toFixed(5)
+    if (block.avg_fee > 0) block.avg_fee = parseFloat(block.avg_fee).toFixed(5)
     html += '<td>'+block.avg_fee+'</td>';
-    if (block.max_fee > 0) block.max_fee = block.max_fee.toFixed(5)
+    if (block.max_fee > 0) block.max_fee = parseFloat(block.max_fee).toFixed(5)
     html += '<td>'+block.max_fee+'</td>';
 
     html += '</tr>';
