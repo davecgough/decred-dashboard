@@ -131,8 +131,9 @@ html(lang='en')
             span.pos-stats-title Average fee
             span.pos-stats-content.stats-fees -
             span.price-change
-              i.fa.fa-ticket
-              | &nbsp;Open Fees Explorer
+              a.fee-explorer(href="#",data-toggle="modal",data-target=".bd-example-modal-lg")
+                i.fa.fa-ticket
+                | &nbsp;Open Fees Explorer
       .row.reward-hints
         .col-xs-6.col-md-6
           p.pos-stats-block.big.stats-second-color

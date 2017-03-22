@@ -346,7 +346,7 @@ function parseSStx(sstx, next) {
         console.error(error)
         return next(error, null);
       }
-      console.log('Parsing SStx transaction ' + counter + ' of ' + sstx.length + ': ' + tx);
+      //console.log('Parsing SStx transaction ' + counter + ' of ' + sstx.length + ': ' + tx);
       try {
         var data = JSON.parse(stdout);
         // is ticket revoked?
@@ -396,6 +396,9 @@ function getAverageMempoolFees() {
             if (data['feeinfoblocks'][0]) {
               for (let row of data['feeinfoblocks']) {
                 Blocks.findOne({where : {'height' : row.height}}).then(function(block) {
+                  if (!block) {
+                    return;
+                  }
                   let update = {
                     min_fee : row.min,
                     avg_fee : row.mean,
