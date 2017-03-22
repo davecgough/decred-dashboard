@@ -133,7 +133,8 @@ html(lang='en')
             span.price-change
               a.fee-explorer(href="#",data-toggle="modal",data-target=".bd-example-modal-lg")
                 i.fa.fa-ticket
-                | &nbsp;Open Fees Explorer
+                span.hidden-xs &nbsp;Open Fees Explorer
+                span.visible-xs &nbsp; Show fees
       .row.reward-hints
         .col-xs-6.col-md-6
           p.pos-stats-block.big.stats-second-color
@@ -180,10 +181,10 @@ html(lang='en')
               br
               | in the pool is&nbsp;
               b.avg-price-in-pos-pool - DCR
-        #stakepool_block.col-xs-12.col-md-12(style="text-align: center; display: none;")
-          a(href="https://stakepool.dcrstats.com", target="_blank")
-            img(src="/img/be-the-lion.png",style="width: 100%; max-width: 600px;")
-          a#meet_the_stakepool(href="javascript:;", style="display: block; color: #444;") [x] I am already the lion. Do not show me this banner again.
+              .col-xs-12.col-md-12(style="text-align: center;")
+                a(href="https://evolution.dcrstats.com", target="_blank")
+                  img(src="https://evolution.dcrstats.com/img/us-mobile-evolution.png",style="width: 100%; max-width: 700px;margin: 25px 0;")
+                //a#meet_the_stakepool(href="javascript:;", style="display: block; color: #444;") [x] I am already the lion. Do not show me this banner again.
       .row.hidden-xs
         .col-xs-12.col-sm-12
           .col-xs-12.col-sm-12.pos-chart-wrapper
@@ -223,10 +224,10 @@ html(lang='en')
                      if (row['Live'] != 'N/A' && row['Live'] && row['PoolFees'] != 'N/A')
                        tr
                         td
-                          if row['url'] == 'https://stakepool.dcrstats.com'
+                          if row['URL'] == 'https://stakepool.dcrstats.com'
                             span.fa.fa-trophy(data-original-title="Our choice!")
                         td
-                          a(href="#{row['url']}",target="_blank",rel="nofollow")= row['url']
+                          a(href="#{row['URL']}",target="_blank",rel="nofollow")= row['URL']
                         td(style="color: #66a833;")= row['Live']
                           | &nbsp;
                           span(style="font-size: 12px; color: #BBBBBB;")= ((row['Live'] / stats.poolsize * 100).toString().substr(0,4) + "%")
@@ -237,7 +238,7 @@ html(lang='en')
                           span(style="font-size: 12px; color: #BBBBBB;")= (((parseFloat(row['Missed']) / (parseFloat(row['Voted']) + parseFloat(row['Missed'])))  * 100).toString().substr(0,4) + "%")
                         td= (row['PoolFees'] + '%')
                         td= row['UserCount']
-                        td= moment(row['lastUpdated'] * 1000).fromNow()
+                        td= moment(row['LastUpdated'] * 1000).fromNow()
                 p.notice Notice: Missed stakepool tickets can be caused by a poorly connected Proof-of-work (PoW) miner and may not necessarily be the fault of the pool.
     footer
       include ./includes/footer.jade

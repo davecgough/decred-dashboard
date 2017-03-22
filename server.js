@@ -39,7 +39,8 @@ var Prices = require('./models').Prices;
 const POLONIEX = 'https://poloniex.com/public?command=returnTicker';
 const BITTREX = 'https://bittrex.com/api/v1.1/public/getmarketsummary?market=btc-dcr';
 const BTCE = 'https://btc-e.com/api/3/ticker/btc_usd';
-const MARKET_CAP = 'https://api.coinmarketcap.com/v1/datapoints/decred/';
+const BITSTAMP = 'https://www.bitstamp.net/api/v2/ticker/btcusd/';
+const MARKET_CAP = 'https://graphs.coinmarketcap.com/v1/datapoints/decred/';
 const GET_TX = 'https://mainnet.decred.org/api/tx/';
 const APILAYER = 'http://apilayer.net/api/live?access_key=';
 
@@ -258,22 +259,21 @@ function getPrices(next) {
         result.btc_volume = data['baseVolume'];
         result.prev_day = (parseFloat(data['percentChange']) * 100).toFixed(2);
 
-        request(BTCE, function (error, response, body) {
+        request(BITSTAMP, function (error, response, body) {
           if (!error && response.statusCode == 200) {
 
             try {
               data = JSON.parse(body);
             } catch(e) {
-              console.log('BTC-E error');
+              console.log('BITSTAMP error');
               return next(e,null);
             }
 
-            data = data.btc_usd;
             if (!data) {
               return next(body,null);
             }
 
-            result.usd_price = data.last;
+            result.usd_price = parseFloat(data.last);
 
             return next(null, result);
           } else {
@@ -315,20 +315,8 @@ function findNewBlock(height) {
           console.log('New block was added, height: ' + height);
 
           getAverageMempoolFees(); // update ticket fees
-
-          parseSStx(data.stx, function(err, yes_votes) {
-            if (err) {
-              console.error(err);
-            }
-
-            row.update({yes_votes : yes_votes}).catch(function(err) {
-              console.log(err);
-            });
-
-            updateEstimatedTicketPrice(row.hash);
-
-            findNewBlock(height + 1);
-          });
+          updateEstimatedTicketPrice(row.hash);
+          findNewBlock(height + 1);
         } else {
           console.log('No new blocks found');
         }
