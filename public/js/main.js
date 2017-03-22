@@ -300,12 +300,11 @@ function updatePricesChart(ticker, time) {
   if (ticker != 'usd' && ticker != 'btc') {
     ticker = 'usd';
   }
-  if (!time || time > 365) {
+  if (!time) {
     time = 365;
   }
   if (time < 1) { time = 1; }
   if (time > 7) {
-    if (time > 365) { time = 365; }
     $.ajax({
       url: '/api/v1/prices',
       type: 'GET',

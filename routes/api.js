@@ -148,7 +148,7 @@ router.get('/prices', function (req, res) {
   var ticker = req.query.ticker;
   var time = req.query.time;
   if (!time || time < 7 || time > 365) {
-    time = 365;
+    time = 365 * 30; // 30 years
   }
   var min_time = new Date().getTime() - time * 24 * 60 * 60 * 1000;
 
