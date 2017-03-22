@@ -159,18 +159,10 @@ $(function() {
           var avg_price_in_pool = Math.round((response.ticketpoolvalue / response.poolsize) * 100) / 100;
 
           var hint_title = '', hint_content = '';
-          if (response.sbits <= response.avg_sbits) {
-            if (response.est_sbits < response.sbits) {
-              hint_title = '<span class="main-color">Don\'t buy</span> new PoS tickets right now';
-              hint_content = 'Current ticket price <b>'+ticket_price+' DCR</b> is higher than next estimated ticket price '+response.est_sbits.toString().substr(0,5)+' DCR. <br>We suggest you to wait for the PoS-difficulty adjustment.';
-            } else {
-              hint_title = 'Good <span class="main-color">time to buy</span> new PoS tickets';
-              hint_content = 'Current ticket price <b>'+ticket_price+' DCR</b> is lower than 30-days average price: '+response.avg_sbits.toString().substr(0,4)+' DCR. <br> Hurry up to take the best price.';
-            }
-          } else {
-            hint_title = '<span class="main-color">Don\'t buy</span> new PoS tickets right now';
-            hint_content = 'Current ticket price <b>'+ticket_price+' DCR</b> is higher than 30-days average price: '+response.avg_sbits.toString().substr(0,4)+' DCR. <br> We suggest you to wait for the PoS-difficulty adjustment.';
-          }
+          var vote_reward = parseFloat(block_reward * 0.3 / 5) - 0.01;
+          hint_title = 'Estimated return on investment';
+          hint_content = 'Your estimated ROI is <b>+' + (100 * vote_reward / response.sbits).toFixed(2) + '%</b> if you will buy ticket now with a 0.01 DCR fee.';
+
           $('.avg-price').html(response.avg_sbits.toString().substr(0,4) + ' DCR');
           $('.hint-title').html(hint_title);
           $('.hint-content').html(hint_content);
