@@ -26,8 +26,9 @@ const colors = ['#3c4ba6','#8c93c0','#ddc38c','#c6a55e','#b8ada3'];
 router.get('/pos', function (req, res) {
   var result = {};
   var sbits = [];
+  var tickets = [];
   if (!req.query.time || req.query.time == '365') {
-    var query = `SELECT DISTINCT(sbits), MIN(datetime) as datetime
+    var query = `SELECT DISTINCT(sbits), SUM(num_tickets) as num_tickets, MIN(datetime) as datetime
              from blocks group by sbits order by datetime asc`;
   } else {
     var day = parseInt(req.query.time);
@@ -36,21 +37,17 @@ router.get('/pos', function (req, res) {
     }
 
     var datetime = Math.floor((new Date()) / 1000) - day * 24 * 60 * 60;
-    var query = `SELECT DISTINCT(sbits), MIN(datetime) as datetime
+    var query = `SELECT DISTINCT(sbits), SUM(num_tickets) as num_tickets, MIN(datetime) as datetime
              from blocks ` + `WHERE datetime >= ` + datetime + ` group by sbits order by datetime asc`;
   }
 
   sequelize.query(query, { model: Blocks }).then(function(prices) {
     for (let row of prices) {
-      /* if date is 8 FEB, set it to 23 FEB
-       * just to beautify a little chart, because PoS diff adjustment
-       * started only after 4895 block */
-      if (row.datetime == 1454954535) {
-        row.datetime = 1456228800;
-      }
       sbits.push([row.datetime * 1000, row.sbits]);
+      tickets.push([row.datetime * 1000, parseInt(row.num_tickets,10)]);
     }
     result.sbits = sbits;
+    result.tickets = tickets;
     res.status(200).json(result);
     return;
   }).catch(function(err) {

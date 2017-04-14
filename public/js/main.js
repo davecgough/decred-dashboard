@@ -249,7 +249,7 @@ $(function () {
         dataType: "json",
         success: function (data) {
           if (chart == 'sbits') {
-            drawSbits(data.sbits, time);
+            drawSbits(data, time);
           }
         }
       });
@@ -281,7 +281,7 @@ $(function () {
       type: 'GET',
       dataType: "json",
       success: function (data) {
-        drawSbits(data.sbits, 30);
+        drawSbits(data, 30);
       }
     });
 

@@ -44,29 +44,48 @@ function drawSbits(data, time) {
     credits: {enabled: false},
     exporting: {enabled: false},
     navigator: {enabled: false},
-    legend: {enabled: false},
+    legend: {enabled: true},
     xAxis: {
         type: 'datetime',
         gridLineWidth: 1,
         gridLineColor: '#fff',
         labels: {style: {color: '#9aa2a9', fill: '#9aa2a9'}}
     },
-    yAxis: {
+    yAxis: [{
         title: {text: ''},
         gridLineWidth: 1,
         gridLineColor: '#fff',
         labels: {style: {color: '#9aa2a9', fill: '#9aa2a9'}}
-    },
-    series: [{
-                name: 'Price',
-                data: data,
-                type: 'spline',
-                color: '#3c4ba6',
-                lineWidth: 2,
-                tooltip: {valueDecimals: 2},
-                marker: {enabled: markerStatus},
-                states: {hover: {lineWidth: 2}}
-            }]
+    },{
+        title: {text: ''},
+        gridLineWidth: 1,
+        gridLineColor: '#fff',
+        labels: {style: {color: '#9aa2a9', fill: '#9aa2a9'}},
+        opposite: true
+    }],
+    series: [
+      {
+        yAxis: 1,
+        name: 'Number of Tickets',
+        data: data.tickets,
+        type: 'column',
+        color: '#e2d2ae',
+        lineWidth: 20,
+        tooltip: {valueDecimals: 0},
+        marker: {enabled: markerStatus},
+        states: {hover: {lineWidth: 2}}
+      },
+      {
+        yAxis: 0,
+        name: 'Price',
+        data: data.sbits,
+        type: 'spline',
+        color: '#3c4ba6',
+        lineWidth: 2,
+        tooltip: {valueDecimals: 2},
+        marker: {enabled: markerStatus},
+        states: {hover: {lineWidth: 2}}
+      }]
   });
 }
 
