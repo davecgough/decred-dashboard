@@ -97,6 +97,10 @@ h2.decred-subtitle {
   margin-bottom: 20px;
 }
 
+img.join-pool:hover {
+  cursor: pointer;
+}
+
 .main-color {
   color: #3f3f3f;
 }

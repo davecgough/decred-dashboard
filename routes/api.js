@@ -261,10 +261,15 @@ router.get('/get_stats', function (req, res) {
       stats.average_seconds = Math.floor(stats.average_time % 60);
       stats.poolsize = block.poolsize;
       stats.sbits = block.sbits;
+      stats.pos_adjustment = 144 - (block.height % 144);
+      stats.avg_ticket_price = stats.ticketpoolvalue / stats.poolsize;
       stats.supply = SUPPLY;
       stats.premine = PREMINE;
       stats.mined_before_pos = MINED_DCR_BEFORE_POS;
       stats.reward = SUBSIDY;
+      stats.block_reward = getEstimatedBlockReward(Math.ceil(block.height / 6144) - 1, SUBSIDY);
+      stats.pow_reward = stats.block_reward * 0.6;
+      stats.vote_reward = stats.block_reward * 0.3 / 5;
 
       res.status(200).json(stats);
     });
@@ -317,6 +322,15 @@ function updatePriceCache() {
 
 var updateCacheInterval = setInterval(updatePriceCache, 60000);
 updatePriceCache();
+
+function getEstimatedBlockReward(cycles, reward) {
+  if (cycles) {
+    reward = reward * 100/101;
+    return getEstimatedBlockReward(cycles - 1, reward);
+  } else {
+    return reward;
+  }
+}
 
 router.get('/convert', function(req, res) {
 
