@@ -588,9 +588,7 @@ function updateCoinSupply() {
     }
 
     Stats.findOne({where : {id : 1}}).then(function(stats) {
-      stats.update({coinsupply : supply}).catch(function(err) {
-        console.error(err);
-      });
+      return stats.update({coinsupply : supply});
     }).catch(function(err) {
       console.error(err);
     });
@@ -702,6 +700,10 @@ function updateExchangeRates() {
       console.log('Bad response from apilayer.net', response);
     }
   });
+}
+
+function now() {
+  return Math.floor(new Date().getTime() / 1000);
 }
 
 app.listen(8080, function () {
