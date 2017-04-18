@@ -1,5 +1,12 @@
 $(function() {
 
+var countdownDiff = 1493139600 - Math.floor(new Date().getTime() / 1000);
+
+var clock = $('#release-countdown').FlipClock(countdownDiff, {
+  clockFace: 'DailyCounter',
+  countdown : true
+});
+
 /* Lion Banner Start */
   function lsTest(){
       var test = 'test';

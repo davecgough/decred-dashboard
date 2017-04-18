@@ -6,6 +6,11 @@ body {
   font-family: "Proxima Nova Regular", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
+#release-countdown.flip-clock-wrapper {
+    display: inline-block;
+    width: auto !important;
+}
+
 .btn:focus {
   outline: thin dotted;
   outline: 5px auto -webkit-focus-ring-color;
