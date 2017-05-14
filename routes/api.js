@@ -239,6 +239,28 @@ router.get('/fees', function (req, res) {
   });
 });
 
+/* Temp changes for new voting */
+var VOTING = {};
+var exec = require('child_process').exec;
+var updateVotingInterval = setInterval(updateVotings, 60 * 1000);
+updateVotings();
+
+function updateVotings() {
+  exec("dcrctl getvoteinfo 4", function(error, stdout, stderr) {
+    if (error || stderr) {
+      return console.error(error, stderr);
+    }
+    try {
+      var data = JSON.parse(stdout);
+    } catch(e) {
+      return console.error('[ERROR] getvoteinfo');
+    }
+
+    VOTING = data;
+  });
+}
+/* End temp */
+
 router.get('/get_stats', function (req, res) {
   if (req.query.origin) {
     console.log('[API]: get_stats request from ' + req.query.origin);
@@ -270,6 +292,7 @@ router.get('/get_stats', function (req, res) {
       stats.block_reward = getEstimatedBlockReward(Math.ceil(block.height / 6144) - 1, SUBSIDY);
       stats.pow_reward = stats.block_reward * 0.6;
       stats.vote_reward = stats.block_reward * 0.3 / 5;
+      stats.voting = VOTING;
 
       res.status(200).json(stats);
     });

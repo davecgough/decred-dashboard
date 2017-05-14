@@ -181,17 +181,25 @@ function drawHashrate(data) {
 });
 }
 
-function drawVotersChart(data, missed, total) {
+function drawVotingChart(data, info) {
     $(function () {
 
     $(document).ready(function () {
+        var percent_mined = (((info.currentheight - info.startheight) / 8096) * 100).toFixed(2);
+        var yes_ratio = (data.choices[2].count / (data.choices[2].count + data.choices[1].count) * 100).toFixed(2);
 
-        var percent_missed = (missed / total * 100).toString().substr(0,4) + '%';
+        $('.percent_' + data.id).text(yes_ratio + '%');
+        $('.passed_' + data.id).text(info.currentheight - info.startheight);
+
+        $('.'+data.id+'-progress .progress .progress-bar')
+          .css('width', percent_mined + "%")
+          .attr('aria-valuenow', percent_mined);
 
         // Build the chart
-        $('#voters').highcharts({
+        $('#' + data.id).highcharts({
             chart: {
-                plotBackgroundColor: null,
+                backgroundColor: "#f2f2f2",
+                plotbackgroundColor: null,
                 plotBorderWidth: null,
                 plotShadow: false,
                 type: 'pie'
@@ -203,13 +211,10 @@ function drawVotersChart(data, missed, total) {
                   enabled: false
             },
             title: {
-                text: 'Voters per block'
-            },
-            subtitle: {
-                text: "<b>"+percent_missed+"</b> tickets didn't cast a vote ("+missed+" of "+total+")"
+                text: ''
             },
             tooltip: {
-                pointFormat: '<b>{point.y} blocks</b>'
+                pointFormat: '<b>{point.y} votes</b>'
             },
             plotOptions: {
                 pie: {
@@ -225,7 +230,19 @@ function drawVotersChart(data, missed, total) {
             series: [{
                 name: 'Votes',
                 colorByPoint: true,
-                data: data
+                data: [{
+                    name: 'Abstain',
+                    y: data.choices[0].count,
+                    color: '#ddc38c'
+                }, {
+                    name: 'Yes',
+                    y: data.choices[2].count,
+                    color: '#3c4ba6'
+                }, {
+                    name: 'No',
+                    y: data.choices[1].count,
+                    color: '#8c93c0'
+                }]
             }]
         });
     });

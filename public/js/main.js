@@ -2,11 +2,6 @@ $(function() {
 
 var countdownDiff = 1493139600 - Math.floor(new Date().getTime() / 1000);
 
-var clock = $('#release-countdown').FlipClock(countdownDiff, {
-  clockFace: 'DailyCounter',
-  countdown : true
-});
-
 /* Lion Banner Start */
   function lsTest(){
       var test = 'test';
@@ -190,22 +185,13 @@ var clock = $('#release-countdown').FlipClock(countdownDiff, {
 
           /* Draw voters chart on page load */
           if (isStartup) {
-            var voters = [{
-                      name: '5 voters',
-                      y: response.five_voters,
-                      color: '#3498DB'
-                  }, {
-                      name: '4 voters',
-                      y: response.four_voters,
-                      color: '#E7A03C'
-                  }, {
-                      name: '3 voters',
-                      y: response.three_voters,
-                      color: '#E74C3C'
-                  }];
-            var missed = response.four_voters + 2 * response.three_voters;
-            var total = 5 * (response.blocks - 4095);
-            drawVotersChart(voters, missed, total);
+            if (response.voting) {
+              if (response.voting.agendas) {
+                for (var i = 0; i < response.voting.agendas.length; i++) {
+                  drawVotingChart(response.voting.agendas[i], response.voting);
+                }
+              }
+            }
           }
 
           /* Draw supply chart on page load */
