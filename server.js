@@ -40,7 +40,7 @@ const POLONIEX = 'https://poloniex.com/public?command=returnTicker';
 const BITTREX = 'https://bittrex.com/api/v1.1/public/getmarketsummary?market=btc-dcr';
 const BTCE = 'https://btc-e.com/api/3/ticker/btc_usd';
 const BITSTAMP = 'https://www.bitstamp.net/api/v2/ticker/btcusd/';
-const MARKET_CAP = 'https://graphs.coinmarketcap.com/v1/datapoints/decred/';
+const MARKET_CAP = 'https://graphs.coinmarketcap.com/currencies/decred/';
 const GET_TX = 'https://mainnet.decred.org/api/tx/';
 const APILAYER = 'http://apilayer.net/api/live?access_key=';
 
