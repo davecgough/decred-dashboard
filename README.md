@@ -24,8 +24,8 @@ Rename file 'config/config.json.sample' to 'config/config.json' and fill it with
 
 Now you need Sequelize-CLI and PM2 installed globally:
 ```
-npm install -g pm2
-npm install -g sequelize-cli
+sudo npm install -g pm2
+sudo npm install -g sequelize-cli
 ```
 Migrate database (if you will not specify NODE_ENV, sequelize will use configs for "development"):
 ```
@@ -55,11 +55,18 @@ Decred Dashboard is still in early stage of development. Feel free to ask us for
 
 Preparing server to run GNT-stats
 ```
+sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" >> /etc/apt/sources.list.d/pgdg.list'
+wget -q https://www.postgresql.org/media/keys/ACCC4CF8.asc -O - | sudo apt-key add -
+sudo apt-get update
+sudo apt-get install postgresql postgresql-contrib
 sudo su - postgres
 	createuser --pwprompt decred
 	*password x 2*
 	createdb -O decred stats-db
 echo "export PGPASSWORD=1234" >> ~/.bashrc
+cp config/config.json.sample config/config.json
+vi config.json
+
 
 sequelize db:migrate
 ```

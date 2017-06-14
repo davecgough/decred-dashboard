@@ -1,59 +1,52 @@
-.footer-wrapper
-  .pull-left
-    div.footer-menu
-      a(href="https://dcrstats.com/converter") Decred Converter
-      a.show-chat.hidden-xs(href="javascript:;") Chat
-      a(href="https://github.com/Dyrk/decred-dashboard", target="_blank") Github
-      a(href="https://evolution.dcrstats.com",target="_blank") Evolution
-      a(href="https://stakepool.dcrstats.com",target="_blank") Stakepool
-    p 
-      a(href="https://play.google.com/store/apps/details?id=com.ionicframework.myapp554035", target="_blank")
-        img.center(src="/img/playstore.png", width="125", style="padding: 0 3px;")
-      a(href="https://itunes.apple.com/us/app/dcrstats/id1141383230", target="_blank")
-        img.center(src="/img/appstore.png", width="125", style="padding: 0 3px;")
-  .pull-right.footer-desc.hidden-xs
-    p DcrStats.com is the biggest dashboard of Decred Network. It's an  
-      | open source project
-      | &nbsp;so feel free to send any improvements and bug reports on github.
-      | Here you can find plenty of decred network statistics, decred charts, PoS-mining hints and predictions, Decred Stakepools comparison table, PoW charts etc.
-    p 
-      | Contact:&nbsp;
-      a(href="mailto:info@dcrstats.com") info@dcrstats.com
-.modal.fade.bd-example-modal-lg(tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
-  .modal-dialog.modal-lg
-    .modal-content(style="padding: 25px;")
-      .modal-header
-        button.close(type='button', data-dismiss='modal', aria-label='Close')
-          span(aria-hidden='true') ×
-        h4.modal-title Tickets Fee Explorer
-      .modal-body
-        table.fees-table.table.table-striped
-          thead
-            tr
-              th 
-                span Block
-              th.hidden-xs 
-                span Age
-              th.hidden-xs 
-                span Tickets
-              th.hidden-xs 
-                span Min Fee
-              th 
-                span.hidden-xs Average Fee
-                span.visible-xs Avg Fee
-              th 
-                span Max Fee
-          tbody.blocks-fee-info
-            tr(data-best="0")
-              td(colspan="5", style="text-align: center;") Retrieving data...
+//- .footer-wrapper
+//-   .pull-left
+//-     div.footer-menu
+//-       a(href="https://dcrstats.com/converter") Decred Converter
+//-       a.show-chat.hidden-xs(href="javascript:;") Chat
+//-       a(href="https://github.com/Dyrk/decred-dashboard", target="_blank") Github
+//-       a(href="https://evolution.dcrstats.com",target="_blank") Evolution
+//-       a(href="https://stakepool.dcrstats.com",target="_blank") Stakepool
+//-     p 
+//-       a(href="https://play.google.com/store/apps/details?id=com.ionicframework.myapp554035", target="_blank")
+//-         img.center(src="/img/playstore.png", width="125", style="padding: 0 3px;")
+//-       a(href="https://itunes.apple.com/us/app/dcrstats/id1141383230", target="_blank")
+//-         img.center(src="/img/appstore.png", width="125", style="padding: 0 3px;")
+//-   .pull-right.footer-desc.hidden-xs
+//-     p DcrStats.com is the biggest dashboard of Decred Network. It's an  
+//-       | open source project
+//-       | &nbsp;so feel free to send any improvements and bug reports on github.
+//-       | Here you can find plenty of decred network statistics, decred charts, PoS-mining hints and predictions, Decred Stakepools comparison table, PoW charts etc.
+//-     p 
+//-       | Contact:&nbsp;
+//-       a(href="mailto:info@dcrstats.com") info@dcrstats.com
+//- .modal.fade.bd-example-modal-lg(tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
+//-   .modal-dialog.modal-lg
+//-     .modal-content(style="padding: 25px;")
+//-       .modal-header
+//-         button.close(type='button', data-dismiss='modal', aria-label='Close')
+//-           span(aria-hidden='true') ×
+//-         h4.modal-title Tickets Fee Explorer
+//-       .modal-body
+//-         table.fees-table.table.table-striped
+//-           thead
+//-             tr
+//-               th 
+//-                 span Block
+//-               th.hidden-xs 
+//-                 span Age
+//-               th.hidden-xs 
+//-                 span Tickets
+//-               th.hidden-xs 
+//-                 span Min Fee
+//-               th 
+//-                 span.hidden-xs Average Fee
+//-                 span.visible-xs Avg Fee
+//-               th 
+//-                 span Max Fee
+//-           tbody.blocks-fee-info
+//-             tr(data-best="0")
+//-               td(colspan="5", style="text-align: center;") Retrieving data...
 
 script(src="/js/bootstrap.min.js")
-script.
-  ((window.gitter = {}).chat = {}).options = {
-  room: 'Dyrk/decred-dashboard',
-  activationElement: '.show-chat'
-  };
-script(src='https://sidecar.gitter.im/dist/sidecar.v1.js', async='', defer='')
-
 if env == 'production'
   script(src='/js/metrics.js?v130')

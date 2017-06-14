@@ -79,6 +79,7 @@ router.get('/day_price', function(req, res) {
     res.status(200).json(result);
   }).catch(function(err) {
     console.error(err);
+    res.status(500).json({error : true});
   });
 });
 
@@ -106,9 +107,6 @@ router.get('/estimated_ticket_price', function (req, res) {
 });
 
 router.get('/get_stats', function (req, res) {
-  if (req.query.origin) {
-    console.log('[API]: get_stats request from ' + req.query.origin);
-  }
   Stats.findOne({where : {id : 1}}).then(function(stats) {
 
     if (!stats) {
@@ -116,25 +114,12 @@ router.get('/get_stats', function (req, res) {
       return;
     }
 
-    return Blocks.findOne({order: 'height DESC'}).then(function(block) {
       stats = stats.dataValues;
-      stats.last_block_datetime = block.datetime;
-      stats.average_time = Math.floor((block.datetime - FIRST_BLOCK_TIME) / block.height);
-      stats.average_minutes = Math.floor(stats.average_time / 60);
-      stats.average_seconds = Math.floor(stats.average_time % 60);
-      stats.pos_adjustment = 144 - (block.height % 144);
-      stats.supply = SUPPLY;
-      stats.premine = PREMINE;
-      stats.mined_before_pos = MINED_DCR_BEFORE_POS;
-      stats.reward = SUBSIDY;
-      stats.block_reward = getEstimatedBlockReward(Math.ceil(block.height / 6144) - 1, SUBSIDY);
-      stats.pow_reward = stats.block_reward * 0.6;
-      stats.vote_reward = stats.block_reward * 0.3 / 5;
 
       res.status(200).json(stats);
-    });
   }).catch(function(err) {
     console.error(err);
+    res.status(500).json({error : true});
   });
 });
 
@@ -142,6 +127,9 @@ var USD = 0;
 var RATES = {};
 
 // JHTODO this needs to go back in
+// Actually it seems like it probably wont
+//
+//
 // function updatePriceCache() {
 //   fs.readFile('./uploads/rates.json', 'utf8', function (err, data) {
 //     if (err) {

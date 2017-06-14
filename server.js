@@ -6,7 +6,6 @@ var moment  = require('moment');
 var exec    = require('child_process').exec;
 var CronJob = require('cron').CronJob;
 var fs = require('fs');
-var geoip = require('geoip-lite');
 
 var api = require('./routes/api.js');
 var site = require('./routes/site.js');
@@ -32,7 +31,7 @@ var Prices = require('./models').Prices;
 const POLONIEX = 'https://poloniex.com/public?command=returnTicker';
 const BTCE = 'https://btc-e.com/api/3/ticker/btc_usd';
 const BITSTAMP = 'https://www.bitstamp.net/api/v2/ticker/btcusd/';
-const MARKET_CAP = 'https://graphs.coinmarketcap.com/currencies/decred/';
+const MARKET_CAP = 'https://graphs.coinmarketcap.com/currencies/golem-network-tokens/';
 const APILAYER = 'http://apilayer.net/api/live?access_key=';
 
 app.use('', site);
@@ -69,18 +68,15 @@ var updateExchangeRate = function() {
   updateExchangeRates();
 }
 
-new CronJob('0,30  * * * * *', updatePrices, null, true, 'Europe/Rome');
-new CronJob('15,45 * * * * *', updateMarketCap2, null, true, 'Europe/Rome');
-// new CronJob('5 */60 * * * *', updateExchangeRate, null, true, 'Europe/Rome');
-
 // Original timings
-// new CronJob('*/15 * * * * *', updatePrices, null, true, 'Europe/Rome');
-// new CronJob('0 */15 * * * *', updateMarketCap2, null, true, 'Europe/Rome');
+new CronJob('*/15 * * * * *', updatePrices, null, true, 'Europe/Rome');
+new CronJob('0 */15 * * * *', updateMarketCap2, null, true, 'Europe/Rome');
 // new CronJob('5 */60 * * * *', updateExchangeRate, null, true, 'Europe/Rome');
 
 function getPrices(next) {
   var result = {};
 
+  // Get BTC/DCR from polo
   request(POLONIEX, function (error, response, body) {
     if (!error && response.statusCode == 200) {
 
@@ -90,7 +86,7 @@ function getPrices(next) {
         return next(e,null);
       }
 
-      data = data['BTC_DCR'];
+      data = data['BTC_GNT'];
       if (!data) {
         return next(body,null);
       }
@@ -100,6 +96,7 @@ function getPrices(next) {
       result.btc_volume = data['baseVolume'];
       result.prev_day = (parseFloat(data['percentChange']) * 100).toFixed(2);
 
+      // Get USD/BTC from bitstamp
       request(BITSTAMP, function (error, response, body) {
         if (!error && response.statusCode == 200) {
 
@@ -111,7 +108,7 @@ function getPrices(next) {
 
           if (!data) {
             return next(body,null);
-          }
+        }
 
           result.usd_price = parseFloat(data.last);
 
