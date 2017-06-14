@@ -1,21 +1,5 @@
 $(function() {
 
-  $.ajax({
-    url : '/api/v1/peerinfo?' + new Date().getTime(),
-    type : 'GET',
-    success : function(peers) {
-      // try {
-      //   peers = JSON.parse(peers);
-      // } catch(e) {
-      //   console.error(e);
-      //   return;
-      // }
-      $('h2.decred-subtitle').text(peers.length + ' active nodes on the map');
-      drawMap(peers);
-      fillTable(peers);
-    }
-  });
-
   function drawMap(peers) {
     /* Prepare array with nodes */
     var map = _.map(peers, function (peer) {

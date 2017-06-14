@@ -3,8 +3,6 @@ config/config.json
 public/js/metrics.js
 public/robots.txt
 uploads/prices.json
-uploads/peers.json
-uploads/stakepools.json
 snippets.js
 .DS_Store
 npm-debug.log

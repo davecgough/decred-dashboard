@@ -32,8 +32,6 @@ var countdownDiff = 1493139600 - Math.floor(new Date().getTime() / 1000);
   var lastBlockInterval;
   updateStats(true);
   setInterval(updateStats, 15000);
-  updateFeesInfo();
-  setInterval(updateFeesInfo, 15000);
 
   function updateStats(isStartup) {
 
@@ -44,12 +42,6 @@ var countdownDiff = 1493139600 - Math.floor(new Date().getTime() / 1000);
       success: function(response) {
 
         if (!response.error) {
-
-          /* If there is a new block, then update ticket fees info */
-          var oldBlockHeight = parseInt($('.fees-table tr:first').data('best'), 10);
-          if (response.blocks > oldBlockHeight) {
-            updateFeesInfo();
-          }
 
           var usd_last = (response.btc_last * response.usd_price).toString().substr(0,4);
           if (response.prev_day > 0) {
@@ -82,7 +74,7 @@ var countdownDiff = 1493139600 - Math.floor(new Date().getTime() / 1000);
 
           $('span.stats-btc-usd').text('$' + response.usd_price);
 
-          var hashrate = (response.networkhashps / 1000 / 1000 / 1000 / 1000).toString().substr(0,5);
+          var hashrate = (200200200200200200 / 1000 / 1000 / 1000 / 1000).toString().substr(0,5);
           $('span.stats-hashrate').html(hashrate);
           $('span.stats-blocks').html(numberFormat(response.blocks));
           $('span.stats-difficulty').html(numberFormat(Math.floor(response.difficulty)));
@@ -102,38 +94,27 @@ var countdownDiff = 1493139600 - Math.floor(new Date().getTime() / 1000);
             lastTimeBlock.html(time + ' ago');
           }, 1000);
 
-          var ticket_price = response.sbits.toString().substr(0,5);
+          var ticket_price = "10.11"
           /* 2.00000001 -> 2.01
            * 2.09999999 -> 2.10
            */
-          ticket_price = parseFloat(ticket_price);
-          if (response.sbits > ticket_price) {
-            ticket_price = Math.round((ticket_price + 0.01) * 100) / 100;
-          }
 
-          //$('span.real-pos-price').attr('title', response.sbits + ' DCR');
           $('span.stats-ticketprice').html(ticket_price + ' DCR');
-          $('span.stats-poolsize').html(numberFormat(response.poolsize));
-          $('span.stats-mempool').html(numberFormat(response.pooledtx));
-
-          /*
-          var avg_fee = response.fees ? response.fees.toFixed(4) : 0;
-          var max_fee = response.max_fees ? response.max_fees.toFixed(4) : 0;
-          $('span.stats-fees').html(avg_fee + ' <span class="hidden-xs">DCR</span>');
-          */
+          $('span.stats-poolsize').html(numberFormat("565656"));
+          $('span.stats-mempool').html(numberFormat("262626"));
 
           var est_pos_blocks = 144 - (response.blocks % 144);
           var est_pos_time = secondsToTime(est_pos_blocks * response.average_time);
 
           $('.est-pos-time').html('in '+est_pos_time.hours+' hours '+est_pos_time.minutes+' minutes');
           $('.est-pos-blocks').html('<b>' + est_pos_blocks + '</b> blocks left');
-          if (response.est_sbits <= response.prev_est_sbits) {
-            $('.est-pos-price').html(response.est_sbits.toString().substr(0,5) + ' DCR');
-          } else {
-            $('.est-pos-price').html(response.est_sbits.toString().substr(0,5) + ' DCR');
-          }
-          $('.min-est-pos').html(response.est_sbits_min.toString().substr(0,5) + ' DCR');
-          $('.max-est-pos').html(response.est_sbits_max.toString().substr(0,5) + ' DCR');
+
+          
+          $('.est-pos-price').html('109 SDCR');
+          
+
+          $('.min-est-pos').html('1 DCR');
+          $('.max-est-pos').html('29 DCR');
 
           var block_reward = getEstimatedBlockReward(Math.ceil(response.blocks / 6144) - 1, response.reward);
           $('.block-reward').html(block_reward.toString().substr(0,5) + ' DCR');
@@ -158,41 +139,39 @@ var countdownDiff = 1493139600 - Math.floor(new Date().getTime() / 1000);
           /* PoS tickets */
 
           // Average ticket price in the pool = amount of locked coins divide by number of tickets in the pool
-          var avg_price_in_pool = Math.round((response.ticketpoolvalue / response.poolsize) * 100) / 100;
+          var avg_price_in_pool = Math.round("3333.333");
 
           var hint_title = '', hint_content = '';
           var vote_reward = parseFloat(block_reward * 0.3 / 5) - 0.01;
           hint_title = 'Estimated return on investment';
-          hint_content = 'Your estimated ROI is <b>+' + (100 * vote_reward / response.sbits).toFixed(2) + '%</b> if you will buy ticket now with a 0.01 DCR fee.';
+          hint_content = 'Your estimated ROI is <b>2%</b> if you will buy ticket now with a 0.01 DCR fee.';
 
-          $('.avg-price').html(response.avg_sbits.toString().substr(0,4) + ' DCR');
+          $('.avg-price').html('-99 DCR');
           $('.hint-title').html(hint_title);
           $('.hint-content').html(hint_content);
 
-          /* Mempool fees */
-          // $('b.avg-fee').html(avg_fee + ' DCR');
-          // $('b.max-fee').html(max_fee + ' DCR');
-
           /* Total locked DCR in PoS */
-          $('.poolvalue').html(numberFormat(response.ticketpoolvalue) + ' DCR');
+          $('.poolvalue').html(numberFormat('99 DCR'));
 
-          var coinsupply = response.coinsupply / 100000000;
-          var poolvalue_percent = ((response.ticketpoolvalue / coinsupply) * 100).toString().substr(0,5);
+          var coinsupply = 101010101010101;
+          var poolvalue_percent = 20;
           $('.poolvalue-percent').html(poolvalue_percent + ' %');
           $('.avg-price-in-pos-pool').html(avg_price_in_pool + ' DCR');
 
            /***** Hints blocks end *****/
 
           /* Draw voters chart on page load */
-          if (isStartup) {
-            if (response.voting) {
-              if (response.voting.agendas) {
-                for (var i = 0; i < response.voting.agendas.length; i++) {
-                  drawVotingChart(response.voting.agendas[i], response.voting);
-                }
-              }
-            }
-          }
+
+          // JHTODO - Remove any elements which are drawn by this:
+          // if (isStartup) {
+          //   if (response.voting) {
+          //     if (response.voting.agendas) {
+          //       for (var i = 0; i < response.voting.agendas.length; i++) {
+          //         drawVotingChart(response.voting.agendas[i], response.voting);
+          //       }
+          //     }
+          //   }
+          // }
 
           /* Draw supply chart on page load */
           if (isStartup) {
@@ -235,17 +214,7 @@ $(function () {
 
       $this.parent().find('button').each(function(item) { $(this).removeClass('active'); });
       $this.addClass('active');
-
-      $.ajax({
-        url: '/api/v1/pos?data='+chart+'&time='+time+'&nonce='+nonce,
-        type: 'GET',
-        dataType: "json",
-        success: function (data) {
-          if (chart == 'sbits') {
-            drawSbits(data, time);
-          }
-        }
-      });
+      
     });
 
     $('.price-group .btn-chart').on('click', function(e) {
@@ -267,15 +236,6 @@ $(function () {
       $this.parent().find('button').each(function(item) { $(this).removeClass('active'); });
       $this.addClass('active');
       updatePricesChart(ticker, time);
-    });
-
-    $.ajax({
-      url: '/api/v1/pos?time=30&nonce='+nonce,
-      type: 'GET',
-      dataType: "json",
-      success: function (data) {
-        drawSbits(data, 30);
-      }
     });
 
     updatePricesChart('usd', 30);
@@ -314,51 +274,6 @@ function updatePricesChart(ticker, time) {
       }
     });
   }
-}
-
-function updateFeesInfo() {
-  $.ajax({
-    url: '/api/v1/fees',
-    type: 'GET',
-    data: {},
-    dataType: "json",
-    success: function (data) {
-      if (!data.error) {
-        fillFeesTable(data);
-      }
-    }
-  });
-}
-
-function fillFeesTable(data) {
-  if(Object.prototype.toString.call( data ) != '[object Array]') {
-    return;
-  }
-  var html = "";
-  for (var i = 0; i < data.length; i++) {
-    if (i > 9) continue; // let's show only last 10 blocks
-    var block = data[i];
-
-    /* Update Average Fee in the Main Dashboard */
-    if (i == 0 && block.avg_fee >= 0) {
-      var avg_fee = block.avg_fee ? parseFloat(block.avg_fee).toFixed(4) : 0;
-      $('span.stats-fees').html(avg_fee + ' <span class="hidden-xs">DCR</span>');
-    }
-
-    html += '<tr '+(i == 0 ? 'data-best="'+block.height+'"' : '')+'>';
-    html += '<td>'+numberFormat(block.height)+'</td>';
-    html += '<td class="hidden-xs">'+moment(block.datetime * 1000).fromNow()+'</td>';
-    html += '<td class="hidden-xs">'+block.num_tickets+'</td>';
-    if (block.min_fee > 0) block.min_fee = parseFloat(block.min_fee).toFixed(5)
-    html += '<td class="hidden-xs">'+block.min_fee+'</td>';
-    if (block.avg_fee > 0) block.avg_fee = parseFloat(block.avg_fee).toFixed(5)
-    html += '<td>'+block.avg_fee+'</td>';
-    if (block.max_fee > 0) block.max_fee = parseFloat(block.max_fee).toFixed(5)
-    html += '<td>'+block.max_fee+'</td>';
-
-    html += '</tr>';
-  }
-  $('.blocks-fee-info').html(html);
 }
 
 function getEstimatedBlockReward(cycles, reward) {

@@ -35,60 +35,6 @@ function drawPrice(data, ticker) {
 
 }
 
-function drawSbits(data, time) {
-  var markerStatus = time > 30 ? false : true;
-  $('#pos-sbits').highcharts({
-    chart: {backgroundColor: null},
-    tooltip: {backgroundColor: "#e2e2e2", borderColor: '#fff', style: {"color": "#2f2f2f"}},
-    title: {text: ''},
-    credits: {enabled: false},
-    exporting: {enabled: false},
-    navigator: {enabled: false},
-    legend: {enabled: true},
-    xAxis: {
-        type: 'datetime',
-        gridLineWidth: 1,
-        gridLineColor: '#fff',
-        labels: {style: {color: '#9aa2a9', fill: '#9aa2a9'}}
-    },
-    yAxis: [{
-        title: {text: ''},
-        gridLineWidth: 1,
-        gridLineColor: '#fff',
-        labels: {style: {color: '#9aa2a9', fill: '#9aa2a9'}}
-    },{
-        title: {text: ''},
-        gridLineWidth: 1,
-        gridLineColor: '#fff',
-        labels: {style: {color: '#9aa2a9', fill: '#9aa2a9'}},
-        opposite: true
-    }],
-    series: [
-      {
-        yAxis: 1,
-        name: 'Number of Tickets',
-        data: data.tickets,
-        type: 'column',
-        color: '#e2d2ae',
-        lineWidth: 20,
-        tooltip: {valueDecimals: 0},
-        marker: {enabled: markerStatus},
-        states: {hover: {lineWidth: 2}}
-      },
-      {
-        yAxis: 0,
-        name: 'Price',
-        data: data.sbits,
-        type: 'spline',
-        color: '#3c4ba6',
-        lineWidth: 2,
-        tooltip: {valueDecimals: 2},
-        marker: {enabled: markerStatus},
-        states: {hover: {lineWidth: 2}}
-      }]
-  });
-}
-
 function drawPow(data, chart, title) {
   var valueDecimals = 2;
   var name = 'Thash/s';

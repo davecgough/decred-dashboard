@@ -1,0 +1,2 @@
+2017-06-14 12:27:18 ERROR    golem.rpc                           RPC: call error: [Failure instance: Traceback (failure with no frames): <class 'autobahn.wamp.exception.ApplicationError'>: ApplicationError(error=<wamp.close.transport_lost>, args=[u'WAMP transport was lost without closing the session before'], kwargs={}, enc_algo=None)
+]

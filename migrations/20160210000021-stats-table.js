@@ -8,22 +8,6 @@ module.exports = {
         primaryKey: true,
         autoIncrement: true
       },
-      blocks: {
-        type: Sequelize.INTEGER,
-        allowNull: false
-      },
-      difficulty: {
-        type: Sequelize.DOUBLE,
-        allowNull: false
-      },
-      networkhashps: {
-        type: Sequelize.BIGINT,
-        allowNull: false
-      },
-      pooledtx: {
-        type: Sequelize.INTEGER,
-        allowNull: false
-      },
       btc_high: {
         type: Sequelize.DOUBLE,
         allowNull: false
@@ -35,6 +19,10 @@ module.exports = {
       btc_last: {
         type: Sequelize.DOUBLE,
         allowNull: false
+      },
+      prev_day: {
+        type: Sequelize.DOUBLE,
+        allowNull: true
       },
       btc_volume: {
         type: Sequelize.DOUBLE,

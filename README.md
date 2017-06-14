@@ -50,3 +50,23 @@ If everything ok, cronjobs will start all parsers in the next 1-5 minutes, which
 
 ### Pull requests
 Decred Dashboard is still in early stage of development. Feel free to ask us for implementation of any new features or just do it yourself, we will be happy to see your pull requests.
+
+
+
+Preparing server to run GNT-stats
+```
+sudo su - postgres
+	createuser --pwprompt decred
+	*password x 2*
+	createdb -O decred stats-db
+echo "export PGPASSWORD=1234" >> ~/.bashrc
+
+sequelize db:migrate
+```
+
+
+Preparing server to be a golem node
+1. `./download_golem.sh`
+1. restart server
+1. golemapp --nogui
+
