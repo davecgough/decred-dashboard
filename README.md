@@ -12,7 +12,7 @@ See live version here: https://dcrstats.com
 ### Installation and configuration
 Clone this repository:
 ```
-git clone https://github.com/Dyrk/decred-dashboard.git
+git clone https://github.com/jholdstock/decred-dashboard.git
 ```
 
 Install all dependencies:
@@ -53,26 +53,32 @@ Decred Dashboard is still in early stage of development. Feel free to ask us for
 
 
 
-Preparing server to run GNT-stats
+Preparing ubuntu to run GNT-stats
 ```
+git clone https://github.com/jholdstock/decred-dashboard.git
+cd decred-dashboard
+sudo apt-get update
+sudo apt-get install -y nodejs npm
+ln -s -f /usr/bin/nodejs /usr/bin/node
+npm install
+sudo npm install -g pm2 sequelize-cli
+
 sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" >> /etc/apt/sources.list.d/pgdg.list'
 wget -q https://www.postgresql.org/media/keys/ACCC4CF8.asc -O - | sudo apt-key add -
 sudo apt-get update
-sudo apt-get install postgresql postgresql-contrib
+sudo apt-get install -y postgresql postgresql-contrib
 sudo su - postgres
 	createuser --pwprompt decred
-	*password x 2*
 	createdb -O decred stats-db
 echo "export PGPASSWORD=1234" >> ~/.bashrc
 cp config/config.json.sample config/config.json
-vi config.json
-
+vi config/config.json
 
 sequelize db:migrate
 ```
 
 
-Preparing server to be a golem node
+Preparing ubuntu to be a golem node
 1. `./download_golem.sh`
 1. restart server
 1. golemapp --nogui
