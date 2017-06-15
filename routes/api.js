@@ -15,7 +15,7 @@ router.get('/prices', function (req, res) {
   var ticker = req.query.ticker;
   var time = req.query.time;
   if (!time || time < 7 || time > 365) {
-    time = 365 * 30; // 30 years
+    time = 10950; // 30 years
   }
   var min_time = new Date().getTime() - time * 24 * 60 * 60 * 1000;
 
@@ -112,29 +112,37 @@ router.get('/convert', function(req, res) {
 var USD = 0;
 var RATES = {};
 
-function updatePriceCache() {
+function updateForexCache() {
   fs.readFile('./uploads/rates.json', 'utf8', function (err, data) {
     if (err) {
-      console.log(err);
-      res.status(500).json({error : true}); return;
+      console.error(err);
+      res.status(500).json({error : true});
+      return;
     }
+
     var result = {};
     try {
       result = JSON.parse(data);
     } catch(e) {
-      console.log(e);
+      console.error(e);
       res.status(500).json({error : true});
       return;
     }
-    Stats.findOne({where : {id : 1}}).then(function(stats) {
-      USD = parseFloat(stats.usd_price) * parseFloat(stats.btc_last);
-      RATES = result.rates;
-    }).catch(function(err) { console.log(err); });
+    RATES = result.rates;
+    
   });
+
+  Stats.findOne({where : {id : 1}}).then(function(stats) {
+    USD = parseFloat(stats.usd_price) * parseFloat(stats.btc_last);
+  })
+  .catch(function(err) {
+    console.error(err); 
+  });
+    
 }
 
-var updateCacheInterval = setInterval(updatePriceCache, 60000);
-updatePriceCache();
+var updateCacheInterval = setInterval(updateForexCache, 60000);
+updateForexCache();
 
 
 module.exports = router;
