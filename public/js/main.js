@@ -63,7 +63,9 @@ $(function () {
 
       /* Change chart title only if we change currency */
       if (ticker) {
-        $('.price-chart-title').text('GNT Price, ' + ticker.toUpperCase());
+        var old_title = $('.price-chart-title').text();
+        old_title = old_title.substr(0, old_title.indexOf(','));
+        $('.price-chart-title').text(old_title + ', ' + ticker.toUpperCase());
       } else {
         ticker = $('.price-group .price-ticker.active').data('ticker');
       }
