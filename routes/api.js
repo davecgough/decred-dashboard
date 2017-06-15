@@ -90,37 +90,6 @@ router.get('/get_stats', function (req, res) {
   });
 });
 
-// var USD = 0;
-// var RATES = {};
-//
-// function updatePriceCache() {
-//   fs.readFile('./uploads/rates.json', 'utf8', function (err, data) {
-//     if (err) {
-//       console.log(err);
-//       res.status(500).json({error : true}); return;
-//     }
-//     var result = {};
-//     try {
-//       result = JSON.parse(data);
-//     } catch(e) {
-//       console.log(e);
-//       res.status(500).json({error : true});
-//       return;
-//     }
-//     Stats.findOne({where : {id : 1}}).then(function(stats) {
-//         console.error("JHTODO STATS STILL == NULL");
-//       else {
-//         console.error("\n\n\n\nJHTODO STATS IS NOT NULL!!!!\n\n\n\n");
-//         USD = parseFloat(stats.usd_price) * parseFloat(stats.btc_last);
-//         RATES = result;
-//       }
-//     }).catch(function(err) { console.log(err); });
-//   });
-// }
-//
-// var updateCacheInterval = setInterval(updatePriceCache, 60000);
-// updatePriceCache();
-
 router.get('/convert', function(req, res) {
 
   if (!req.query) {
@@ -137,5 +106,35 @@ router.get('/convert', function(req, res) {
   }
   res.json({alt : alt, result : pair});
 });
+
+
+// forex rate cache
+var USD = 0;
+var RATES = {};
+
+function updatePriceCache() {
+  fs.readFile('./uploads/rates.json', 'utf8', function (err, data) {
+    if (err) {
+      console.log(err);
+      res.status(500).json({error : true}); return;
+    }
+    var result = {};
+    try {
+      result = JSON.parse(data);
+    } catch(e) {
+      console.log(e);
+      res.status(500).json({error : true});
+      return;
+    }
+    Stats.findOne({where : {id : 1}}).then(function(stats) {
+      USD = parseFloat(stats.usd_price) * parseFloat(stats.btc_last);
+      RATES = result.rates;
+    }).catch(function(err) { console.log(err); });
+  });
+}
+
+var updateCacheInterval = setInterval(updatePriceCache, 60000);
+updatePriceCache();
+
 
 module.exports = router;

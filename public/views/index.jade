@@ -32,7 +32,7 @@ html(lang='en')
       .row.price-block-end
         .col-xs-6.col-md-3
           p.stats-block
-            span.stats-title(title="Price based on data from Poloniex + BitStamp")
+            span.stats-title(title="Price based on data from Poloniex + Bitstamp")
               span &nbsp;#{alt_ticker} / USD&nbsp;
             span.stats-content.stats-lastprice -
             span.price-change.percent
@@ -54,6 +54,36 @@ html(lang='en')
               span &nbsp;DAY HIGH&nbsp;
             span.stats-content.stats-dayhigh -
             span.price-change.btc-high -
-    
+    .container
+      .row
+        .col-xs-12.col-md-12
+          .col-xs-12.col-md-12(style="padding-bottom: 45px; padding-top: 20px;")
+            h2(style="margin: 25px auto; text-align: center; color: #c1c1c1;") #{converter_name} Converter
+            form.form-inline(style="text-align: center;")
+              .form-group
+                .form-group.input-group
+                  .input-group-addon #{alt_ticker}
+                  input#altcoinAmount.form-control(type='text', value="1", style="font-size: 16px;")
+                .form-group
+                  div(style="padding: 0 10px;font-size: 32px;line-height: 32px;") = 
+                .form-group
+                  input#result.form-control(type='text', style="font-size: 16px;")
+                .form-group
+                  select#convertTo.selectpicker(data-live-search='true')
+                    option(value='GBP') British Pound (GBP)
+                    each row, key in currencies
+                      if key != 'GBP'
+                        option(value='#{key}') #{row}
+      
+        .row
+          .col-xs-12.col-md-12
+            div(style="margin: 0 auto; max-width: 600px;")
+              h3(style="text-align: center; color: #c1c1c1;") About #{converter_name} price converter
+              p(style="text-align: center; font-size: 16px; color: #c1c1c1;") This page allows you to see the #{converter_name} exchange rate and convert any amount of #{converter_name} to or from your preferred currency.
+              p(style="text-align: center; font-size: 16px; color: #c1c1c1;") See how many #{converter_name}s you can buy. Enter an amount on the right-hand input field, to see the equivalent amount in #{converter_name} on the left.
+              P(style="text-align: center; font-size: 16px; color: #c1c1c1;") See the value of your #{converter_name} holdings. Enter the number of #{converter_name}s you have, and watch their value fluctuate over time.
+              p(style="text-align: center; font-size: 16px; color: #c1c1c1;") The exchange rates on this site are for information purposes only. They are not guaranteed to be accurate and are subject to change without notice.
+              h3(style="text-align: center; color: #c1c1c1;") How it works
+              p(style="text-align: center; font-size: 16px; color: #c1c1c1;") We use 2 price conversions to calculate the price in the currency of your choice: We take market price from Poloniex (#{alt_ticker}-BTC) and then calculate its price in USD using BTC-USD exchange rate from bitstamp.com. After this, we convert USD price to the currency of your choice using exchange rates from fixer.io
     footer
       include ./includes/footer.jade

@@ -21,37 +21,30 @@ router.get('/', function (req, res) {
     
     stats = stats.dataValues;
 
-    let data = {
-      env : env,
-      page: 'index',
-      title: strings.main_title,
-      desc: strings.main_desc,
-      og_title: strings.og_title,
-      base_url: config.base_url,
-      alt_ticker: strings.alt_ticker,
+    fs.readFile('./uploads/currencies.json', 'utf8', function(err, currencies) {
+      if (err) { console.error(err); }
+      let data = {
+        env : env,
+        page: 'index',
+        title: strings.main_title,
+        desc: strings.main_desc,
+        og_title: strings.og_title,
+        base_url: config.base_url,
+        alt_ticker: strings.alt_ticker,
+        logo: strings.logo,
+        favicon: strings.favicon,
+        converter_name: strings.converter_name,
+        stats: stats,
+      };
 
-      stats: stats,
-    };
-
-    res.render('index', data);
+      try { 
+        data.currencies = JSON.parse(currencies); 
+      } catch (e) {}
+      
+      res.render('index', data);
+    });
   }).catch(function(err) {
     console.error(err);
-  });
-});
-
-router.get('/converter', function(req, res) {
-  fs.readFile('./uploads/currencies.json', 'utf8', function(err, currencies) {
-    if (err) { console.error(err); }
-    let data = {
-      env : env,
-      page: 'converter',
-      title: strings.converter_title,
-      desc: strings.converter_desc,
-      og_title: strings.og_title,
-      base_url: config.base_url,
-    };
-    try { data.currencies = JSON.parse(currencies); } catch (e) {}
-    res.render('converter', data);
   });
 });
 

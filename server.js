@@ -33,7 +33,7 @@ app.use('', site); // site must go last because it contains catchall for 404
 const MARKET_CAP = 'https://graphs.coinmarketcap.com/currencies/' + config.market_cap_id;
 const POLONIEX = 'https://poloniex.com/public?command=returnTicker';
 const BITSTAMP = 'https://www.bitstamp.net/api/v2/ticker/btcusd/';
-const APILAYER = 'http://apilayer.net/api/live?access_key=';
+const FOREX_API = 'http://api.fixer.io/latest?base=USD';
 
 var updatePrices = function() {
   getPrices(function(err, result) {
@@ -54,15 +54,15 @@ var updatePrices = function() {
   });
 }
 
-var updateMarketCap2 = function() {
-  updateMarketCap();
-  saveMarketPrice();
+var updateMarketCap = function() {
+  getMarketCap();
+  updatePricesTable();
 }
 
 // Original timings
 new CronJob('*/15 * * * * *', updatePrices, null, true, 'Europe/Rome');
-new CronJob('0 */15 * * * *', updateMarketCap2, null, true, 'Europe/Rome');
-// new CronJob('5 */60 * * * *', updateExchangeRates, null, true, 'Europe/Rome');
+new CronJob('0 */15 * * * *', updateMarketCap, null, true, 'Europe/Rome');
+new CronJob('5 */60 * * * *', updateExchangeRates, null, true, 'Europe/Rome');
 
 function getPrices(next) {
   var result = {};
@@ -116,7 +116,7 @@ function getPrices(next) {
 
 }
 
-function updateMarketCap() {
+function getMarketCap() {
   request(MARKET_CAP, function (error, response, body) {
     if (!error && response.statusCode == 200) {
       try {
@@ -136,7 +136,7 @@ function updateMarketCap() {
   });
 }
 
-function saveMarketPrice() {
+function updatePricesTable() {
   Stats.findOne({where : {id : 1}}).then(function(stats) {
     if (stats == null) {
       console.error("updateMarketCap: nothing in stats table. Cant update 15 min price");
@@ -161,31 +161,28 @@ function saveMarketPrice() {
   });
 }
 
-// function updateExchangeRates() {
-//   request(APILAYER + config.currencylayer_key, function (error, response, body) {
-//     if (!error && response.statusCode == 200) {
-//       var json = {};
-//       try {
-//         json = JSON.parse(body);
-//         if (!json.quotes) throw new Error('Empty quotes');
-//         json = JSON.stringify(json.quotes);
-//       } catch(e) {
-//         console.error('Bad response from apilayer.net', e);
-//         return;
-//       }
+function updateExchangeRates() {
+  request(FOREX_API, function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+      try {
+        JSON.parse(body);
+      } catch(e) {
+        console.error('Bad response from forex provider', e);
+        return;
+      }
 
-//       fs.writeFile("./uploads/rates.json", json, function(err) {
-//           if(err) {
-//               return console.error(err);
-//           }
-//           return console.log("Exchange rates updated.");
-//       });
+      fs.writeFile("./uploads/rates.json", body, function(err) {
+          if(err) {
+              return console.error(err);
+          }
+          return console.log("USD foreign exchange rates updated.");
+      });
 
-//     } else {
-//       console.log('Bad response from apilayer.net', response);
-//     }
-//   });
-// }
+    } else {
+      console.log('Bad response from forex provider', response);
+    }
+  });
+}
 
 app.listen(config.listen_port, function () {
   console.log('Listening on port ' + config.listen_port);
