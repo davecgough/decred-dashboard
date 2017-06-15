@@ -11,6 +11,7 @@ API:
 	/convert
 		- Called by converter
 		- Returns data from rates.json (held in-mem cache) 
+		- Also uses currencies.json
 
 CronJobs:
 	updatePrices

@@ -2,7 +2,6 @@ node_modules
 config/config.json
 public/js/metrics.js
 public/robots.txt
-uploads/market-cap.json
 snippets.js
 .DS_Store
 npm-debug.log
