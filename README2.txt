@@ -16,7 +16,6 @@ CronJobs:
 		- Writes market-cap.json and generates Price table data from Stats table
 
 To do:
-	- sitemap.xml
 	- README.md
 	- seo.json
 	- 404

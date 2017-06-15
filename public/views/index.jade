@@ -26,20 +26,20 @@ html(lang='en')
                 span BTC
               button.price-ticker.btn-chart.btn.btn-default.active(type='button', data-ticker="usd", data-chart="price")
                 span USD
-          h3.price-chart-title GNT Price, USD
+          h3.price-chart-title #{alt_ticker} Price, USD
           #price-chart.chart-container
 
       .row.price-block-end
         .col-xs-6.col-md-3
           p.stats-block
             span.stats-title(title="Price based on data from Poloniex + BitStamp")
-              span &nbsp;GNT / USD&nbsp;
+              span &nbsp;#{alt_ticker} / USD&nbsp;
             span.stats-content.stats-lastprice -
             span.price-change.percent
         .col-xs-6.col-md-3
           p.stats-block
             span.stats-title(title="Last price on Poloniex")
-              span &nbsp;GNT / BTC&nbsp;
+              span &nbsp;#{alt_ticker} / BTC&nbsp;
             span.stats-content.stats-btc -
             span.price-change.volume
         .col-xs-6.col-md-3

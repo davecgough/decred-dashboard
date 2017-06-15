@@ -10,6 +10,7 @@ var api = require('./routes/api.js');
 var site = require('./routes/site.js');
 var env = process.env.NODE_ENV || 'development';
 var config = require('./config/config.json')[env];
+var strings = require("./public/strings/" + config.alt_profile);
 
 var app = express();
 app.set('views', './public/views');
@@ -26,13 +27,10 @@ var sequelize = require('./models').sequelize;
 var Stats = require('./models').Stats;
 var Prices = require('./models').Prices;
 
-app.use('', site);
 app.use('/api/v1', api);
+app.use('', site); // site must go last because it contains catchall for 404
 
-const POLO_ID = "BTC_GNT";
-const MARKET_CAP_ID = "golem-network-tokens";
-
-const MARKET_CAP = 'https://graphs.coinmarketcap.com/currencies/' + MARKET_CAP_ID;
+const MARKET_CAP = 'https://graphs.coinmarketcap.com/currencies/' + config.market_cap_id;
 const POLONIEX = 'https://poloniex.com/public?command=returnTicker';
 const BITSTAMP = 'https://www.bitstamp.net/api/v2/ticker/btcusd/';
 const APILAYER = 'http://apilayer.net/api/live?access_key=';
@@ -79,7 +77,7 @@ function getPrices(next) {
         return next(e,null);
       }
 
-      data = data[POLO_ID];
+      data = data[strings.polo_id];
       if (!data) {
         return next(body,null);
       }
@@ -192,5 +190,4 @@ function saveMarketPrice() {
 app.listen(config.listen_port, function () {
   console.log('Listening on port ' + config.listen_port);
 });
-
 module.exports = app;

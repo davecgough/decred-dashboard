@@ -6,9 +6,9 @@ var express = require('express');
 
 var router = express.Router();
 
-var strings = require('../public/strings/seo.json');
 var env = process.env.NODE_ENV || 'development';
 var config = require('../config/config.json')[env];
+var strings = require("../public/strings/" + config.alt_profile);
 
 var Stats = require('../models').Stats;
 
@@ -26,28 +26,45 @@ router.get('/', function (req, res) {
       page: 'index',
       title: strings.main_title,
       desc: strings.main_desc,
-      stats: stats
+      og_title: strings.og_title,
+      base_url: config.base_url,
+      alt_ticker: strings.alt_ticker,
+
+      stats: stats,
     };
-    data.base_url = config.base_url;
+
     res.render('index', data);
   }).catch(function(err) {
     console.error(err);
   });
 });
 
-// router.get('/converter', function(req, res) {
-//   fs.readFile('./uploads/currencies.json', 'utf8', function(err, currencies) {
-//     if (err) { console.error(err); }
-//     let data = {
-//       env : env,
-//       page: 'converter',
-//       title: strings.converter_title,
-//       desc: strings.converter_desc
-//     };
-//     try { data.currencies = JSON.parse(currencies); } catch (e) {}
-//      data.base_url = config.base_url;
-//     res.render('converter', data);
-//   });
-// });
+router.get('/converter', function(req, res) {
+  fs.readFile('./uploads/currencies.json', 'utf8', function(err, currencies) {
+    if (err) { console.error(err); }
+    let data = {
+      env : env,
+      page: 'converter',
+      title: strings.converter_title,
+      desc: strings.converter_desc,
+      og_title: strings.og_title,
+      base_url: config.base_url,
+    };
+    try { data.currencies = JSON.parse(currencies); } catch (e) {}
+    res.render('converter', data);
+  });
+});
+
+router.get('*', function(req, res){
+  let data = {
+    env : env,
+    page: '404',
+    title: "404 - Page not found",
+    desc: strings.main_desc,
+    og_title: strings.og_title,
+    base_url: config.base_url,
+  };
+  res.status(404).render("404.jade", data);
+});
 
 module.exports = router;

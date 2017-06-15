@@ -6,6 +6,7 @@
     "dialect": "postgres",
     "logging": false,
     "base_url": "http://localhost:8080",
+    "alt_profile": "gnt-profile.json",
     "listen_port": 8080,
     "currencylayer_key" : "Get it here: https://currencylayer.com"
   },
@@ -16,6 +17,7 @@
     "dialect": "postgres",
     "logging": false,
     "base_url": "https://website.com",
+    "alt_profile": "gnt-profile.json",
     "listen_port": 80,
     "currencylayer_key" : "Get it here: https://currencylayer.com"
   }
