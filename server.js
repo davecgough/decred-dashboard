@@ -3,13 +3,11 @@
 var express = require('express');
 var request = require('request');
 var moment  = require('moment');
-var exec    = require('child_process').exec;
 var CronJob = require('cron').CronJob;
 var fs = require('fs');
 
 var api = require('./routes/api.js');
 var site = require('./routes/site.js');
-var strings = require('./public/strings/seo.json');
 var env = process.env.NODE_ENV || 'development';
 var config = require('./config/config.json')[env];
 
@@ -28,17 +26,18 @@ var sequelize = require('./models').sequelize;
 var Stats = require('./models').Stats;
 var Prices = require('./models').Prices;
 
-const POLONIEX = 'https://poloniex.com/public?command=returnTicker';
-const BTCE = 'https://btc-e.com/api/3/ticker/btc_usd';
-const BITSTAMP = 'https://www.bitstamp.net/api/v2/ticker/btcusd/';
-const MARKET_CAP = 'https://graphs.coinmarketcap.com/currencies/golem-network-tokens/';
-const APILAYER = 'http://apilayer.net/api/live?access_key=';
-
 app.use('', site);
 app.use('/api/v1', api);
 
+const POLO_ID = "BTC_GNT";
+const MARKET_CAP_ID = "golem-network-tokens";
+
+const MARKET_CAP = 'https://graphs.coinmarketcap.com/currencies/' + MARKET_CAP_ID;
+const POLONIEX = 'https://poloniex.com/public?command=returnTicker';
+const BITSTAMP = 'https://www.bitstamp.net/api/v2/ticker/btcusd/';
+const APILAYER = 'http://apilayer.net/api/live?access_key=';
+
 var updatePrices = function() {
-  console.log('updatePrices: BEGIN');
   getPrices(function(err, result) {
     if (err) {
       console.error(err);
@@ -58,25 +57,19 @@ var updatePrices = function() {
 }
 
 var updateMarketCap2 = function() {
-  console.log("updateMarketCap: BEGIN");
   updateMarketCap();
   saveMarketPrice();
-}
-
-var updateExchangeRate = function() {
-  console.log('updateExchangeRate: BEGIN');
-  updateExchangeRates();
 }
 
 // Original timings
 new CronJob('*/15 * * * * *', updatePrices, null, true, 'Europe/Rome');
 new CronJob('0 */15 * * * *', updateMarketCap2, null, true, 'Europe/Rome');
-// new CronJob('5 */60 * * * *', updateExchangeRate, null, true, 'Europe/Rome');
+// new CronJob('5 */60 * * * *', updateExchangeRates, null, true, 'Europe/Rome');
 
 function getPrices(next) {
   var result = {};
 
-  // Get BTC/DCR from polo
+  // Get BTC/ALT from polo
   request(POLONIEX, function (error, response, body) {
     if (!error && response.statusCode == 200) {
 
@@ -86,7 +79,7 @@ function getPrices(next) {
         return next(e,null);
       }
 
-      data = data['BTC_GNT'];
+      data = data[POLO_ID];
       if (!data) {
         return next(body,null);
       }
@@ -101,16 +94,16 @@ function getPrices(next) {
         if (!error && response.statusCode == 200) {
 
           try {
-            data = JSON.parse(body);
+            var data2 = JSON.parse(body);
           } catch(e) {
             return next(e,null);
           }
 
-          if (!data) {
+          if (!data2) {
             return next(body,null);
         }
 
-          result.usd_price = parseFloat(data.last);
+          result.usd_price = parseFloat(data2.last);
 
           return next(null, result);
         } else {
@@ -131,11 +124,11 @@ function updateMarketCap() {
       try {
         let json = JSON.parse(body);
         json = JSON.stringify({usd_price : json.price_usd, btc_price : json.price_btc});
-        fs.writeFile("./uploads/prices.json", json, function(err) {
+        fs.writeFile("./uploads/market-cap.json", json, function(err) {
             if(err) {
                 return console.error(err);
             }
-            return console.log("updateMarketCap: USD,BTC market price updated.");
+            return console.log("updateMarketCap: Saved market cap data in market-cap.json.");
         });
 
       } catch(e) {
@@ -153,9 +146,9 @@ function saveMarketPrice() {
     }
 
     var data = {
-      dcr_btc : stats.btc_last,
+      alt_btc : stats.btc_last,
       btc_usd : stats.usd_price,
-      dcr_usd : (stats.btc_last * stats.usd_price),
+      alt_usd : (stats.btc_last * stats.usd_price),
       datetime : Math.floor(new Date().getTime() / 1000)
     };
 
@@ -170,38 +163,34 @@ function saveMarketPrice() {
   });
 }
 
-function updateExchangeRates() {
-  request(APILAYER + config.currencylayer_key, function (error, response, body) {
-    if (!error && response.statusCode == 200) {
-      var json = {};
-      try {
-        json = JSON.parse(body);
-        if (!json.quotes) throw new Error('Empty quotes');
-        json = JSON.stringify(json.quotes);
-      } catch(e) {
-        console.error('Bad response from apilayer.net', e);
-        return;
-      }
+// function updateExchangeRates() {
+//   request(APILAYER + config.currencylayer_key, function (error, response, body) {
+//     if (!error && response.statusCode == 200) {
+//       var json = {};
+//       try {
+//         json = JSON.parse(body);
+//         if (!json.quotes) throw new Error('Empty quotes');
+//         json = JSON.stringify(json.quotes);
+//       } catch(e) {
+//         console.error('Bad response from apilayer.net', e);
+//         return;
+//       }
 
-      fs.writeFile("./uploads/rates.json", json, function(err) {
-          if(err) {
-              return console.error(err);
-          }
-          return console.log("Exchange rates updated.");
-      });
+//       fs.writeFile("./uploads/rates.json", json, function(err) {
+//           if(err) {
+//               return console.error(err);
+//           }
+//           return console.log("Exchange rates updated.");
+//       });
 
-    } else {
-      console.log('Bad response from apilayer.net', response);
-    }
-  });
-}
+//     } else {
+//       console.log('Bad response from apilayer.net', response);
+//     }
+//   });
+// }
 
-function now() {
-  return Math.floor(new Date().getTime() / 1000);
-}
-
-app.listen(8080, function () {
-  console.log('Listening on port 8080!');
+app.listen(config.listen_port, function () {
+  console.log('Listening on port ' + config.listen_port);
 });
 
 module.exports = app;

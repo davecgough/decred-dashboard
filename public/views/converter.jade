@@ -8,12 +8,12 @@ html(lang='en')
       .row
         .col-xs-12.col-md-12
           .col-xs-12.col-md-12(style="padding: 100px 0;")
-            h2(style="margin: 25px auto; text-align: center;") Decred Converter
+            h2(style="margin: 25px auto; text-align: center;") Altcoin Converter
             form.form-inline(style="text-align: center;")
               .form-group
                 .form-group.input-group
-                  .input-group-addon DCR
-                  input#decredAmount.form-control(type='text', value="1", style="font-size: 16px;")
+                  .input-group-addon ALT
+                  input#altcoinAmount.form-control(type='text', value="1", style="font-size: 16px;")
                 .form-group
                   div(style="padding: 0 10px;font-size: 32px;line-height: 32px;") = 
                 .form-group
@@ -28,12 +28,12 @@ html(lang='en')
       .row
         .col-xs-12.col-md-12
           div(style="margin: 0 auto; max-width: 600px;")
-            h3(style="text-align: center; color: #737373;") About Decred price converter
-            p(style="text-align: center; font-size: 16px; color: #737373;") This page allows you to see the Decred exchange rate and convert any amount of decred to or from your preferred currency.
-            p(style="text-align: center; font-size: 16px; color: #737373;") See how many decreds you can buy. Enter an amount on the right-hand input field, to see the equivalent amount in Decred on the left.
-            P(style="text-align: center; font-size: 16px; color: #737373;") See the value of your Decred holdings. Enter the number of decreds you have, and watch their value fluctuate over time.
+            h3(style="text-align: center; color: #737373;") About Altcoin price converter
+            p(style="text-align: center; font-size: 16px; color: #737373;") This page allows you to see the Altcoin exchange rate and convert any amount of Altcoin to or from your preferred currency.
+            p(style="text-align: center; font-size: 16px; color: #737373;") See how many Altcoins you can buy. Enter an amount on the right-hand input field, to see the equivalent amount in Altcoin on the left.
+            P(style="text-align: center; font-size: 16px; color: #737373;") See the value of your Altcoin holdings. Enter the number of Altcoins you have, and watch their value fluctuate over time.
             p(style="text-align: center; font-size: 16px; color: #737373;") The exchange rates on this site are for information purposes only. They are not guaranteed to be accurate and are subject to change without notice.
             h3(style="text-align: center; color: #737373;") How it works
-            p(style="text-align: center; font-size: 16px; color: #737373;") We use 2 price conversions to calculate the price in the currency of your choice: We take market price from Poloniex (DCR-BTC) and then calculate its price in USD using Bitcoin-USD exchange rate from BTC-E.com. After this, we convert USD price to the currency of your choice using exchange rates from currencylayer.com
+            p(style="text-align: center; font-size: 16px; color: #737373;") We use 2 price conversions to calculate the price in the currency of your choice: We take market price from Poloniex (ALT-BTC) and then calculate its price in USD using Bitcoin-USD exchange rate from BTC-E.com. After this, we convert USD price to the currency of your choice using exchange rates from currencylayer.com
     footer
       include ./includes/footer.jade

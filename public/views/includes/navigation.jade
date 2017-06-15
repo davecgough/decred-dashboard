@@ -1,18 +1,5 @@
 nav.navbar.navbar-inverse(style= page == 'app' ? 'background: #ffdc4f;' : '')
   .container
     .navbar-header
-      //- button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#navbar', aria-expanded='false', aria-controls='navbar')
-        span.sr-only Toggle navigation
-        span.icon-bar
-        span.icon-bar
-        span.icon-bar
-      a(href="https://dcrstats.com/")
-        img(src="/img/decred-2.png", height="30", alt="decred")
-    //- #navbar.navbar-collapse.collapse
-    //-   ul.nav.navbar-nav.navbar-right
-    //-     li
-    //-       a(href='https://dcrstats.com/')
-    //-         | Dashboard
-    //-     li
-    //-       a(href="https://dcrstats.com/converter")
-    //-         | Converter
+      a(href="#{base_url}")
+        img(src="/img/main-logo.png", height="30")

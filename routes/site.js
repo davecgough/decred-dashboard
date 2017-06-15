@@ -8,7 +8,7 @@ var router = express.Router();
 
 var strings = require('../public/strings/seo.json');
 var env = process.env.NODE_ENV || 'development';
-var currencies = require('../uploads/currencies.json');
+var config = require('../config/config.json')[env];
 
 var Stats = require('../models').Stats;
 
@@ -28,25 +28,26 @@ router.get('/', function (req, res) {
       desc: strings.main_desc,
       stats: stats
     };
-    
+    data.base_url = config.base_url;
     res.render('index', data);
   }).catch(function(err) {
     console.error(err);
   });
 });
 
-router.get('/converter', function(req, res) {
-  fs.readFile('./uploads/currencies.json', 'utf8', function(err, currencies) {
-    if (err) { console.error(err); }
-    let data = {
-      env : env,
-      page: 'converter',
-      title: strings.converter_title,
-      desc: strings.converter_desc
-    };
-    try { data.currencies = JSON.parse(currencies); } catch (e) {}
-    res.render('converter', data);
-  });
-});
+// router.get('/converter', function(req, res) {
+//   fs.readFile('./uploads/currencies.json', 'utf8', function(err, currencies) {
+//     if (err) { console.error(err); }
+//     let data = {
+//       env : env,
+//       page: 'converter',
+//       title: strings.converter_title,
+//       desc: strings.converter_desc
+//     };
+//     try { data.currencies = JSON.parse(currencies); } catch (e) {}
+//      data.base_url = config.base_url;
+//     res.render('converter', data);
+//   });
+// });
 
 module.exports = router;

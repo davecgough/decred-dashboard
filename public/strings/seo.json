@@ -1,14 +1,6 @@
 {
   "main_title" : "Dcrstats: Decred Stats, Decred PoS mining, Charts",
   "main_desc"  : "Decred is an open, progressive, and self-funding cryptocurrency with a system of community-based governance integrated into its blockchain. Decred PoS pools, charts, network statistic.",
-  "pow_title" : "Decred Network Hashrate Distribution, Proof of Work Charts - Dcrstats",
-  "pow_desc" : "Decred Proof of Work Charts, Network Hashrate Distribution, Mining Pools statistic and mining difficulty.",
-  "map_title" : "Decred Network Map | Dcrstats",
-  "map_desc" : "Detailed Map of the Decred network at World Map. Nodes list and decred software versions.",
-  "subsidy_title" : "Decred Subsidy Forecast | Dcrstats",
-  "subsidy_desc" : "Here you can see forecast of Decred block reward: PoW-miner reward, PoS vote reward and estimated subsidy forward up to 23 years.",
-  "app_title" : "Decred Mobile App, Stakepool Mining | Dcrstats",
-  "app_desc" : "Install Dcrstats mobile application and get easy access to Decred Network Statistic, PoS ticket prices and increase your stakepool mining profit.",
   "converter_title" : "Decred Price, Decred Exchange Rate, Decred Converter | Dcrstats",
   "converter_desc" : "See the live Decred price. Convert amounts to or from USD and other currencies with this simple Decred calculator."
 }

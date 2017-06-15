@@ -8,7 +8,7 @@ module.exports = {
         primaryKey: true,
         autoIncrement: true
       },
-      dcr_btc: {
+      alt_btc: {
         type: Sequelize.DOUBLE,
         allowNull: true
       },
@@ -16,7 +16,7 @@ module.exports = {
         type: Sequelize.DOUBLE,
         allowNull: true
       },
-      dcr_usd: {
+      alt_usd: {
         type: Sequelize.DOUBLE,
         allowNull: true
       },

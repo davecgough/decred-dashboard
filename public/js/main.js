@@ -30,7 +30,7 @@ $(function() {
           $('span.btc-low').text(btc_low + ' BTC');
 
           var btc_high = (response.btc_high).toString().substr(0,8);
-          var usd_high = (response.btc_high* response.usd_price).toString().substr(0,4);
+          var usd_high = (response.btc_high * response.usd_price).toString().substr(0,4);
           $('span.stats-dayhigh').text('$' + usd_high);
           $('span.btc-high').text(btc_high + ' BTC');
 
@@ -52,22 +52,7 @@ $(function() {
 
 $(function () {
 
-    $('.glyphicon-question-sign').tooltip();
-    $('span.fa-trophy').tooltip();
     var nonce = (new Date()).getTime();
-
-    $('.pos-group .btn-chart').on('click', function(e) {
-      e.preventDefault();
-      var $this = $(this);
-      var time = $this.data('period');
-      var chart = $this.data('chart');
-
-      var nonce = (new Date()).getTime();
-
-      $this.parent().find('button').each(function(item) { $(this).removeClass('active'); });
-      $this.addClass('active');
-      
-    });
 
     $('.price-group .btn-chart').on('click', function(e) {
       e.preventDefault();
@@ -78,7 +63,7 @@ $(function () {
 
       /* Change chart title only if we change currency */
       if (ticker) {
-        $('.price-chart-title').text('Decred Price, ' + ticker.toUpperCase());
+        $('.price-chart-title').text('GNT Price, ' + ticker.toUpperCase());
       } else {
         ticker = $('.price-group .price-ticker.active').data('ticker');
       }
@@ -125,37 +110,4 @@ function updatePricesChart(ticker, time) {
       }
     });
   }
-}
-
-function getEstimatedBlockReward(cycles, reward) {
-  if (cycles) {
-    reward = reward * 100/101;
-    return getEstimatedBlockReward(cycles - 1, reward);
-  } else {
-    return reward;
-  }
-}
-
-function numberFormat(number) {
-    return number.toString().replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ');
-}
-
-function secondsToTime(secs) {
-  var hours = Math.floor(secs / (60 * 60));
-
-  var divisor_for_minutes = secs % (60 * 60);
-  var minutes = Math.floor(divisor_for_minutes / 60);
-  if (minutes < 10) {
-    minutes = "0" + minutes.toString();
-  }
-
-  var days = 0;
-
-  if (hours >= 24) {
-    days = parseInt(hours / 24, 10);
-    hours = hours - days * 24;
-    minutes = 0;
-  }
-
-  return {"days" : days, "hours": hours, "minutes": minutes};
 }

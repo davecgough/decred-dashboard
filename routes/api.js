@@ -7,19 +7,9 @@ var express = require('express');
 var router = express.Router();
 
 var sequelize = require('../models').sequelize;
-var Blocks = require('../models').Blocks;
 var Stats = require('../models').Stats;
 var Prices = require('../models').Prices;
 
-const SUPPLY = 21000000;
-const FIRST_BLOCK_TIME = 1454954535;
-const SUBSIDY = 31.19582664;
-const PREMINE = 1680000;
-/* (4095 - 1) blocks * 21.83707864 DCR ~ 89401 */
-const MINED_DCR_BEFORE_POS = 89401;
-const DCR_TOTAL = PREMINE + MINED_DCR_BEFORE_POS;
-
-const colors = ['#3c4ba6','#8c93c0','#ddc38c','#c6a55e','#b8ada3'];
 
 router.get('/prices', function (req, res) {
   var ticker = req.query.ticker;
@@ -33,7 +23,7 @@ router.get('/prices', function (req, res) {
     res.status(500).json({error : true});
     return;
   }
-  fs.readFile('./uploads/prices.json', 'utf8', function (err, data) {
+  fs.readFile('./uploads/market-cap.json', 'utf8', function (err, data) {
     if (err) {
       console.log(err);
       res.status(500).json({error : true}); return;
@@ -73,35 +63,12 @@ router.get('/day_price', function(req, res) {
     let result = [];
 
     for (let row of rows) {
-      result.push([row.datetime * 1000, row['dcr_' + ticker]]);
+      result.push([row.datetime * 1000, row[ticker]]);
     }
     result.reverse();
     res.status(200).json(result);
   }).catch(function(err) {
     console.error(err);
-    res.status(500).json({error : true});
-  });
-});
-
-router.get('/estimated_ticket_price', function (req, res) {
-  res.status(404).json({error : true, message: "Feature disabled"});
-  return;
-
-  console.log('Estimated ticket price start: ', (new Date()).getTime());
-  let query = {
-    attributes: ['datetime', 'estimated_ticket_price'],
-    order: 'height DESC',
-    limit: 720
-  };
-  Blocks.findAll(query).then(function(blocks) {
-    var result = [];
-    for (let row of blocks) {
-      result.push([row.datetime * 1000,row.estimated_ticket_price]);
-    }
-    console.log('Estimated ticket price end: ', (new Date()).getTime());
-    res.status(200).json(result);
-  }).catch(function(err) {
-    console.log(err);
     res.status(500).json({error : true});
   });
 });
@@ -123,12 +90,8 @@ router.get('/get_stats', function (req, res) {
   });
 });
 
-var USD = 0;
-var RATES = {};
-
-// JHTODO this needs to go back in
-// Actually it seems like it probably wont
-//
+// var USD = 0;
+// var RATES = {};
 //
 // function updatePriceCache() {
 //   fs.readFile('./uploads/rates.json', 'utf8', function (err, data) {
@@ -154,46 +117,25 @@ var RATES = {};
 //     }).catch(function(err) { console.log(err); });
 //   });
 // }
-
+//
 // var updateCacheInterval = setInterval(updatePriceCache, 60000);
 // updatePriceCache();
-
-function getEstimatedBlockReward(cycles, reward) {
-  if (cycles) {
-    reward = reward * 100/101;
-    return getEstimatedBlockReward(cycles - 1, reward);
-  } else {
-    return reward;
-  }
-}
 
 router.get('/convert', function(req, res) {
 
   if (!req.query) {
     res.status(500).json({error : true}); return;
   }
-  var dcr = 0;
+  var alt = 0;
   var pair = 0;
-  if (req.query.from == 'dcr') {
-    dcr = parseFloat(req.query.dcr);
-    pair = (dcr * USD * parseFloat(RATES[req.query.to])).toFixed(2);
+  if (req.query.from == 'alt') {
+    alt = parseFloat(req.query.alt);
+    pair = (alt * USD * parseFloat(RATES[req.query.to])).toFixed(2);
   } else {
     pair = req.query.pair;
-    dcr = (req.query.pair / parseFloat(RATES[req.query.to]) / USD).toFixed(2);
+    alt = (req.query.pair / parseFloat(RATES[req.query.to]) / USD).toFixed(2);
   }
-  res.json({dcr : dcr, result : pair});
-});
-
-router.get('/app_notifications', function(req, res) {
-  let json = {
-    'start_date' : '1470062077',
-    'end_date' : '1470252001',
-    'image' : 'https://decred.dcrstats.com/img/be-the-lion.png',
-    'url' : 'https://stakepool.dcrstats.com/',
-    'text' : ''
-  };
-
-  res.status(200).json(json);
+  res.json({alt : alt, result : pair});
 });
 
 module.exports = router;

@@ -84,33 +84,7 @@ nav.navbar span.badge {
   color: #3c4ba6;
 }
 
-h1.decred-title {
-  color: #3c4ba6;
-  font-size: 72px;
-  text-align: center;
-  text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-  margin-bottom: 0px;
-  font-family: "Proxima Nova Bold", Helvetica, Arial, sans-serif !important;
-}
-
-h2.decred-subtitle {
-  color: #3f3f3f;
-  font-size: 30px;
-  text-align: center;
-  /*text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);*/
-  margin-top: 0px;
-  margin-bottom: 20px;
-}
-
-img.join-pool:hover {
-  cursor: pointer;
-}
-
 .main-color {
-  color: #3f3f3f;
-}
-
-.pos-color {
   color: #3f3f3f;
 }
 
@@ -544,20 +518,6 @@ table#pools-table {
   background: rgba(255,255,255,0);
 }
 
-div.stakepools-row h2.pos-color {
-  margin-top: 45px;
-}
-
-div.stakepools-row .pos-chart-wrapper {
-  margin-top: 0;
-}
-
-span.fa.fa-trophy {
-  color: #ffcc00;
-  font-size: 18px;
-  padding-left: 5px;
-}
-
 p.notice {
   text-align: center;
   color: #8a8a8a;
@@ -906,9 +866,6 @@ body.not-found-page {
 /* MOBILE STYLES */
 
 @media (max-width: 768px) {
-  h1.decred-title {
-    display: none;
-  }
   nav.navbar .navbar-header {
     margin-left: 5px;
   }
@@ -1037,17 +994,6 @@ body.not-found-page {
   .small-text {
     font-size: 12px;
   }
-  .pow .pos-chart-wrapper .chart-title {
-    width: 100%;
-    font-size: 16px;
-    text-align: left;
-  }
-  .pow .pos-chart-wrapper .btn-toolbar {
-      float: none;
-  }
-  .pow .pow-group {
-    margin: 10px auto 20px auto;
-  }
   footer {
     padding: 10px 20px;
   }
@@ -1056,8 +1002,5 @@ body.not-found-page {
   }
   .footer-wrapper p {
     margin-right: 0;
-  }
-  .dcr-addr {
-    font-size: 12px;
   }
 }

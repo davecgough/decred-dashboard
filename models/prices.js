@@ -7,7 +7,7 @@ module.exports = function(sequelize, DataTypes) {
       primaryKey: true,
       autoIncrement: true
     },
-    dcr_btc: {
+    alt_btc: {
       type: DataTypes.DOUBLE,
       allowNull: true
     },
@@ -15,7 +15,7 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.DOUBLE,
       allowNull: true
     },
-    dcr_usd: {
+    alt_usd: {
       type: DataTypes.DOUBLE,
       allowNull: true
     },

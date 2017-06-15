@@ -1,22 +1,22 @@
 {
   "development": {
-    "username": "decred",
+    "username": "alt-stats",
     "password": "",
-    "database": "database_development",
-    "host": "127.0.0.1",
+    "database": "stats-db",
     "dialect": "postgres",
     "logging": false,
     "base_url": "http://localhost:8080",
+    "listen_port": 8080,
     "currencylayer_key" : "Get it here: https://currencylayer.com"
   },
   "production": {
-    "username": "decred",
+    "username": "alt-stats",
     "password": "",
-    "database": "database_production",
-    "host": "127.0.0.1",
+    "database": "stats-db",
     "dialect": "postgres",
     "logging": false,
-    "base_url": "https://dcrstats.com",
+    "base_url": "https://website.com",
+    "listen_port": 80,
     "currencylayer_key" : "Get it here: https://currencylayer.com"
   }
 }

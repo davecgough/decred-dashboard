@@ -1,12 +1,12 @@
 $(function() {
 
-var decredAmount = $('#decredAmount');
+var altcoinAmount = $('#altcoinAmount');
 var result = $('#result');
 var convertTo = $('#convertTo');
 
 function convert(from) {
   var data = {
-    dcr : decredAmount.val(),
+    alt : altcoinAmount.val(),
     pair: result.val(),
     from: from,
     to: convertTo.val()
@@ -16,7 +16,7 @@ function convert(from) {
     type: 'GET',
     data: data,
     success: function(response) {
-      decredAmount.val(response.dcr);
+      altcoinAmount.val(response.alt);
       result.val(response.result);
     }
   });
@@ -26,14 +26,14 @@ result.on('keyup', function() {
   convert('pair');
 });
 
-decredAmount.on('keyup', function() {
-  convert('dcr');
+altcoinAmount.on('keyup', function() {
+  convert('alt');
 });
 
 convertTo.on('change', function() {
-  convert('dcr');
+  convert('alt');
 });
 
-convert('dcr');
+convert('alt');
 
 });

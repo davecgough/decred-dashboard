@@ -6,7 +6,7 @@ sudo su - postgres -c "dropdb stats-db"
 
 set -e
 
-sudo su - postgres -c "createdb stats-db -O decred"
+sudo su - postgres -c "createdb stats-db -O alt-stats"
 sequelize db:migrate
 pm2 start package.json
 pm2 logs 0
