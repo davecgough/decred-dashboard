@@ -21,3 +21,4 @@ To do:
 	- seo.json
 	- 404
 	- nginx
+	- favicon
