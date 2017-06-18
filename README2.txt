@@ -14,7 +14,7 @@ API:
 		- Also uses currencies.json
 
 CronJobs:
-	updatePrices
+	updateStats
 		- Get data from polo/bitstamp and saves in Stats table
 	updateMarketCap
 		- Writes market-cap.json and generates Price table data from Stats table

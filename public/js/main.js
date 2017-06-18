@@ -1,3 +1,5 @@
+var profile = "DCR";
+
 $(function() {
 
   updateStats(true);
@@ -7,7 +9,7 @@ $(function() {
 
     var nonce = (new Date()).getTime();
     $.ajax({
-      url : '/api/v1/get_stats?'+nonce,
+      url : '/api/v1/get_stats?c='+profile+'&'+nonce,
       type: 'GET',
       success: function(response) {
 
@@ -89,7 +91,7 @@ function updatePricesChart(ticker, time) {
   if (time < 1) { time = 1; }
   if (time > 7) {
     $.ajax({
-      url: '/api/v1/prices',
+      url: '/api/v1/prices?c='+profile,
       type: 'GET',
       data: {ticker : ticker, time : time},
       dataType: "json",
@@ -101,7 +103,7 @@ function updatePricesChart(ticker, time) {
     });
   } else {
     $.ajax({
-      url: '/api/v1/day_price',
+      url: '/api/v1/day_price?c='+profile,
       type: 'GET',
       data: {ticker : ticker, time : time},
       dataType: "json",

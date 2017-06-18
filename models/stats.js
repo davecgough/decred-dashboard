@@ -2,10 +2,10 @@
 
 module.exports = function(sequelize, DataTypes) {
   var Stats = sequelize.define('Stats', {
-    id: {
-      type: DataTypes.INTEGER,
+    ticker: {
+      type: DataTypes.STRING(4),
       primaryKey: true,
-      autoIncrement: true
+      allowNull: false
     },
     btc_high: {
       type: DataTypes.DOUBLE,

@@ -3,10 +3,10 @@
 module.exports = {
   up: function (queryInterface, Sequelize) {
     return queryInterface.createTable('stats', {
-      id: {
-        type: Sequelize.INTEGER,
+      ticker: {
+        type: Sequelize.STRING(4),
         primaryKey: true,
-        autoIncrement: true
+        allowNull: false
       },
       btc_high: {
         type: Sequelize.DOUBLE,

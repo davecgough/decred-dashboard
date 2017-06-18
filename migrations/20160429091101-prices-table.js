@@ -8,6 +8,10 @@ module.exports = {
         primaryKey: true,
         autoIncrement: true
       },
+      ticker: {
+        type: Sequelize.STRING(4),
+        allowNull: false
+      },
       alt_btc: {
         type: Sequelize.DOUBLE,
         allowNull: true

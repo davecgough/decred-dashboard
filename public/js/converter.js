@@ -12,7 +12,7 @@ $(function() {
       to: convertTo.val()
     };
     $.ajax({
-      url : '/api/v1/convert',
+      url : '/api/v1/convert?c='+profile,
       type: 'GET',
       data: data,
       success: function(response) {

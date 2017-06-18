@@ -2,10 +2,8 @@
 	"alt_ticker": "GNT",
 	"polo_id": "BTC_GNT",
 	"market_cap_id": "golem-network-tokens",
-	"logo": "gnt-logo.png",
-	"favicon": "gnt-favicon.png",
 	"og_title": "GNT Price Dashboard",
-	"converter_name": "Golem",
+"converter_name": "Golem",
 	"main_title": "Gntstats: Golem Price Dashboard",
 	"main_desc": "Golem is a global, open sourced, decentralized supercomputer that anyone can access. Golem price charts and currency converter."
 }

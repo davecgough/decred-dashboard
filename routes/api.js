@@ -11,10 +11,22 @@ var sequelize = require('../models').sequelize;
 var Stats = require('../models').Stats;
 var Prices = require('../models').Prices;
 
+var dcr_profile = require("../public/strings/dcr-profile.json");
+var gnt_profile = require("../public/strings/gnt-profile.json");
+var profiles = [ dcr_profile, gnt_profile];
+
+function get_profile(req) {
+  if (req.query.c) {
+    return req.query.c;
+  } else {
+    return "GNT";
+  }
+};
 
 router.get('/prices', function (req, res) {
   var ticker = req.query.ticker;
   var time = req.query.time;
+
   if (!time || time < 7 || time > 365) {
     time = 10950; // 30 years
   }
@@ -27,9 +39,9 @@ router.get('/prices', function (req, res) {
 
   var resp;
   if (ticker === 'usd') {
-    resp = MARKET_CAP.usd_price;
+    resp = MARKET_CAP[get_profile(req)].usd_price;
   } else {
-    resp = MARKET_CAP.btc_price;
+    resp = MARKET_CAP[get_profile(req)].btc_price;
   }
 
   resp = resp.filter(function(item) {
@@ -51,7 +63,7 @@ router.get('/day_price', function(req, res) {
     time = 1;
   }
 
-  Prices.findAll({order : 'datetime DESC', limit : (96 * time)}).then(function(rows) {
+  Prices.findAll({ where: { ticker: get_profile(req) }, order : 'datetime DESC', limit : (96 * time)}).then(function(rows) {
     let result = [];
 
     for (let row of rows) {
@@ -66,7 +78,7 @@ router.get('/day_price', function(req, res) {
 });
 
 router.get('/get_stats', function (req, res) {
-  Stats.findOne({where : {id : 1}}).then(function(stats) {
+  Stats.findOne({where : {ticker: get_profile(req)}}).then(function(stats) {
 
     if (!stats) {
       res.status(500).json({error : true});
@@ -94,7 +106,7 @@ router.get('/convert', function(req, res) {
     pair = (alt * USD * parseFloat(RATES[req.query.to])).toFixed(2);
   } else {
     pair = req.query.pair;
-    alt = (req.query.pair / parseFloat(RATES[req.query.to]) / USD).toFixed(2);
+    alt = (req.query.pair / parseFloat(RATES[req.query.to]) / USD[get_profile(req)]).toFixed(2);
   }
   res.json({alt : alt, result : pair});
 });
@@ -102,26 +114,28 @@ router.get('/convert', function(req, res) {
 // market-cap.json cache
 var MARKET_CAP = {};
 function updateMarketCapCache() {
-  fs.readFile('./uploads/market-cap.json', 'utf8', function (err, data) {
-    if (err) {
-      console.error(err);
-      return;
-    }
+  for (var i = 0; i < profiles.length; i++) {
+    fs.readFile('./uploads/' + profiles[i].alt_ticker + '-market-cap.json', 'utf8', function (err, data) {
+      if (err) {
+        console.error(err);
+        return;
+      }
 
-    var result = {};
-    try {
-      result = JSON.parse(data);
-    } catch(e) {
-      console.error(e);
-      return;
-    }
-    
-    MARKET_CAP = result;
-  });
+      var result = {};
+      try {
+        result = JSON.parse(data);
+      } catch(e) {
+        console.error(e);
+        return;
+      }
+      
+      MARKET_CAP[this.profile.alt_ticker] = result;
+    }.bind({profile: profiles[i]}));
+  }
 }
 
 // rates.json cache
-var USD = 0;
+var USD = {};
 var RATES = {};
 function updateForexCache() {
   fs.readFile('./uploads/rates.json', 'utf8', function (err, data) {
@@ -140,11 +154,13 @@ function updateForexCache() {
     RATES = result.rates;
   });
 
-  Stats.findOne({where : {id : 1}}).then(function(stats) {
-    USD = parseFloat(stats.usd_price) * parseFloat(stats.btc_last);
+  Stats.findAll().then(function(stats) {
+    for (stat in stats){
+      USD[stat.ticker] = parseFloat(stat.usd_price) * parseFloat(stat.btc_last);
+    }
   })
   .catch(function(err) {
-    console.error(err); 
+    console.error("Failed to create forex cache"); 
   });
     
 }

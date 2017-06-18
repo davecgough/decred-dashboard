@@ -7,6 +7,10 @@ module.exports = function(sequelize, DataTypes) {
       primaryKey: true,
       autoIncrement: true
     },
+    ticker: {
+      type: DataTypes.STRING(4),
+      allowNull: false
+    },
     alt_btc: {
       type: DataTypes.DOUBLE,
       allowNull: true

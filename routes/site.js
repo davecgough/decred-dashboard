@@ -8,12 +8,20 @@ var router = express.Router();
 
 var env = process.env.NODE_ENV || 'development';
 var config = require('../config/config.json')[env];
-var strings = require("../public/strings/" + config.alt_profile);
+var strings = require("../public/strings/gnt-profile.json");
 
 var Stats = require('../models').Stats;
 
+function get_profile(req) {
+  if (req.query.c) {
+    return req.query.c;
+  } else {
+    return "GNT";
+  }
+}
+
 router.get('/', function (req, res) {
-  Stats.findOne({where : {id : 1}}).then(function(stats) {
+  Stats.findOne({where : {ticker: get_profile(req)}}).then(function(stats) {
     if (stats == null) {
       console.error("Browser called but the stats table is empty");
       return;
@@ -31,8 +39,12 @@ router.get('/', function (req, res) {
         og_title: strings.og_title,
         base_url: config.base_url,
         alt_ticker: strings.alt_ticker,
-        logo: strings.logo,
-        favicon: strings.favicon,
+        
+
+        logo: "logo.png",
+        favicon: "favicon.png",
+
+
         converter_name: strings.converter_name,
         stats: stats,
       };
