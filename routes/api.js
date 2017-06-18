@@ -63,7 +63,7 @@ router.get('/day_price', function(req, res) {
     let result = [];
 
     for (let row of rows) {
-      result.push([row.datetime * 1000, row[ticker]]);
+      result.push([row.datetime * 1000, row["alt_" + ticker]]);
     }
     result.reverse();
     res.status(200).json(result);
