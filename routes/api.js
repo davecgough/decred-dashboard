@@ -3,6 +3,7 @@
 var fs = require('fs');
 var path = require('path');
 var moment = require('moment');
+var CronJob = require('cron').CronJob;
 var express = require('express');
 var router = express.Router();
 
@@ -23,28 +24,19 @@ router.get('/prices', function (req, res) {
     res.status(500).json({error : true});
     return;
   }
-  fs.readFile('./uploads/market-cap.json', 'utf8', function (err, data) {
-    if (err) {
-      console.log(err);
-      res.status(500).json({error : true}); return;
-    }
-    try {
-      var result = JSON.parse(data);
-    } catch(e) {
-      console.log(e);
-      res.status(500).json({error : true});
-      return;
-    }
-    if (ticker === 'usd') {
-      result = result.usd_price;
-    } else {
-      result = result.btc_price;
-    }
-    result = result.filter(function(item) {
-      return (item[0] > min_time) ? true : false;
-    });
-    res.status(200).json(result);
+
+  var resp;
+  if (ticker === 'usd') {
+    resp = MARKET_CAP.usd_price;
+  } else {
+    resp = MARKET_CAP.btc_price;
+  }
+
+  resp = resp.filter(function(item) {
+    return (item[0] > min_time) ? true : false;
   });
+  res.status(200).json(resp);
+
 });
 
 router.get('/day_price', function(req, res) {
@@ -107,16 +99,12 @@ router.get('/convert', function(req, res) {
   res.json({alt : alt, result : pair});
 });
 
-
-// forex rate cache
-var USD = 0;
-var RATES = {};
-
-function updateForexCache() {
-  fs.readFile('./uploads/rates.json', 'utf8', function (err, data) {
+// market-cap.json cache
+var MARKET_CAP = {};
+function updateMarketCapCache() {
+  fs.readFile('./uploads/market-cap.json', 'utf8', function (err, data) {
     if (err) {
       console.error(err);
-      res.status(500).json({error : true});
       return;
     }
 
@@ -125,11 +113,31 @@ function updateForexCache() {
       result = JSON.parse(data);
     } catch(e) {
       console.error(e);
-      res.status(500).json({error : true});
+      return;
+    }
+    
+    MARKET_CAP = result;
+  });
+}
+
+// rates.json cache
+var USD = 0;
+var RATES = {};
+function updateForexCache() {
+  fs.readFile('./uploads/rates.json', 'utf8', function (err, data) {
+    if (err) {
+      console.error(err);
+      return;
+    }
+
+    var result = {};
+    try {
+      result = JSON.parse(data);
+    } catch(e) {
+      console.error(e);
       return;
     }
     RATES = result.rates;
-    
   });
 
   Stats.findOne({where : {id : 1}}).then(function(stats) {
@@ -141,8 +149,9 @@ function updateForexCache() {
     
 }
 
-var updateCacheInterval = setInterval(updateForexCache, 60000);
+new CronJob('10 * * * * *', updateMarketCapCache, null, true, 'Europe/Rome');
+new CronJob('10 * * * * *', updateForexCache, null, true, 'Europe/Rome');
 updateForexCache();
-
+updateMarketCapCache();
 
 module.exports = router;
