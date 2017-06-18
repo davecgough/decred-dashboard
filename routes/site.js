@@ -8,7 +8,13 @@ var router = express.Router();
 
 var env = process.env.NODE_ENV || 'development';
 var config = require('../config/config.json')[env];
-var strings = require("../public/strings/gnt-profile.json");
+
+var profiles = {};
+for (var i=0; i< config.load_profiles.length; i++) {
+  var x = config.load_profiles[i];  
+  var p = require("../public/strings/" + x);
+  profiles[p.alt_ticker] = p;
+}
 
 var Stats = require('../models').Stats;
 
@@ -34,18 +40,18 @@ router.get('/', function (req, res) {
       let data = {
         env : env,
         page: 'index',
-        title: strings.main_title,
-        desc: strings.main_desc,
-        og_title: strings.og_title,
+        title: profiles[get_profile(req)].main_title,
+        desc: profiles[get_profile(req)].main_desc,
+        og_title: profiles[get_profile(req)].og_title,
         base_url: config.base_url,
-        alt_ticker: strings.alt_ticker,
+        alt_ticker: profiles[get_profile(req)].alt_ticker,
         
 
         logo: "logo.png",
         favicon: "favicon.png",
 
 
-        converter_name: strings.converter_name,
+        converter_name: profiles[get_profile(req)].converter_name,
         stats: stats,
       };
 
@@ -65,8 +71,8 @@ router.get('*', function(req, res){
     env : env,
     page: '404',
     title: "404 - Page not found",
-    desc: strings.main_desc,
-    og_title: strings.og_title,
+    desc: profiles[get_profile(req)].main_desc,
+    og_title: profiles[get_profile(req)].og_title,
     base_url: config.base_url,
   };
   res.status(404).render("404.jade", data);

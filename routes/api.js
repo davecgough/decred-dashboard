@@ -11,9 +11,15 @@ var sequelize = require('../models').sequelize;
 var Stats = require('../models').Stats;
 var Prices = require('../models').Prices;
 
-var dcr_profile = require("../public/strings/dcr-profile.json");
-var gnt_profile = require("../public/strings/gnt-profile.json");
-var profiles = [ dcr_profile, gnt_profile];
+var env = process.env.NODE_ENV || 'development';
+var config = require('../config/config.json')[env];
+
+var profiles = {};
+for (var i=0; i< config.load_profiles.length; i++) {
+  var x = config.load_profiles[i];  
+  var p = require("../public/strings/" + x);
+  profiles[p.alt_ticker] = p;
+}
 
 function get_profile(req) {
   if (req.query.c) {
@@ -114,8 +120,8 @@ router.get('/convert', function(req, res) {
 // market-cap.json cache
 var MARKET_CAP = {};
 function updateMarketCapCache() {
-  for (var i = 0; i < profiles.length; i++) {
-    fs.readFile('./uploads/' + profiles[i].alt_ticker + '-market-cap.json', 'utf8', function (err, data) {
+  for (var key in profiles) {
+    fs.readFile('./uploads/' + profiles[key].alt_ticker + '-market-cap.json', 'utf8', function (err, data) {
       if (err) {
         console.error(err);
         return;
@@ -130,7 +136,7 @@ function updateMarketCapCache() {
       }
       
       MARKET_CAP[this.profile.alt_ticker] = result;
-    }.bind({profile: profiles[i]}));
+    }.bind({profile: profiles[key]}));
   }
 }
 

@@ -11,11 +11,12 @@ var site = require('./routes/site.js');
 var env = process.env.NODE_ENV || 'development';
 var config = require('./config/config.json')[env];
 
-var dcr_profile = require("./public/strings/dcr-profile.json");
-var gnt_profile = require("./public/strings/gnt-profile.json");
-var profiles = [ dcr_profile, gnt_profile]
-
-var strings = profiles[0];
+var profiles = {};
+for (var i=0; i< config.load_profiles.length; i++) {
+  var x = config.load_profiles[i];  
+  var p = require("./public/strings/" + x);
+  profiles[p.alt_ticker] = p;
+}
 
 var app = express();
 app.set('views', './public/views');
@@ -23,12 +24,6 @@ app.set('view engine', 'jade');
 app.locals.moment = moment;
 
 console.log('Starting app in ' + env + ' environment.');
-var p = "";
-for (var i = 0; i < profiles.length; i++) {
-  p += profiles[i].alt_ticker + " ";
-
-}
-console.log("Profiles: " + p)
 // in production we are using Nginx to deliver static files
 if (env == 'development') {
   app.use(express.static('public'));
@@ -83,15 +78,15 @@ var updateStats = function() {
       
       var newRows = [];
 
-      for (var i = 0; i < profiles.length; i++) {
-        var data = resp[profiles[i].polo_id];
+      for (var key in profiles) {
+        var data = resp[profiles[key].polo_id];
         if (!data) {
-          console.error("No data for profile: " + profiles[i].alt_ticker)
+          console.error("No data for profile: " + profiles[key].alt_ticker)
           continue;
         }
 
         var result = {};
-        result.ticker = profiles[i].alt_ticker;
+        result.ticker = profiles[key].alt_ticker;
         result.usd_price = usdbtc_price;
         
         result.btc_high = data['high24hr'];
@@ -145,8 +140,8 @@ function getPrices(next) {
 }
 
 function getMarketCap() {
-  for (var i = 0; i < profiles.length; i++) {
-    request(MARKET_CAP + profiles[i].market_cap_id, function (error, response, body) {
+  for (var key in profiles) {
+    request(MARKET_CAP + profiles[key].market_cap_id, function (error, response, body) {
       if (!error && response.statusCode == 200) {
         try {
           var file_name = this.profile.alt_ticker+"-market-cap.json";
@@ -163,7 +158,7 @@ function getMarketCap() {
           console.error('updateMarketCap: ', e); return;
         }
       }
-    }.bind({profile: profiles[i]}));
+    }.bind({profile: profiles[key]}));
   }
 }
 

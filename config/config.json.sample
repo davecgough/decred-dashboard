@@ -6,7 +6,12 @@
     "dialect": "postgres",
     "logging": false,
     "base_url": "http://localhost:8080",
-    "listen_port": 8080
+    "listen_port": 8080,
+    "load_profiles": [
+      "dcr-profile.json",
+      "gnt-profile.json",
+      "eth-profile.json"
+    ]
   },
   "production": {
     "username": "alt-stats",
@@ -15,6 +20,11 @@
     "dialect": "postgres",
     "logging": false,
     "base_url": "https://website.com",
-    "listen_port": 80
+    "listen_port": 80,
+    "load_profiles": [
+      "dcr-profile.json",
+      "gnt-profile.json",
+      "eth-profile.json"
+    ]
   }
 }
