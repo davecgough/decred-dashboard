@@ -33,6 +33,7 @@ CronJobs:
 
 To do:
 	- README.md
+	- footer?
 	- add bitcoin and usd to converter currencies
 	- usd values truncated incorrectly for eth ($234.)
 	- Production: 

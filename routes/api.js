@@ -23,17 +23,18 @@ for (var i=0; i< p.length; i++) {
 function get_profile(req) {
   if (req.query.c) {
     if (profiles[req.query.c] == undefined) {
-      return config.default_profile;
+      return profiles[config.default_profile];
     } else {
-      return req.query.c;
+      return profiles[req.query.c];
     }
   } else {
-    return config.default_profile;
+    return profiles[config.default_profile];
   }
 }
 
 router.get("/prices", function (req, res) {
-  if (MARKET_CAP[get_profile(req)] == undefined) {
+  var profile.alt_ticker = get_profile(req);
+  if (MARKET_CAP[profile.alt_ticker] == undefined) {
     console.error("API(prices):", "MARKET_CAP cache not initialised yet")
     res.status(500).json({error : true});
     return;
@@ -54,9 +55,9 @@ router.get("/prices", function (req, res) {
 
   var resp;
   if (ticker === "usd") {
-    resp = MARKET_CAP[get_profile(req)].usd_price;
+    resp = MARKET_CAP[profile.alt_ticker].usd_price;
   } else {
-    resp = MARKET_CAP[get_profile(req)].btc_price;
+    resp = MARKET_CAP[profile.alt_ticker].btc_price;
   }
 
   resp = resp.filter(function(item) {
@@ -77,8 +78,10 @@ router.get("/day_price", function(req, res) {
   if (!time || time < 1 || time > 7) {
     time = 1;
   }
+  
+  var profile = get_profile(req);
 
-  Prices.findAll({ where: { ticker: get_profile(req) }, order :"datetime DESC", limit : (96 * time)}).then(function(rows) {
+  Prices.findAll({ where: { ticker: profile.alt_ticker }, order :"datetime DESC", limit : (96 * time)}).then(function(rows) {
     let result = [];
 
     for (let row of rows) {
@@ -93,7 +96,7 @@ router.get("/day_price", function(req, res) {
 });
 
 router.get("/get_stats", function (req, res) {
-  Stats.findOne({where : {ticker: get_profile(req)}}).then(function(stats) {
+  Stats.findOne({where : {ticker: profile.alt_ticker}}).then(function(stats) {
 
     if (!stats) {
       res.status(500).json({error : true});
@@ -116,12 +119,13 @@ router.get("/convert", function(req, res) {
   }
   var alt = 0;
   var pair = 0;
+  var profile = get_profile(req);
   if (req.query.from == "alt") {
     alt = parseFloat(req.query.alt);
-    pair = (alt * USD[get_profile(req)] * parseFloat(RATES[req.query.to])).toFixed(2);
+    pair = (alt * USD[profile.alt_ticker] * parseFloat(RATES[req.query.to])).toFixed(2);
   } else {
     pair = req.query.pair;
-    alt = (req.query.pair / parseFloat(RATES[req.query.to]) / USD[get_profile(req)]).toFixed(2);
+    alt = (req.query.pair / parseFloat(RATES[req.query.to]) / USD[profile.alt_ticker]).toFixed(2);
   }
   res.json({alt : alt, result : pair});
 });

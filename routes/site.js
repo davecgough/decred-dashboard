@@ -21,17 +21,18 @@ var Stats = require("../models").Stats;
 function get_profile(req) {
   if (req.query.c) {
     if (profiles[req.query.c] == undefined) {
-      return config.default_profile;
+      return profiles[config.default_profile];
     } else {
-      return req.query.c;
+      return profiles[req.query.c];
     }
   } else {
-    return config.default_profile;
+    return profiles[config.default_profile];
   }
 }
 
 router.get("/", function (req, res) {
-  Stats.findOne({where : {ticker: get_profile(req)}}).then(function(stats) {
+  var profile = get_profile(req);
+  Stats.findOne({where : {ticker: profile.alt_ticker}}).then(function(stats) {
     if (stats == null) {
       console.error("Site(/):", "Browser called but the stats table is empty");
       return;
@@ -50,9 +51,9 @@ router.get("/", function (req, res) {
         
         tickers: Object.keys(profiles),
 
-        current_profile: profiles[get_profile(req)].alt_ticker,
-        alt_ticker: profiles[get_profile(req)].alt_ticker,
-        converter_name: profiles[get_profile(req)].converter_name,
+        current_profile: profile.alt_ticker,
+        alt_ticker: profile.alt_ticker,
+        converter_name: profile.converter_name,
         stats: stats,
       };
 

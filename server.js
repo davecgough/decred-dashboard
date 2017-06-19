@@ -214,6 +214,10 @@ new CronJob("*/15 * * * * *", updateStats, null, true, "Europe/Rome");
 new CronJob("*/10 * * * * *", updatePrices, null, true, "Europe/Rome");
 new CronJob("*/10 * * * * *", updateMarketCap, null, true, "Europe/Rome");
 new CronJob("*/20 * * * * *", updateForexRates, null, true, "Europe/Rome");
+updateStats();
+updatePrices();
+updateMarketCap();
+updateForexRates();
 
 app.listen(config.listen_port, function () {
   console.log("Listening on port " + config.listen_port);
