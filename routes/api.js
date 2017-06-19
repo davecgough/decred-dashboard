@@ -14,11 +14,10 @@ var Prices = require("../models").Prices;
 var env = process.env.NODE_ENV || "development";
 var config = require("../config/config.json")[env];
 
+var p = require("../config/profiles.json");
 var profiles = {};
-for (var i=0; i< config.load_profiles.length; i++) {
-  var x = config.load_profiles[i];  
-  var p = require("../config/" + x);
-  profiles[p.alt_ticker] = p;
+for (var i=0; i< p.length; i++) {
+  profiles[p[i].alt_ticker] = p[i];
 }
 
 function get_profile(req) {

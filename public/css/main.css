@@ -7,7 +7,7 @@ html, body {
 @font-face { font-family: "Proxima Nova Regular"; src: url('/fonts/ProximaNovaRegular.otf') format("opentype"); }
 
 body {
-  background: #002D64;
+  background: #EBEBEB; /*mainbgcolor*/
   font-family: "Proxima Nova Regular", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
@@ -58,7 +58,7 @@ nav.navbar {
 
 .navbar-inverse .navbar-nav>li>a {
     font-family: "Proxima Nova Regular", Helvetica, Arial, sans-serif !important;
-    color: #c1c1c1;
+    color: #4D4D4D;
     font-weight: 300;
     letter-spacing: 0.5px;
     padding-top: 10px;
@@ -66,7 +66,7 @@ nav.navbar {
 }
 
 .navbar-inverse .navbar-nav>li>a:hover {
-    color: #aaa;
+    color: #455674; /*selected button color*/
 }
 
 nav.navbar span.badge {
@@ -87,15 +87,15 @@ nav.navbar span.badge {
 
 #navbar li a.stakepool-bg {
   font-weight: bold;
-  color: #aaa;
+  color: #455674; /*selected button color*/
 }
 
 .main-color {
-  color: #c1c1c1;
+  color: #4D4D4D;
 }
 
 p span.text-black {
-  color: #c1c1c1;
+  color: #4D4D4D;
 }
 
 .small-text {
@@ -114,17 +114,17 @@ p span.text-black {
 
 .stats-block {
   padding: 0;
-  color: #c1c1c1;
+  color: #4D4D4D;
   text-align: center;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #b0B0b0;
   height: 90px;
   border-radius: 4px;
 }
 
 p.pos-stats-block {
     padding: 0;
-    color: #c1c1c1;
-    border: 1px solid #e0e0e0;
+    color: #4D4D4D;
+    border: 1px solid #b0B0b0;
     height: 90px;
     border-radius: 4px;
     text-align: center;
@@ -146,7 +146,7 @@ p.pos-stats-block.big {
   text-align: center;
   text-transform: uppercase;
   display: block;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid #b0B0b0;
   color: #727272;
   font-family: "Proxima Nova Bold", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
@@ -157,21 +157,21 @@ p.pos-stats-block.big {
     font-size: 32px;
     line-height: 54px;
     letter-spacing: 0px;
-    color: #c1c1c1;
+    color: #4D4D4D;
     border-radius: 4px;
     text-align: center;
     padding-left: 15px;
 }
 
 .pos-stats-subinfo {
-    color: #c1c1c1;
+    color: #4D4D4D;
     font-size: 18px;
     display: block;
     text-align: center;
 }
 
 .pos-stats-subinfo b {
-    color: #c1c1c1;
+    color: #4D4D4D;
     font-size: 22px;
 }
 
@@ -190,8 +190,8 @@ span.pos-stats-content.main-color.est-pos-time {
 
 p.network-stats-block {
   padding: 0;
-  color: #c1c1c1;
-  border: 1px solid #e0e0e0;
+  color: #4D4D4D;
+  border: 1px solid #b0B0b0;
   height: 115px;
   border-radius: 4px;
   text-align: left;
@@ -215,16 +215,16 @@ p.network-stats-block {
 }
 
 .stats-title span {
-  background: #002D64;
+  background: #EBEBEB; /*mainbgcolor*/
 }
 
 span.price-change {
   position: relative;;
-  bottom: 2px;
+  bottomppp: 2px;
   margin: 0 auto;
   font-size: 16px;
   line-height: 16px;
-  background: #002D64;
+  background: #EBEBEB; /*mainbgcolor*/
   padding: 0 10px;
 }
 
@@ -257,7 +257,7 @@ span.down {
   width: 100%;
   text-align: left;
   display: block;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid #b0B0b0;
   color: #727272;
   font-family: "Proxima Nova Bold", "Helvetica Neue", Helvetica, Arial, sans-serif;
   text-transform: uppercase;
@@ -269,7 +269,7 @@ span.down {
   font-size: 32px;
   line-height: 82px;
   letter-spacing: 0px;
-  color: #c1c1c1;
+  color: #4D4D4D;
 }
 
 .stats-subinfo {
@@ -285,35 +285,35 @@ span.down {
 }
 
 .stats-main-color .stats-subinfo {
-  color: #c1c1c1;
+  color: #4D4D4D;
 }
 
 .row p.stats-main-color {
-  border-color: #e0e0e0;
-  color: #c1c1c1;
+  border-color: #b0B0b0;
+  color: #4D4D4D;
 }
 
 .row p.stats-second-color {
-  border-color: #e0e0e0;
-  color: #aaa;
+  border-color: #b0B0b0;
+  color: #455674; /*selected button color*/
 }
 
 .row p.stats-main-color .network-stats-title,
 .row p.stats-main-color .pos-stats-title {
-  border-color: #e0e0e0;
+  border-color: #b0B0b0;
 }
 
 .row p.stats-second-color .pos-stats-title {
-  border-color: #e0e0e0;
+  border-color: #b0B0b0;
 }
 
 .stats-main-color .block-reward,
 .stats-main-color .est-pos-time  {
-  color: #aaa;
+  color: #455674; /*selected button color*/
 }
 
 .stats-second-color .est-pos-price  {
-  color: #aaa;
+  color: #455674; /*selected button color*/
 }
 
 span.stats-subinfo a {
@@ -343,7 +343,8 @@ span.stats-btc {
   /*text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);*/
   position: absolute;
   bottom: 40px;
-  margin-left: 40px;
+  margin-left: 60px;
+  font-size: 30px;
 }
 
 .price-block-end {
@@ -353,8 +354,8 @@ span.stats-btc {
 
 .supply-chart-wrapper {
   padding: 0;
-  color: #c1c1c1;
-  border: 1px solid #e0e0e0;
+  color: #4D4D4D;
+  border: 1px solid #b0B0b0;
   border-radius: 4px;
   text-align: left;
 }
@@ -365,7 +366,7 @@ span.stats-btc {
   width: 100%;
   text-align: left;
   display: block;
-  border-top: 1px solid #e0e0e0;
+  border-top: 1px solid #b0B0b0;
 }
 
 .supply-chart-footer .progress {
@@ -390,13 +391,13 @@ span.stats-btc {
 }
 
 .supply-numbers b {
-  color: #c1c1c1;
+  color: #4D4D4D;
   font-size: 24px;
   font-family: "Proxima Nova Regular", Helvetica, Arial, sans-serif !important;
 }
 
 .supply-chart-footer .supply-title b {
-  color: #c1c1c1;
+  color: #4D4D4D;
   font-family: "Proxima Nova Regular", Helvetica, Arial, sans-serif !important;
 }
 
@@ -416,28 +417,26 @@ span.stats-btc {
 }
 
 .chart-toolbar .btn-group .btn-chart {
-  border: 2px solid #aaa;
-  background: transparent;
-  color: #FFF;
+  color: #455671;
   margin-bottom: 5px;
 }
 
 .chart-toolbar .btn-group .btn-chart.active {
-  background: #aaa;
-  color: #002D64;
+  background: #455674; /*selected button color*/
+  color: #EBEBEB; /*mainbgcolor*/
   box-shadow: none;
-  -webkit-box-shadow: none;
+  -webkit-box-shadow: nopppne;
 }
 
 .btn-toolbar .btn-group .btn-chart {
-  border: 2px solid #aaa;
+  border: 2px solid #455674; /*selected button color*/
   background: transparent;
-  color: #aaa;
+  color: #455674; /*selected button color*/
 }
 
 .btn-toolbar .btn-group .btn-chart.active {
-  background: #aaa;
-  color: #fff;
+  background: #455674; /*selected button color*/
+  color: #455671;
   box-shadow: none;
   -webkit-box-shadow: none;
 }
@@ -452,7 +451,7 @@ span.stats-btc {
 
 .pos-chart-wrapper {
   margin-top: 30px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #b0B0b0;
   border-radius: 4px;
   padding: 15px;
 }
@@ -471,7 +470,7 @@ span.stats-btc {
 }
 
 .hint-title {
-  border-top: 1px solid #e0e0e0;
+  border-top: 1px solid #b0B0b0;
   padding-top: 10px;
   margin: 0;
   font-size: 24px;
@@ -479,7 +478,7 @@ span.stats-btc {
 
 .hint-content {
   padding: 15px 25px;
-  color: ##c1c1c1;
+  color: #4D4D4D;
   font-family: "Proxima Nova Regular", Helvetica, Arial, sans-serif !important;
 }
 
@@ -496,14 +495,14 @@ p.avg-pool-price {
 
 p.avg-pool-price i.fa {
   font-size: 50px;
-  color: #aaa;
+  color: #455674; /*selected button color*/
   float: left;
   margin-top: -10px;
 }
 
 p.poolvalue-stats b,
 p.avg-pool-price b {
-  color: #aaa;
+  color: #455674; /*selected button color*/
 }
 
 table#pools-table {
@@ -528,7 +527,7 @@ footer {
 footer .footer-title {
   font-size: 38px;
   max-width: 730px;
-  color: #aaa;
+  color: #455674; /*selected button color*/
   text-align: center;
   margin: 0 auto;
   margin-bottom: 25px;
@@ -537,7 +536,7 @@ footer .footer-title {
 footer .footer-content {
   font-size: 18px;
   max-width: 640px;
-  color: #c1c1c1;
+  color: #4D4D4D;
   text-align: center;
   margin: 0 auto;
   font-weight: 200;
@@ -570,13 +569,13 @@ footer .footer-content {
 footer span,
 footer a,
 footer a:visited {
-  color: #aaa;
+  color: #455674; /*selected button color*/
 }
 
 footer a:hover,
 footer a:focus,
 footer a:active {
-  color: #aaa;
+  color: #455674; /*selected button color*/
 }
 
 .pluso {
@@ -636,7 +635,7 @@ body.not-found-page {
 
 .row div.not-found-page {
   text-align: center;
-  margin-top: 100px;
+  margin-top: 10ppp0px;
 }
 
 .row div.not-found-page h1 {
@@ -761,4 +760,31 @@ body.not-found-page {
   .footer-wrapper p {
     margin-right: 0;
   }
+}
+
+.jh-title {
+  background-color: #455673;
+}
+
+.navbar-header {
+  display:table-cell;
+  float:none;
+  vertical-align: middle;
+  padding: 10px 40px 10px 40px;
+}
+
+.navbar-header a {
+  color: white;
+}
+
+.jh-page-logo {
+  font-size: 50px;
+}
+
+.jh-ticker {
+  display   :table-cell;
+  float     :none;
+  text-align: right;
+  color     : white;
+  font-size : 22px;
 }

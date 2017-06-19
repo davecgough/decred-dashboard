@@ -20,7 +20,7 @@ CronJobs:
 		- Generate Price table rows based on Stats table
 	updateMarketCap
 		- Writes market-cap.json and 
-	updateExchangeRates
+	updateForexRates
 		- Get data from XX.com and save in rates.json
 	forexCache
 		- Cache rates.json in memory

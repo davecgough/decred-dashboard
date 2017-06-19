@@ -2,8 +2,12 @@ function drawPrice(data, ticker) {
   var valueDecimals = ticker == 'usd' ? 2 : 8;
 
   $('#price-chart').highcharts({
-    chart: {backgroundColor: "#C2D3EA"},
-    tooltip: {backgroundColor: "#e2e2e2", borderColor: '#fff', style: {"color": "#2f2f2f"}},
+    chart: {
+      backgroundColor: "#FFFFFF",
+      borderColor: "#ccc",
+      borderWidth: 1
+    },
+    tooltip: {backgroundColor: "#e2e2e2", bordborderColor: '#fff', style: {"color": "#2f2f2f"}},
     title: {text: ''},
     credits: {enabled: false},
     exporting: {enabled: false},
@@ -12,13 +16,17 @@ function drawPrice(data, ticker) {
     xAxis: {
         type: 'datetime',
         gridLineWidth: 1,
-        gridLineColor: '#fff',
+        gridLineColor: '#f3f3f3',
+        lineColor: '#d8d8d8',
+        lineWidth: 2,
         labels: {style: {color: '#333', fill: '#333'}}
     },
     yAxis: {
         title: {text: ''},
         gridLineWidth: 1,
-        gridLineColor: '#fff',
+        gridLineColor: '#f3f3f3',
+        lineColor: '#d8d8d8',
+        lineWidth: 2,
         labels: {style: {color: '#333', fill: '#333'}}
     },
     series: [{

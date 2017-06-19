@@ -7,12 +7,7 @@
     "logging": false,
     "base_url": "http://localhost:8080",
     "listen_port": 8080,
-    "default_profile": "GNT",
-    "load_profiles": [
-      "dcr-profile.json",
-      "gnt-profile.json",
-      "eth-profile.json"
-    ]
+    "default_profile": "GNT"
   },
   "production": {
     "username": "alt-stats",
@@ -22,11 +17,6 @@
     "logging": false,
     "base_url": "https://website.com",
     "listen_port": 80,
-    "default_profile": "GNT",
-    "load_profiles": [
-      "dcr-profile.json",
-      "gnt-profile.json",
-      "eth-profile.json"
-    ]
+    "default_profile": "GNT"
   }
 }

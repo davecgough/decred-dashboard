@@ -9,11 +9,10 @@ var router = express.Router();
 var env = process.env.NODE_ENV || "development";
 var config = require("../config/config.json")[env];
 
+var p = require("../config/profiles.json");
 var profiles = {};
-for (var i=0; i< config.load_profiles.length; i++) {
-  var x = config.load_profiles[i];  
-  var p = require("../config/" + x);
-  profiles[p.alt_ticker] = p;
+for (var i=0; i< p.length; i++) {
+  profiles[p[i].alt_ticker] = p[i];
 }
 var strings = require("../public/strings/strings.json");
 
@@ -28,6 +27,7 @@ function get_profile(req) {
 }
 
 router.get("/", function (req, res) {
+  console.log(get_profile(req));
   Stats.findOne({where : {ticker: get_profile(req)}}).then(function(stats) {
     if (stats == null) {
       console.error("Site(/):", "Browser called but the stats table is empty");

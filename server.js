@@ -11,11 +11,10 @@ var site = require("./routes/site.js");
 var env = process.env.NODE_ENV || "development";
 var config = require("./config/config.json")[env];
 
+var p = require("./config/profiles.json");
 var profiles = {};
-for (var i=0; i< config.load_profiles.length; i++) {
-  var x = config.load_profiles[i];  
-  var p = require("./config/" + x);
-  profiles[p.alt_ticker] = p;
+for (var i=0; i< p.length; i++) {
+  profiles[p[i].alt_ticker] = p[i];
 }
 
 var app = express();
@@ -108,15 +107,6 @@ var updateStats = function() {
 
 }
 
-// Original timings
- new CronJob("*/15 * * * * *", updateStats, null, true, "Europe/Rome");
-// new CronJob("0 */15 * * * *", updatePrices, null, true, "Europe/Rome");
-// new CronJob("0 */15 * * * *", updateMarketCap, null, true, "Europe/Rome");
-// new CronJob("5 */60 * * * *", updateExchangeRates, null, true, "Europe/Rome");
-
-new CronJob("*/10 * * * * *", updatePrices, null, true, "Europe/Rome");
-new CronJob("*/10 * * * * *", updateMarketCap, null, true, "Europe/Rome");
-
 function getPrices(next) {
   // Get BTC/ALT from polo
   request(POLONIEX, function (error, response, body) {
@@ -191,28 +181,39 @@ function updatePrices() {
   });
 }
 
-function updateExchangeRates() {
+function updateForexRates() {
   request(FOREX_API, function (error, response, body) {
     if (!error && response.statusCode == 200) {
       try {
         JSON.parse(body);
       } catch(e) {
-        console.error("updateExchangeRates:", "Bad response from forex provider", e);
+        console.error("updateForexRates:", "Bad response from forex provider", e);
         return;
       }
 
       fs.writeFile("./uploads/rates.json", body, function(err) {
           if(err) {
-              return console.error("updateExchangeRates:", err);
+              return console.error("updateForexRates:", err);
           }
-          return console.log("updateExchangeRates:", "USD foreign exchange rates updated.");
+          return console.log("updateForexRates:", "USD forex rates updated.");
       });
 
     } else {
-      console.error("updateExchangeRates:", "Bad response from forex provider", response);
+      console.error("updateForexRates:", "Bad response from forex provider", response);
     }
   });
 }
+
+
+// Original timings
+new CronJob("*/15 * * * * *", updateStats, null, true, "Europe/Rome");
+// new CronJob("0 */15 * * * *", updatePrices, null, true, "Europe/Rome");
+// new CronJob("0 */15 * * * *", updateMarketCap, null, true, "Europe/Rome");
+// new CronJob("5 */60 * * * *", updateForexRates, null, true, "Europe/Rome");
+
+new CronJob("*/10 * * * * *", updatePrices, null, true, "Europe/Rome");
+new CronJob("*/10 * * * * *", updateMarketCap, null, true, "Europe/Rome");
+new CronJob("*/30 * * * * *", updateForexRates, null, true, "Europe/Rome");
 
 app.listen(config.listen_port, function () {
   console.log("Listening on port " + config.listen_port);
