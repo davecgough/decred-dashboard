@@ -134,7 +134,7 @@ function updateMarketCap() {
           var file_name = this.profile.alt_ticker+"-market-cap.json";
           let json = JSON.parse(body);
           json = JSON.stringify({usd_price : json.price_usd, btc_price : json.price_btc});
-          fs.writeFile("./uploads/"+file_name, json, function(err) {
+          fs.writeFile("./cache/"+file_name, json, function(err) {
               if(err) {
                 return console.error("updateMarketCap:", err);
               }
@@ -191,7 +191,7 @@ function updateForexRates() {
         return;
       }
 
-      fs.writeFile("./uploads/rates.json", body, function(err) {
+      fs.writeFile("./cache/rates.json", body, function(err) {
           if(err) {
               return console.error("updateForexRates:", err);
           }

@@ -126,9 +126,9 @@ router.get("/convert", function(req, res) {
 var MARKET_CAP = {};
 function marketCapCache() {
   for (var key in profiles) {
-    fs.readFile("./uploads/" + profiles[key].alt_ticker + "-market-cap.json", "utf8", function (err, data) {
+    fs.readFile("./cache/" + profiles[key].alt_ticker + "-market-cap.json", "utf8", function (err, data) {
       if (err) {
-        console.error("marketCapCache:", "Could not open " + "./uploads/" + this.profile.alt_ticker + "-market-cap.json");
+        console.error("marketCapCache:", "Could not open " + "./cache/" + this.profile.alt_ticker + "-market-cap.json");
         return;
       }
 
@@ -147,9 +147,9 @@ function marketCapCache() {
 // rates.json cache
 var RATES = null;
 function forexCache() {
-  fs.readFile("./uploads/rates.json", "utf8", function (err, data) {
+  fs.readFile("./cache/rates.json", "utf8", function (err, data) {
     if (err) {
-      console.error("forexCache:", "Could not open ./uploads/rates.json");
+      console.error("forexCache:", "Could not open ./cache/rates.json");
       return;
     }
 
