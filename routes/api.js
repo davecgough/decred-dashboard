@@ -25,7 +25,7 @@ function get_profile(req) {
   if (req.query.c) {
     return req.query.c;
   } else {
-    return "GNT";
+    return config.default_profile;
   }
 };
 
@@ -109,7 +109,7 @@ router.get("/convert", function(req, res) {
   var pair = 0;
   if (req.query.from == "alt") {
     alt = parseFloat(req.query.alt);
-    pair = (alt * USD * parseFloat(RATES[req.query.to])).toFixed(2);
+    pair = (alt * USD[get_profile(req)] * parseFloat(RATES[req.query.to])).toFixed(2);
   } else {
     pair = req.query.pair;
     alt = (req.query.pair / parseFloat(RATES[req.query.to]) / USD[get_profile(req)]).toFixed(2);
@@ -123,7 +123,7 @@ function marketCapCache() {
   for (var key in profiles) {
     fs.readFile("./uploads/" + profiles[key].alt_ticker + "-market-cap.json", "utf8", function (err, data) {
       if (err) {
-        console.error("marketCapCache: Could not load " + "./uploads/" + this.profile.alt_ticker + "-market-cap.json");
+        console.error("marketCapCache:", "Could not open " + "./uploads/" + this.profile.alt_ticker + "-market-cap.json");
         return;
       }
 
@@ -131,7 +131,7 @@ function marketCapCache() {
       try {
         result = JSON.parse(data);
       } catch(e) {
-        console.error("marketCapCache:" + e);
+        console.error("marketCapCache:", e);
         return;
       }
       
@@ -141,7 +141,7 @@ function marketCapCache() {
 }
 
 // rates.json cache
-var USD = {};
+var USD = []
 var RATES = {};
 function forexCache() {
   fs.readFile("./uploads/rates.json", "utf8", function (err, data) {
@@ -161,12 +161,12 @@ function forexCache() {
   });
 
   Stats.findAll().then(function(stats) {
-    for (stat in stats){
-      USD[stat.ticker] = parseFloat(stat.usd_price) * parseFloat(stat.btc_last);
+    for (var i=0;i<stats.length;i++){
+      USD[stats[i].ticker] = parseFloat(stats[i].usd_price) * parseFloat(stats[i].btc_last);
     }
   })
   .catch(function(err) {
-    console.error("forexCache:", "Failed to create forex cache"); 
+    console.error("forexCache:", err); 
   });
     
 }

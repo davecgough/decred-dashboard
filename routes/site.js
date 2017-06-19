@@ -23,7 +23,7 @@ function get_profile(req) {
   if (req.query.c) {
     return req.query.c;
   } else {
-    return "GNT";
+    return config.default_profile;
   }
 }
 

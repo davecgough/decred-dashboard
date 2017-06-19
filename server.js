@@ -98,7 +98,7 @@ var updateStats = function() {
       }
 
       for (var i = 0; i < newRows.length; i++) {
-        console.log("updateStats: writing " + newRows[i].ticker + " stats");
+        console.log("updateStats:", "writing " + newRows[i].ticker + " stats");
         Stats.upsert(newRows[i]).catch(function(err) {
           console.error("updateStats:", err);
         });
