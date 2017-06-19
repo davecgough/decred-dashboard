@@ -19,13 +19,15 @@ CronJobs:
 	updatePrices
 		- Generate Price table rows based on Stats table
 	updateMarketCap
-		- Writes market-cap.json and 
+		- Writes market-cap.json  
 	updateForexRates
-		- Get data from XX.com and save in rates.json
+		- Get data from forex.com and save in rates.json
 	forexCache
-		- Cache rates.json in memory
+		- Cache rates.json 
+	forexCache
+		- Cache usd rates from stats table 
 	marketCapCache
-		- Cache each XXX-market-cap.json in memory
+		- Cache each XXX-market-cap.json 
 
 
 
@@ -34,6 +36,7 @@ To do:
 	- add bitcoin and usd to converter currencies
 	- usd values truncated incorrectly for eth ($234.)
 	- Production: 
+		- cron timings
 		- nginx
 		- analytics
 		- robots

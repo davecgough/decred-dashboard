@@ -3,7 +3,7 @@
 pm2 stop 0
 
 sudo su - postgres -c "dropdb stats-db"
-rm uploads/*-market-cap.json
+rm uploads/*
 set -e
 
 sudo su - postgres -c "createdb stats-db -O alt-stats"

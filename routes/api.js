@@ -139,19 +139,17 @@ function marketCapCache() {
         console.error("marketCapCache:", e);
         return;
       }
-      
       MARKET_CAP[this.profile.alt_ticker] = result;
     }.bind({profile: profiles[key]}));
   }
 }
 
 // rates.json cache
-var USD = []
-var RATES = {};
+var RATES = null;
 function forexCache() {
   fs.readFile("./uploads/rates.json", "utf8", function (err, data) {
     if (err) {
-      console.error("forexCache:", err);
+      console.error("forexCache:", "Could not open ./uploads/rates.json");
       return;
     }
 
@@ -162,23 +160,34 @@ function forexCache() {
       console.error("forexCache:", e);
       return;
     }
+
     RATES = result.rates;
   });
+}
 
+var USD = []
+function usdCache() {
   Stats.findAll().then(function(stats) {
+    if (stats.length == 0) {
+      console.error("usdCache:", "Nothing in stats table");
+      return;
+    }
+
     for (var i=0;i<stats.length;i++){
       USD[stats[i].ticker] = parseFloat(stats[i].usd_price) * parseFloat(stats[i].btc_last);
     }
   })
   .catch(function(err) {
-    console.error("forexCache:", err); 
+    console.error("usdCache:", err); 
   });
     
 }
 
 new CronJob("10 * * * * *", marketCapCache, null, true, "Europe/Rome");
-new CronJob("10 * * * * *", forexCache, null, true, "Europe/Rome");
+new CronJob("*/10 * * * * *", forexCache, null, true, "Europe/Rome");
+new CronJob("*/10 * * * * *", usdCache, null, true, "Europe/Rome");
 forexCache();
+usdCache();
 marketCapCache();
 
 module.exports = router;
