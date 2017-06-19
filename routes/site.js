@@ -20,14 +20,17 @@ var Stats = require("../models").Stats;
 
 function get_profile(req) {
   if (req.query.c) {
-    return req.query.c;
+    if (profiles[req.query.c] == undefined) {
+      return config.default_profile;
+    } else {
+      return req.query.c;
+    }
   } else {
     return config.default_profile;
   }
 }
 
 router.get("/", function (req, res) {
-  console.log(get_profile(req));
   Stats.findOne({where : {ticker: get_profile(req)}}).then(function(stats) {
     if (stats == null) {
       console.error("Site(/):", "Browser called but the stats table is empty");
@@ -45,6 +48,8 @@ router.get("/", function (req, res) {
         title: strings.main_title,
         base_url: config.base_url,
         
+        tickers: Object.keys(profiles),
+
         current_profile: profiles[get_profile(req)].alt_ticker,
         alt_ticker: profiles[get_profile(req)].alt_ticker,
         converter_name: profiles[get_profile(req)].converter_name,
@@ -62,15 +67,17 @@ router.get("/", function (req, res) {
   });
 });
 
-router.get("*", function(req, res){
+router.get("*", render404);
+
+function render404(req, res){
   let data = {
-    env : env,
-    page:"404",
+    env: env,
+    page: "404",
     s: strings,
     title: strings.page_not_found,
     base_url: config.base_url,
   };
   res.status(404).render("404.jade", data);
-});
+}
 
 module.exports = router;

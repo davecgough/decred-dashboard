@@ -34,25 +34,25 @@ html(lang='en')
 
     .container
       .row.price-block-end
-        .col-xs-6.col-md-3
+        .col-xs-6.col-md-3(style="padding-bottom:15px;")
           p.stats-block
             span.stats-title(title="#{s.last_price_hint_usd}")
               span &nbsp;#{alt_ticker} / #{s.usd}&nbsp;
             span.stats-content.stats-lastprice -
             span.price-change.percent
-        .col-xs-6.col-md-3
+        .col-xs-6.col-md-3(style="padding-bottom:15px;")
           p.stats-block
             span.stats-title(title="#{s.last_price_hint_btc}")
               span &nbsp;#{alt_ticker} / #{s.btc}&nbsp;
             span.stats-content.stats-btc -
             span.price-change.volume
-        .col-xs-6.col-md-3
+        .col-xs-6.col-md-3(style="padding-bottom:15px;")
           p.stats-block
             span.stats-title
               span &nbsp;#{s.day_low}&nbsp;
             span.stats-content.stats-daylow -
             span.price-change.btc-low -
-        .col-xs-6.col-md-3
+        .col-xs-6.col-md-3(style="padding-bottom:15px;")
           p.stats-block
             span.stats-title
               span &nbsp;#{s.day_high}&nbsp;
@@ -62,7 +62,7 @@ html(lang='en')
     .container
       .row
         .col-xs-12.col-md-12
-          .col-xs-12.col-md-12(style="padding-bottom: 45px; padding-top: 20px;")
+          .col-xs-12.col-md-12(style="padding-bottom: 45px")
             h2(style="margin: 25px auto; text-align: center;") #{converter_name} Converter
             form.form-inline(style="text-align: center;")
               .form-group

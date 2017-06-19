@@ -1,5 +1,29 @@
 [
 	{
+		"alt_ticker": "DOGE",
+		"polo_id": "BTC_DOGE",
+		"market_cap_id": "dogecoin",
+		"converter_name": "Dogecoin"
+	},
+	{
+		"alt_ticker": "LTC",
+		"polo_id": "BTC_LTC",
+		"market_cap_id": "litecoin",
+		"converter_name": "Litecoin"
+	},
+	{
+		"alt_ticker": "XMR",
+		"polo_id": "BTC_XMR",
+		"market_cap_id": "monero",
+		"converter_name": "Monero"
+	},
+	{
+		"alt_ticker": "DASH",
+		"polo_id": "BTC_DASH",
+		"market_cap_id": "dash",
+		"converter_name": "Dash"
+	},
+	{
 		"alt_ticker": "GNT",
 		"polo_id": "BTC_GNT",
 		"market_cap_id": "golem-network-tokens",

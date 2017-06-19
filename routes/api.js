@@ -22,11 +22,15 @@ for (var i=0; i< p.length; i++) {
 
 function get_profile(req) {
   if (req.query.c) {
-    return req.query.c;
+    if (profiles[req.query.c] == undefined) {
+      return config.default_profile;
+    } else {
+      return req.query.c;
+    }
   } else {
     return config.default_profile;
   }
-};
+}
 
 router.get("/prices", function (req, res) {
   if (MARKET_CAP[get_profile(req)] == undefined) {

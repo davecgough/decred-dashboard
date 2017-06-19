@@ -1,20 +1,14 @@
 .modal.fade.bd-example-modal-lg(tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
-	.modal-dialog.modal-lg
-		.modal-content(style="padding: 25px;")
+	.modal-dialog.modal-lg(style="max-width: 700px;")
+		.modal-content(style="padding: 25px; margin-top: 150px;")
 			.modal-header
 				button.close(type='button', data-dismiss='modal', aria-label='Close')
 					span(aria-hidden='true') ×
 				h4.modal-title Choose an alt-coin...
 			.modal-body
-				table.table.table-striped
-					tbody
-						tr(style="")
-							td(style="border: none;text-align:center;")
-								a(href="#{base_url}?c=DCR") DCR
-							td(style="border: none;text-align:center;")
-								a(href="#{base_url}?c=ETH") ETH
-							td(style="border: none;text-align:center;")
-								a(href="#{base_url}?c=GNT") GNT
-
+				div(style="display:flex; flex-wrap: wrap; width: 100%;")
+					each ticker in tickers
+						div(style="flex-grow: 1; text-align:center; min-width: 100px; min-height: 50px;")
+							a(href="#{base_url}?c=#{ticker}") #{ticker}
 
 script(src="/js/bootstrap.min.js")

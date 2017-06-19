@@ -6,7 +6,22 @@ function drawPrice(data, ticker) {
       backgroundColor: "#FFFFFF",
       borderColor: "#ccc",
       borderWidth: 1,
-      zoomType: "x"
+      zoomType: "x",
+      resetZoomButton: {
+        theme: {
+          fill: '#455673',
+          stroke: '0',
+          r: 0,
+          style: {
+            color: 'white'
+          },
+          states: {
+            hover: {
+              fill: '#556683',
+            }
+          }
+        }
+      }
     },
     tooltip: {
       // backgroundColor: "#e2e2e2",
