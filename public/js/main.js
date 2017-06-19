@@ -1,26 +1,8 @@
-var getUrlParameter = function getUrlParameter(sParam) {
-    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
-        sURLVariables = sPageURL.split('&'),
-        sParameterName,
-        i;
-
-    for (i = 0; i < sURLVariables.length; i++) {
-        sParameterName = sURLVariables[i].split('=');
-
-        if (sParameterName[0] === sParam) {
-          if (sParameterName[1] != undefined)
-            return sParameterName[1];
-          else
-            break;
-        }
-    }
-
-    return "GNT";
-};
-
-var profile = getUrlParameter('c');
+var profile;
 
 $(function() {
+
+  profile = $("#current_profile").val();
 
   updateStats(true);
   setInterval(updateStats, 10000);

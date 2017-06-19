@@ -1,6 +1,18 @@
 {
-	"og_title": "GNT Price Dashboard",
-	"main_title": "Gntstats: Golem Price Dashboard",
-	"main_desc": "Golem is a global, open sourced, decentralized supercomputer that anyone can access. Golem price charts and currency converter.",
-	"page_not_found": "404 - Page not found"
+	"og_title": "Altcoin Price Dashboard",
+	"main_title": "Altcoin-stats: Altcoin Price Dashboard",
+	"main_desc": "Altcoin-stats is a dashboard to view altcoin prices in BTC and USD",
+	"page_not_found": "404 - Page not found",
+	"day": "Day",
+	"week": "Week",
+	"month": "Month",
+	"year": "Year",
+	"all_time": "All Time",
+	"btc": "BTC",
+	"usd": "USD",
+	"chart_label": "Price, USD",
+	"last_price_hint_usd": "Price based on data from Poloniex + Bitstamp",
+	"last_price_hint_btc": "Last price on Poloniex",
+	"day_low": "DAY LOW",
+	"day_high": "DAY HIGH"
 }

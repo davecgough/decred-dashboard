@@ -27,7 +27,14 @@ CronJobs:
 	marketCapCache
 		- Cache each XXX-market-cap.json in memory
 
+
+
 To do:
 	- README.md
-	- nginx
 	- add bitcoin and usd to converter currencies
+	- usd values truncated incorrectly for eth ($234.)
+	- Production: 
+		- nginx
+		- analytics
+		- robots
+		- seo

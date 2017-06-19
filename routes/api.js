@@ -30,6 +30,12 @@ function get_profile(req) {
 };
 
 router.get("/prices", function (req, res) {
+  if (MARKET_CAP[get_profile(req)] == undefined) {
+    console.error("API(prices):", "MARKET_CAP cache not initialised yet")
+    res.status(500).json({error : true});
+    return;
+  }
+
   var ticker = req.query.ticker;
   var time = req.query.time;
 
@@ -53,8 +59,8 @@ router.get("/prices", function (req, res) {
   resp = resp.filter(function(item) {
     return (item[0] > min_time) ? true : false;
   });
-  res.status(200).json(resp);
 
+  res.status(200).json(resp);
 });
 
 router.get("/day_price", function(req, res) {

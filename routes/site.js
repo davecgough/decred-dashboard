@@ -30,25 +30,22 @@ function get_profile(req) {
 router.get("/", function (req, res) {
   Stats.findOne({where : {ticker: get_profile(req)}}).then(function(stats) {
     if (stats == null) {
-      console.error("SITE(/):", "Browser called but the stats table is empty");
+      console.error("Site(/):", "Browser called but the stats table is empty");
       return;
     }
     
     stats = stats.dataValues;
 
-    fs.readFile("./uploads/currencies.json", "utf8", function(err, currencies) {
-      if (err) { console.error("SITE(/):", err); }
+    fs.readFile("./config/currencies.json", "utf8", function(err, currencies) {
+      if (err) { console.error("Site(/):", err); }
       let data = {
         env : env,
         page:"index",
+        s: strings,
         title: strings.main_title,
-        desc: strings.main_desc,
-        og_title: strings.og_title,
         base_url: config.base_url,
         
-        logo:"logo.png",
-        favicon:"favicon.png",
-
+        current_profile: profiles[get_profile(req)].alt_ticker,
         alt_ticker: profiles[get_profile(req)].alt_ticker,
         converter_name: profiles[get_profile(req)].converter_name,
         stats: stats,
@@ -61,7 +58,7 @@ router.get("/", function (req, res) {
       res.render("index", data);
     });
   }).catch(function(err) {
-    console.error("SITE(/):", err);
+    console.error("Site(/):", err);
   });
 });
 
@@ -69,9 +66,8 @@ router.get("*", function(req, res){
   let data = {
     env : env,
     page:"404",
+    s: strings,
     title: strings.page_not_found,
-    desc: strings.main_desc,
-    og_title: strings.og_title,
     base_url: config.base_url,
   };
   res.status(404).render("404.jade", data);

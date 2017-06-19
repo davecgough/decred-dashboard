@@ -3,6 +3,9 @@ html(lang='en')
   head
     include ./includes/head.jade
   body
+
+    input#current_profile(type='hidden', value='#{current_profile}')
+
     .container
       .row
         include ./includes/navigation.jade
@@ -12,46 +15,46 @@ html(lang='en')
           .container.chart-toolbar.text-center(role='toolbar')
             .btn-group.price-group.pull-right
               button.price-time.btn-chart.btn.btn-default(type='button', data-time="1", data-chart="price")
-                span Day
+                span #{s.day}
               button.price-time.btn-chart.btn.btn-default(type='button', data-time="7", data-chart="price")
-                span Week
+                span #{s.week}
               button.price-time.btn-chart.btn.btn-default.active(type='button', data-time="30", data-chart="price")
-                span Month
+                span #{s.month}
               button.price-time.btn-chart.btn.btn-default(type='button', data-time="365", data-chart="price")
-                span Year
+                span #{s.year}
               button.price-time.btn-chart.btn.btn-default(type='button', data-time="99999", data-chart="price")
-                span All Time
+                span #{s.all_time}
             .btn-group.price-group.pull-right
               button.price-ticker.btn-chart.btn.btn-default(type='button', data-ticker="btc", data-chart="price")
-                span BTC
+                span #{s.btc}
               button.price-ticker.btn-chart.btn.btn-default.active(type='button', data-ticker="usd", data-chart="price")
-                span USD
-          h3.price-chart-title #{alt_ticker} Price, USD
+                span #{s.usd}
+          h3.price-chart-title #{alt_ticker} #{s.chart_label}
           #price-chart.chart-container
 
       .row.price-block-end
         .col-xs-6.col-md-3
           p.stats-block
-            span.stats-title(title="Price based on data from Poloniex + Bitstamp")
-              span &nbsp;#{alt_ticker} / USD&nbsp;
+            span.stats-title(title="#{s.last_price_hint_usd}")
+              span &nbsp;#{alt_ticker} / #{s.usd}&nbsp;
             span.stats-content.stats-lastprice -
             span.price-change.percent
         .col-xs-6.col-md-3
           p.stats-block
-            span.stats-title(title="Last price on Poloniex")
-              span &nbsp;#{alt_ticker} / BTC&nbsp;
+            span.stats-title(title="#{s.last_price_hint_btc}")
+              span &nbsp;#{alt_ticker} / #{s.btc}&nbsp;
             span.stats-content.stats-btc -
             span.price-change.volume
         .col-xs-6.col-md-3
           p.stats-block
             span.stats-title
-              span &nbsp;DAY LOW&nbsp;
+              span &nbsp;#{s.day_low}&nbsp;
             span.stats-content.stats-daylow -
             span.price-change.btc-low -
         .col-xs-6.col-md-3
           p.stats-block
             span.stats-title
-              span &nbsp;DAY HIGH&nbsp;
+              span &nbsp;#{s.day_high}&nbsp;
             span.stats-content.stats-dayhigh -
             span.price-change.btc-high -
     .container
