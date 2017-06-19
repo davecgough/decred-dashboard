@@ -1,6 +1,7 @@
 nav.navbar.navbar-inverse(style= page == 'app' ? 'background: #ffdc4f;' : '')
-  .container(style="display:table")
-    .navbar-header(style="display:table-cell;float:none;width: 200px;")
-      a(href="#{base_url}")
-        img(src="/img/logo.png", height="75")
-    .navbar-header(style="display:table-cell;float:none;color: white;font-size: 34px;text-align: center;vertical-align: middle;") #{current_profile}
+	.container(style="display:table")
+		.navbar-header(style="display:table-cell;float:none;width: 200px;")
+		a(href="#{base_url}")
+			img(src="/img/logo.png", height="75")
+		.navbar-header(style="display:table-cell;float:none;color: white;font-size: 34px;text-align: center;vertical-align: middle;") 
+			a.fee-explorer(href="#",data-toggle="modal",data-target=".bd-example-modal-lg") #{current_profile}
