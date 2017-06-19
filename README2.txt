@@ -4,7 +4,7 @@ API:
 		- Data from Prices table 
 	/prices
 		- Called by Month/Year/All charts
-		- Data from market-cap.json 
+		- Data from market-cap.json (held in-mem cache)
 	/get_stats
 		- Called periodically by main page
 		- Data from Stats table
@@ -16,13 +16,18 @@ API:
 CronJobs:
 	updateStats
 		- Get data from polo/bitstamp and saves in Stats table
+	updatePrices
+		- Generate Price table rows based on Stats table
 	updateMarketCap
-		- Writes market-cap.json and generates Price table data from Stats table
+		- Writes market-cap.json and 
 	updateExchangeRates
 		- Get data from XX.com and save in rates.json
+	forexCache
+		- Cache rates.json in memory
+	marketCapCache
+		- Cache each XXX-market-cap.json in memory
 
 To do:
 	- README.md
 	- nginx
-	- favicon
 	- add bitcoin and usd to converter currencies

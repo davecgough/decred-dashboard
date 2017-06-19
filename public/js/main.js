@@ -8,7 +8,6 @@ var getUrlParameter = function getUrlParameter(sParam) {
         sParameterName = sURLVariables[i].split('=');
 
         if (sParameterName[0] === sParam) {
-          console.log(sParameterName[1]);
           if (sParameterName[1] != undefined)
             return sParameterName[1];
           else
