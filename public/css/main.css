@@ -770,7 +770,7 @@ body.not-found-page {
   display:table-cell;
   float:none;
   vertical-align: middle;
-  padding: 10px 40px 10px 40px;
+  padding: 8px 40px 8px 40px;
 }
 
 .navbar-header a {
@@ -778,7 +778,7 @@ body.not-found-page {
 }
 
 .jh-page-logo {
-  font-size: 50px;
+  font-size: 40px;
 }
 
 .jh-ticker {
@@ -786,5 +786,5 @@ body.not-found-page {
   float     :none;
   text-align: right;
   color     : white;
-  font-size : 22px;
+  font-size : 20px;
 }

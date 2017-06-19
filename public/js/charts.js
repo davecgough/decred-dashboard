@@ -5,9 +5,18 @@ function drawPrice(data, ticker) {
     chart: {
       backgroundColor: "#FFFFFF",
       borderColor: "#ccc",
-      borderWidth: 1
+      borderWidth: 1,
+      zoomType: "x"
     },
-    tooltip: {backgroundColor: "#e2e2e2", bordborderColor: '#fff', style: {"color": "#2f2f2f"}},
+    tooltip: {
+      // backgroundColor: "#e2e2e2",
+      // bordborderColor: '#fff',
+      shadow: 0,
+      borderWidth: 0,
+      backgroundColor: "#455673",
+      style: {"color": "#fff"}
+
+    },
     title: {text: ''},
     credits: {enabled: false},
     exporting: {enabled: false},
@@ -29,11 +38,16 @@ function drawPrice(data, ticker) {
         lineWidth: 2,
         labels: {style: {color: '#333', fill: '#333'}}
     },
+    plotOptions: {
+        areaspline: {
+            fillOpacity: 0.1
+        }
+    },
     series: [{
       name: 'Price',
       data: data,
-      type: 'spline',
-      color: '#3c4ba6',
+      type: 'areaspline',
+      color: '#56CDF6',
       lineWidth: 2,
       tooltip: {valueDecimals: valueDecimals},
       marker: {enabled: false},
