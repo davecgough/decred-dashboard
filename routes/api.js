@@ -11,8 +11,7 @@ var sequelize = require("../models").sequelize;
 var Stats = require("../models").Stats;
 var Prices = require("../models").Prices;
 
-var env = process.env.NODE_ENV || "development";
-var config = require("../config/config.json")[env];
+var config = require("../config/config.json");
 
 var p = require("../config/profiles.json");
 var profiles = {};
@@ -33,7 +32,7 @@ function get_profile(req) {
 }
 
 router.get("/prices", function (req, res) {
-  var profile.alt_ticker = get_profile(req);
+  var profile = get_profile(req);
   if (MARKET_CAP[profile.alt_ticker] == undefined) {
     console.error("API(prices):", "MARKET_CAP cache not initialised yet")
     res.status(500).json({error : true});
@@ -96,6 +95,7 @@ router.get("/day_price", function(req, res) {
 });
 
 router.get("/get_stats", function (req, res) {
+  var profile = get_profile(req);
   Stats.findOne({where : {ticker: profile.alt_ticker}}).then(function(stats) {
 
     if (!stats) {
@@ -113,10 +113,15 @@ router.get("/get_stats", function (req, res) {
 });
 
 router.get("/convert", function(req, res) {
-
   if (!req.query) {
     res.status(500).json({error : true}); return;
   }
+  var profile = get_profile(req);
+  if (USD[profile.alt_ticker] == undefined) {
+    console.error("API(convert)", "USD forex cache not initialised");
+    res.status(500).json({error : true}); return;
+  }
+  
   var alt = 0;
   var pair = 0;
   var profile = get_profile(req);
@@ -173,7 +178,7 @@ function forexCache() {
   });
 }
 
-var USD = []
+var USD = [];
 function usdCache() {
   Stats.findAll().then(function(stats) {
     if (stats.length == 0) {

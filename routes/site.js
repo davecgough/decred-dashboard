@@ -3,18 +3,16 @@
 var fs = require("fs");
 var jade = require("jade");
 var express = require("express");
-
 var router = express.Router();
 
-var env = process.env.NODE_ENV || "development";
-var config = require("../config/config.json")[env];
+var config = require("../config/config.json");
 
 var p = require("../config/profiles.json");
 var profiles = {};
 for (var i=0; i< p.length; i++) {
   profiles[p[i].alt_ticker] = p[i];
 }
-var strings = require("../public/strings/strings.json");
+var strings = require("../config/strings.json");
 
 var Stats = require("../models").Stats;
 
@@ -43,7 +41,6 @@ router.get("/", function (req, res) {
     fs.readFile("./config/currencies.json", "utf8", function(err, currencies) {
       if (err) { console.error("Site(/):", err); }
       let data = {
-        env : env,
         page:"index",
         s: strings,
         title: strings.main_title,
@@ -72,7 +69,6 @@ router.get("*", render404);
 
 function render404(req, res){
   let data = {
-    env: env,
     page: "404",
     s: strings,
     title: strings.page_not_found,

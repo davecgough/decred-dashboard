@@ -9,7 +9,7 @@ var fs = require("fs");
 var api = require("./routes/api.js");
 var site = require("./routes/site.js");
 var env = process.env.NODE_ENV || "development";
-var config = require("./config/config.json")[env];
+var config = require("./config/config.json");
 
 var p = require("./config/profiles.json");
 var profiles = {};
@@ -17,8 +17,12 @@ for (var i=0; i< p.length; i++) {
   profiles[p[i].alt_ticker] = p[i];
 }
 
+if (!fs.existsSync("./cache")){
+    fs.mkdirSync("./cache");
+}
+
 var app = express();
-app.set("views", "./public/views");
+app.set("views", "./views");
 app.set("view engine", "jade");
 app.locals.moment = moment;
 

@@ -1,5 +1,4 @@
 {
-  "development": {
     "username": "alt-stats",
     "password": "",
     "database": "stats-db",
@@ -8,15 +7,4 @@
     "base_url": "http://localhost:8080",
     "listen_port": 8080,
     "default_profile": "GNT"
-  },
-  "production": {
-    "username": "alt-stats",
-    "password": "",
-    "database": "stats-db",
-    "dialect": "postgres",
-    "logging": false,
-    "base_url": "https://website.com",
-    "listen_port": 80,
-    "default_profile": "GNT"
-  }
 }
