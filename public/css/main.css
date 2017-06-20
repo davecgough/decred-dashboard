@@ -666,7 +666,7 @@ body.not-found-page {
     text-align: center;
   }
 
-  .glyphicon, .fa-ticket, span.up, span.down {
+  span.up, span.down {
     display: none;
   }
   sup {
