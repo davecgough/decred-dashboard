@@ -30,17 +30,14 @@ CronJobs:
 		- Cache each XXX-market-cap.json 
 
 
-
 To do:
 	- README.md
 	- footer?
-	- add bitcoin and usd to converter currencies
-	- usd values truncated incorrectly for eth ($234.)
+	- hide chart by default on mobile
 	- Production: 
 		- https (LetsEncrypt) https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-14-04
 		- postgres on local NIC only
 		- backups
-		- cron timings
 		- nginx
 		- analytics
 		- robots

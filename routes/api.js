@@ -183,6 +183,7 @@ function forexCache() {
     }
 
     RATES = result.rates;
+    RATES["USD"] = 1;
   });
 }
 

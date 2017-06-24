@@ -29,5 +29,6 @@
    "SGD": "Singapore Dollar (SGD)",
    "THB": "Thai Baht (THB)",
    "TRY": "Turkish Lira (TRY)",
-   "ZAR": "South African Rand (ZAR)"
+   "ZAR": "South African Rand (ZAR)",
+   "USD": "United States Dollar (USD)"
 }
