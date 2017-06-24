@@ -5,7 +5,7 @@ $(function() {
   profile = $("#current_profile").val();
 
   updateStats(true);
-  setInterval(updateStats, 10000);
+  setInterval(updateStats, 15000);
 
   function updateStats(isStartup) {
 
@@ -17,7 +17,7 @@ $(function() {
 
         if (!response.error) {
 
-          var usd_last = (response.btc_last * response.usd_price).toString().substr(0,4);
+          var usd_last = parseFloat(response.btc_last * response.usd_price).toFixed(2);
           if (response.prev_day > 0) {
             $('span.stats-lastprice')
               .html('$' + usd_last + '<span class="up">▴</span>');
@@ -29,12 +29,12 @@ $(function() {
           $('span.price-change.volume').text("Volume " + parseFloat(response.btc_volume).toFixed(2) + " BTC");
 
           var btc_low = (response.btc_low).toString().substr(0,8);
-          var usd_low = (response.btc_low * response.usd_price).toString().substr(0,4);
+          var usd_low = parseFloat(response.btc_low * response.usd_price).toFixed(2);
           $('span.stats-daylow').text('$' + usd_low);
           $('span.btc-low').text(btc_low + ' BTC');
 
           var btc_high = (response.btc_high).toString().substr(0,8);
-          var usd_high = (response.btc_high * response.usd_price).toString().substr(0,4);
+          var usd_high = parseFloat(response.btc_high * response.usd_price).toFixed(2);
           $('span.stats-dayhigh').text('$' + usd_high);
           $('span.btc-high').text(btc_high + ' BTC');
 

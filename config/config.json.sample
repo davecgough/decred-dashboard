@@ -1,7 +1,7 @@
 {
 	"debug": true,
-    "pg_username": "alt-stats",
-    "pg_password": "",
+    "username": "alt-stats",
+    "password": "",
     "database": "stats-db",
     "dialect": "postgres",
     "logging": false,

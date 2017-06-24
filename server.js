@@ -9,6 +9,9 @@ var fs = require("fs");
 var api = require("./routes/api.js");
 var site = require("./routes/site.js");
 var env = process.env.NODE_ENV || "development";
+if (env != "production" && env != "development"){
+  env = "development";
+}
 var config = require("./config/config.json");
 
 var p = require("./config/profiles.json");
@@ -27,10 +30,11 @@ app.set("view engine", "jade");
 app.locals.moment = moment;
 
 console.log("Starting app in " + env + " environment.");
+
 // in production we are using Nginx to deliver static files
-if (env == "development") {
-  app.use(express.static("public"));
-}
+// if (env == "development") {
+   app.use(express.static("public"));
+// }
 
 var sequelize = require("./models").sequelize;
 var Stats = require("./models").Stats;
@@ -101,7 +105,6 @@ var updateStats = function() {
       }
 
       for (var i = 0; i < newRows.length; i++) {
-        //console.log("updateStats:", "writing " + newRows[i].ticker + " stats");
         Stats.upsert(newRows[i]).catch(function(err) {
           console.error("updateStats:", err);
         });
@@ -142,7 +145,6 @@ function updateMarketCap() {
               if(err) {
                 return console.error("updateMarketCap:", err);
               }
-              //return console.log("updateMarketCap:", "Saved market cap data in " + file_name);
           });
 
         } catch(e) {
@@ -173,9 +175,6 @@ function updatePrices() {
     }
     
     return Prices.bulkCreate(newRows).then(function(rows) {
-      // for (var i=0; i<rows.length; i++) {
-      //   console.log("updatePrices:", "Saved " + rows[i].ticker + " price: " + rows[i].alt_usd);
-      // }
     }).catch(function(err) {
       console.error("updatePrices:", err);
     });
@@ -199,7 +198,6 @@ function updateForexRates() {
           if(err) {
               return console.error("updateForexRates:", err);
           }
-          //return console.log("updateForexRates:", "USD forex rates updated.");
       });
 
     } else {
@@ -208,16 +206,20 @@ function updateForexRates() {
   });
 }
 
+if (env == "production"){
+  // Production timings
+  new CronJob("*/15 * * * * *", updateStats, null, true, "Europe/Rome");
+  new CronJob("0 0,15,30,45 * * * *", updatePrices, null, true, "Europe/Rome");
+  new CronJob("0 5,20,35,50 * * * *", updateMarketCap, null, true, "Europe/Rome");
+  new CronJob("0 10,25,40,55 * * * *", updateForexRates, null, true, "Europe/Rome");
+} else {
+  // Dev timings
+  new CronJob("*/15 * * * * *", updateStats, null, true, "Europe/Rome");
+  new CronJob("*/15 * * * * *", updatePrices, null, true, "Europe/Rome");
+  new CronJob("*/15 * * * * *", updateMarketCap, null, true, "Europe/Rome");
+  new CronJob("*/20 * * * * *", updateForexRates, null, true, "Europe/Rome");
+}
 
-// Original timings
-new CronJob("*/15 * * * * *", updateStats, null, true, "Europe/Rome");
-// new CronJob("0 */15 * * * *", updatePrices, null, true, "Europe/Rome");
-// new CronJob("0 */15 * * * *", updateMarketCap, null, true, "Europe/Rome");
-// new CronJob("5 */60 * * * *", updateForexRates, null, true, "Europe/Rome");
-
-new CronJob("*/10 * * * * *", updatePrices, null, true, "Europe/Rome");
-new CronJob("*/10 * * * * *", updateMarketCap, null, true, "Europe/Rome");
-new CronJob("*/20 * * * * *", updateForexRates, null, true, "Europe/Rome");
 updateStats();
 updatePrices();
 updateMarketCap();

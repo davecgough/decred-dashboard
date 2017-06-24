@@ -10,7 +10,11 @@ var router = express.Router();
 var sequelize = require("../models").sequelize;
 var Stats = require("../models").Stats;
 var Prices = require("../models").Prices;
-
+console.log ("NODE_ENV='"+process.env.NODE_ENV+"'")
+var env = process.env.NODE_ENV || "development";
+if (env != "production" && env != "development"){
+  env = "development";
+}
 var config = require("../config/config.json");
 
 var p = require("../config/profiles.json");
@@ -117,8 +121,12 @@ router.get("/convert", function(req, res) {
     res.status(500).json({error : true}); return;
   }
   var profile = get_profile(req);
-  if (USD[profile.alt_ticker] == undefined) {
-    console.error("API(convert)", "USD forex cache not initialised");
+  if (USD[profile.alt_ticker] == null || USD[profile.alt_ticker] == undefined) {
+    console.error("API(convert)", "USD rate cache not initialised");
+    res.status(500).json({error : true}); return;
+  }
+  if (RATES == null || RATES[req.query.to] == undefined) {
+    console.error("API(convert)", "Forex cache not initialised");
     res.status(500).json({error : true}); return;
   }
   
@@ -196,9 +204,18 @@ function usdCache() {
     
 }
 
-new CronJob("10 * * * * *", marketCapCache, null, true, "Europe/Rome");
-new CronJob("*/10 * * * * *", forexCache, null, true, "Europe/Rome");
-new CronJob("*/10 * * * * *", usdCache, null, true, "Europe/Rome");
+if (env == "production"){
+  // Production timings
+  new CronJob("0 */14 * * * *", marketCapCache, null, true, "Europe/Rome");
+  new CronJob("0 */14 * * * *", forexCache, null, true, "Europe/Rome");
+  new CronJob("*/10 * * * * *", usdCache, null, true, "Europe/Rome");
+} else {
+  // Dev timings
+  new CronJob("*/10 * * * * *", marketCapCache, null, true, "Europe/Rome");
+  new CronJob("*/10 * * * * *", forexCache, null, true, "Europe/Rome");
+  new CronJob("*/10 * * * * *", usdCache, null, true, "Europe/Rome");
+}
+
 forexCache();
 usdCache();
 marketCapCache();

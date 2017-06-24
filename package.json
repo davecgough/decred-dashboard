@@ -11,14 +11,7 @@
       ],
       "args": [
         "alt-stats_app"
-      ],
-      "env": {
-        "COMMON_ENV_VAR": "true",
-        "NODE_ENV": "development"
-      },
-      "env_production": {
-        "NODE_ENV": "production"
-      }
+      ]
     }
   ],
   "author": "",
