@@ -51,7 +51,8 @@ function drawPrice(data, ticker) {
         gridLineColor: '#f3f3f3',
         lineColor: '#d8d8d8',
         lineWidth: 2,
-        labels: {style: {color: '#333', fill: '#333'}}
+        labels: {style: {color: '#333', fill: '#333'}},
+        floor: 0,
     },
     plotOptions: {
         areaspline: {
@@ -66,7 +67,8 @@ function drawPrice(data, ticker) {
       lineWidth: 2,
       tooltip: {valueDecimals: valueDecimals},
       marker: {enabled: false},
-      states: {hover: {lineWidth: 2}}
+      states: {hover: {lineWidth: 2}},
+      threshold: null,
     }]
   });
 
