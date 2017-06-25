@@ -33,7 +33,6 @@ CronJobs:
 To do:
 	- README.md
 	- footer?
-	- hide chart by default on mobile
 	- Production: 
 		- https (LetsEncrypt) https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-14-04
 		- postgres on local NIC only
