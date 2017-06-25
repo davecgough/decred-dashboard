@@ -10,8 +10,7 @@
 					each profile in profiles
 						a(href="#{base_url}?c=#{profile.alt_ticker}")
 							div.jh_alt_selector
-								img.hidden-xs(src="https://files.coinmarketcap.com/static/img/coins/64x64/#{profile.market_cap_id}.png")
-								img.visible-xs(src="https://files.coinmarketcap.com/static/img/coins/32x32/#{profile.market_cap_id}.png")
+								img(src="https://files.coinmarketcap.com/static/img/coins/128x128/#{profile.market_cap_id}.png")
 								p #{profile.converter_name}
 								p (#{profile.alt_ticker})
 

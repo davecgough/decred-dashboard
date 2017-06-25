@@ -15,8 +15,7 @@ html(lang='en')
       .row
         .col-xs-12.col-sm-12
           .container.chart-toolbar(role='toolbar')
-            img.jh-page-logo.hidden-xs(src="https://files.coinmarketcap.com/static/img/coins/64x64/#{current_profile.market_cap_id}.png")
-            img.jh-page-logo.visible-xs(src="https://files.coinmarketcap.com/static/img/coins/32x32/#{current_profile.market_cap_id}.png")
+            img.jh-page-logo(src="https://files.coinmarketcap.com/static/img/coins/128x128/#{current_profile.market_cap_id}.png")
             div.jh-page-title #{current_profile.converter_name}
             .btn-group.price-group.pull-right
               button.price-time.btn-chart.btn.btn-default(type='button', data-time="1", data-chart="price")

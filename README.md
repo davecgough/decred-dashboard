@@ -42,14 +42,21 @@ If everything ok, cronjobs will start all parsers in the next 1-5 minutes, which
 
 Preparing ubuntu to run alt-stats
 ```
+sudo apt-get update
+
+# project
+sudo apt-get install -y git
+cd /var/www
 git clone https://github.com/jholdstock/decred-dashboard.git
 cd decred-dashboard
-sudo apt-get update
+
+#node
 sudo apt-get install -y nodejs npm
 ln -s -f /usr/bin/nodejs /usr/bin/node
 npm install
 sudo npm install -g pm2 sequelize-cli
 
+#postgres
 sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" >> /etc/apt/sources.list.d/pgdg.list'
 wget -q https://www.postgresql.org/media/keys/ACCC4CF8.asc -O - | sudo apt-key add -
 sudo apt-get update
@@ -57,8 +64,22 @@ sudo apt-get install -y postgresql postgresql-contrib
 sudo su - postgres
 	createuser --pwprompt alt-stats
 	createdb -O alt-stats stats-db
+
+#config
 cp config/config.json.sample config/config.json
 vi config/config.json
 
+#build db
 sequelize db:migrate
+
+#nginx (production only)
+sudo apt-get install -y nginx
+
+#firewall (production only)
+sudo apt-get install -y ufw
+sudo ufw allow 22/tcp
+sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp
+sudo ufw enable
+
 ```

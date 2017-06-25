@@ -33,10 +33,10 @@ CronJobs:
 To do:
 	- README.md
 	- footer?
+	- strict request validation
 	- Production: 
 		- https (LetsEncrypt) https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-14-04
 		- postgres on local NIC only
-		- backups
 		- nginx
 		- analytics
 		- robots
