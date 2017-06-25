@@ -1,12 +1,15 @@
 function drawPrice(data, ticker) {
   var valueDecimals = ticker == 'usd' ? 2 : 8;
 
+  ;
+
   $('#price-chart').highcharts({
     chart: {
       backgroundColor: "#FFFFFF",
       borderColor: "#ccc",
       borderWidth: 1,
-      zoomType: "x",
+      // Disable zoom on mobile devices. 
+      zoomType: ($( window ).width() < 544 ? "None": "x"),
       resetZoomButton: {
         theme: {
           fill: '#455673',

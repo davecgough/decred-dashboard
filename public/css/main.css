@@ -776,8 +776,9 @@ body.not-found-page {
   color: white;
 }
 
-.jh-page-logo {
+.jh-page-logo a {
   font-size: 40px;
+  text-decoration: none;
 }
 
 .jh-ticker {
@@ -786,4 +787,5 @@ body.not-found-page {
   text-align: right;
   color     : white;
   font-size : 20px;
+  text-decoration: underline; 
 }
