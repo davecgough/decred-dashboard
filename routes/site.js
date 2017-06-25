@@ -47,8 +47,9 @@ router.get("/", function (req, res) {
         base_url: config.base_url,
         
         tickers: Object.keys(profiles),
+        profiles: profiles,
 
-        current_profile: profile.alt_ticker,
+        current_profile: profile,
         alt_ticker: profile.alt_ticker,
         converter_name: profile.converter_name,
         stats: stats,

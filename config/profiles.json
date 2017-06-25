@@ -40,5 +40,41 @@
 		"polo_id": "BTC_DCR",
 		"market_cap_id": "decred",
 		"converter_name": "Decred"
+	},
+	{
+		"alt_ticker": "ZEC",
+		"polo_id": "BTC_ZEC",
+		"market_cap_id": "zcash",
+		"converter_name": "Zcash"
+	},
+	{
+		"alt_ticker": "ZEC",
+		"polo_id": "BTC_ZEC",
+		"market_cap_id": "zcash",
+		"converter_name": "Zcash"
+	},
+	{
+		"alt_ticker": "XRP",
+		"polo_id": "BTC_XRP",
+		"market_cap_id": "ripple",
+		"converter_name": "Ripple"
+	},
+	{
+		"alt_ticker": "ETC",
+		"polo_id": "BTC_ETC",
+		"market_cap_id": "ethereum-classic",
+		"converter_name": "Ethereum Classic"
+	},
+	{
+		"alt_ticker": "XEM",
+		"polo_id": "BTC_XEM",
+		"market_cap_id": "nem",
+		"converter_name": "NEM"
+	},
+	{
+		"alt_ticker": "SC",
+		"polo_id": "BTC_SC",
+		"market_cap_id": "siacoin",
+		"converter_name": "Siacoin"
 	}
 ]

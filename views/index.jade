@@ -4,15 +4,21 @@ html(lang='en')
     include ./includes/head.jade
   body
 
-    input#current_profile(type='hidden', value='#{current_profile}')
+    input#current_profile(type='hidden', value='#{current_profile.alt_ticker}')
 
-    .row.jh-title
+    .row.jh-site-titlebar
       include ./includes/navigation.jade
 
     .container
       .row
-        .col-xs-12.col-sm-12(style="padding-top:30px;")
-          .container.chart-toolbar.text-center(role='toolbar')
+
+    .container
+      .row
+        .col-xs-12.col-sm-12
+          .container.chart-toolbar(role='toolbar')
+            img.jh-page-logo.hidden-xs(src="https://files.coinmarketcap.com/static/img/coins/64x64/#{current_profile.market_cap_id}.png")
+            img.jh-page-logo.visible-xs(src="https://files.coinmarketcap.com/static/img/coins/32x32/#{current_profile.market_cap_id}.png")
+            div.jh-page-title #{current_profile.converter_name}
             .btn-group.price-group.pull-right
               button.price-time.btn-chart.btn.btn-default(type='button', data-time="1", data-chart="price")
                 span #{s.day}

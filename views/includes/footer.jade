@@ -3,12 +3,16 @@
 		.modal-content(style="padding: 25px; margin-top: 150px;")
 			.modal-header
 				button.close(type='button', data-dismiss='modal', aria-label='Close')
-					span(aria-hidden='true') ×
-				h4.modal-title Choose an altcoin
+					span.jh-close-modal(style="font-size:35px;" aria-hidden='true') ×
+				h3.modal-title Choose an altcoin
 			.modal-body
-				div(style="display:flex; flex-wrap: wrap; width: 100%;")
-					each ticker in tickers
-						div(style="flex-grow: 1; text-align:center; min-width: 100px; min-height: 50px;")
-							a(href="#{base_url}?c=#{ticker}") #{ticker}
+				div.jh_selector_wrapper
+					each profile in profiles
+						a(href="#{base_url}?c=#{profile.alt_ticker}")
+							div.jh_alt_selector
+								img.hidden-xs(src="https://files.coinmarketcap.com/static/img/coins/64x64/#{profile.market_cap_id}.png")
+								img.visible-xs(src="https://files.coinmarketcap.com/static/img/coins/32x32/#{profile.market_cap_id}.png")
+								p #{profile.converter_name}
+								p (#{profile.alt_ticker})
 
 script(src="/js/vendor/bootstrap.min.js")

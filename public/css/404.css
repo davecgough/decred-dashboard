@@ -1,0 +1,39 @@
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+@font-face { font-family: "Proxima Nova Bold"; src: url('/fonts/ProximaNovaBold.otf') format("opentype"); }
+@font-face { font-family: "Proxima Nova Regular"; src: url('/fonts/ProximaNovaRegular.otf') format("opentype"); }
+
+body {
+  background: #EBEBEB; /*mainbgcolor*/
+  font-family: "Proxima Nova Regular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+body.not-found-page {
+  background: #333;
+  color: #fff;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+.row div.not-found-page {
+  text-align: center;
+  margin-top: 100px;
+}
+
+.row div.not-found-page h1 {
+  font-size: 152px;
+  line-height: 160px;
+  padding: 0;
+  margin: 0;
+}
+
+.row div.not-found-page h2 {
+  font-size: 32px;
+}
+
+.row div.not-found-page h3 a {
+  color: #54D5FF;
+  text-decoration: underline;
+}
