@@ -2,32 +2,148 @@ html, body {
     max-width: 100%;
     overflow-x: hidden;
 }
-
 @font-face { font-family: "Proxima Nova Bold"; src: url('/fonts/ProximaNovaBold.otf') format("opentype"); }
 @font-face { font-family: "Proxima Nova Regular"; src: url('/fonts/ProximaNovaRegular.otf') format("opentype"); }
-
 body {
   background: #EBEBEB; /*mainbgcolor*/
   font-family: "Proxima Nova Regular", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 
-
-nav.navbar {
-  padding-top: 16px;
-  min-height: 65px;
-  border-radius: 0;
-  margin-bottom: 0;
+/*
+  Site title bar
+*/
+.jh-title-container {
+  display:table;
+  width: 100%;
+  background-color: #455673;
+}
+.jh-title-container a {
+  color: white;
+}
+.jh-navbarheader {
+  display:table-cell;
+  vertical-align: middle;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+.jh-website-name a {
+  font-size: 40px;
+  white-space: nowrap;
+  text-decoration: none;
+  padding-left: 110px;
+}
+.jh-change-coin {
+  font-size : 20px;
+  text-align: right;
+  white-space: nowrap;
+  text-decoration: underline; 
+  padding-right: 110px;
 }
 
-.navbar-header img {
-  margin-top: 5px;
+
+/*
+  Page title
+*/
+.container.chart-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
+img.jh-page-logo {
+  padding: 20px 20px 25px;
+  align-self: flex-start;
+}
+
+div.jh-page-title {
+  font-size: 30px;
+  display: inline-block;
+  flex-grow: 1;
+  padding: 10px;
+}
+
+.btn-group {
+  align-self: flex-end; 
+  flex-shrink: 0;
+}
+
+
+
+
+/* 
+  Chart toolbar
+*/
+.chart-toolbar .btn-group .btn:focus {
+  outline: thin dotted;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+
+.chart-toolbar .btn-group .btn:focus {
+  outline: none !important;
+}
+
+.chart-toolbar .btn-group .btn-chart {
+  color: #455671;
+  margin-bottom: 5px;
+}
+
+.chart-toolbar .btn-group .btn-chart.active {
+  background: #455674; /*selected button color*/
+  color: #EBEBEB; /*mainbgcolor*/
+  box-shadow: none;
+  -webkit-box-shadow: none;
+}
+
+.btn-toolbar .btn-group .btn-chart {
+  border: 2px solid #455674; /*selected button color*/
+  background: transparent;
+  color: #455674; /*selected button color*/
+}
+
+.btn-toolbar .btn-group .btn-chart.active {
+  background: #455674; /*selected button color*/
+  color: #455671;
+  box-shadow: none;
+  -webkit-box-shadow: none;
+}
+
+
+
+
+
+/*
+  Price Chart
+*/
 .chart-container {
   min-height: 400px;
   margin: 0 auto;
 }
+
+.chart-title h2.main-title {
+  font-family: "Proxima Nova Regular",'Source Sans Pro', Arial, sans-serif;
+  color: #727272;
+  font-size: 24px;
+  font-weight: 200;
+  margin: 0;
+  padding: 0;
+  line-height: 28px;
+}
+
+.chart-title h2.main-title span.sub-title {
+  font-size: 12px;
+  line-height: 22px;
+}
+.chart-title {
+  float: left;
+}
+
+
+/* 
+  Stats
+*/
 
 .stats-block {
   padding: 0;
@@ -99,10 +215,6 @@ span.stats-btc {
   border-right: none;
 }
 
-.chart-title {
-  float: left;
-}
-
 .price-group {
   margin-right: 25px;
 }
@@ -110,7 +222,6 @@ span.stats-btc {
 .price-chart-title {
   z-index: 999;
   color: #727272;
-  /*text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);*/
   position: absolute;
   bottom: 40px;
   margin-left: 60px;
@@ -123,56 +234,40 @@ span.stats-btc {
 }
 
 
-.chart-title h2.main-title {
-  font-family: "Proxima Nova Regular",'Source Sans Pro', Arial, sans-serif;
-  color: #727272;
-  font-size: 24px;
-  font-weight: 200;
-  margin: 0;
-  padding: 0;
-  line-height: 28px;
+
+
+/*
+  Calculator
+*/
+.calculator h2 {
+  margin: 25px auto;
+  text-align: center;
 }
 
-.chart-title h2.main-title span.sub-title {
-  font-size: 12px;
-  line-height: 22px;
+
+
+
+/*
+  Calculator text
+*/
+
+.calculator-text {
+  margin: 0 auto;
+  max-width: 600px;
+}
+.calculator-text h3 {
+  text-align: center;
+}
+.calculator-text p {
+  text-align: center;
+  font-size: 16px;
 }
 
-.chart-toolbar .btn-group .btn:focus {
-  outline: thin dotted;
-  outline: 5px auto -webkit-focus-ring-color;
-  outline-offset: -2px;
-}
 
-.chart-toolbar .btn-group .btn:focus {
-  outline: none !important;
-}
 
-.chart-toolbar .btn-group .btn-chart {
-  color: #455671;
-  margin-bottom: 5px;
-}
-
-.chart-toolbar .btn-group .btn-chart.active {
-  background: #455674; /*selected button color*/
-  color: #EBEBEB; /*mainbgcolor*/
-  box-shadow: none;
-  -webkit-box-shadow: none;
-}
-
-.btn-toolbar .btn-group .btn-chart {
-  border: 2px solid #455674; /*selected button color*/
-  background: transparent;
-  color: #455674; /*selected button color*/
-}
-
-.btn-toolbar .btn-group .btn-chart.active {
-  background: #455674; /*selected button color*/
-  color: #455671;
-  box-shadow: none;
-  -webkit-box-shadow: none;
-}
-
+/*
+  Footer
+*/
 
 footer {
   width: 100%;
@@ -181,140 +276,7 @@ footer {
 }
 
 
-/* MOBILE STYLES */
 
-@media (max-width: 768px) {
-  nav.navbar .navbar-header {
-    margin-left: 5px;
-  }
-  nav.navbar ul li {
-    background: #f5f5f5;
-    border-bottom: 1px solid #eceaea;
-    text-align: center;
-  }
-
-  span.up, span.down {
-    display: none;
-  }
-  sup {
-    display: none;
-  }
-  .gitter-open-chat-button {
-    display: none;
-  }
-  .stats-block {
-    height: 50px;
-    line-height: 30px;
-    margin-bottom: 30px;
-  }
-  .stats-block .stats-title {
-    font-size: 10px;
-    line-height: 16px;
-  }
-  .stats-block .stats-content {
-    line-height: 50px;
-    letter-spacing: 0;
-    font-size: 20px;
-  }
-  span.price-change,
-  span.price-change.percent,
-  span.price-change.volume {
-    font-size: 12px;
-    line-height: 12px;
-    bottom: 16px;
-  }
-  p.pos-stats-block span.price-change {
-    font-size: 12px;
-    line-height: 12px;
-    bottom: 4px;
-  }
-  .reward-hints p.pos-stats-block.big .pos-stats-content,
-  .stats-block .pos-stats-content.avg-price,
-  h4.hint-title {
-    font-size: 16px;
-    line-height: 20px;
-  }
-  .stats-subinfo {
-    padding: 0;
-    text-align: center;
-  }
-  span.stats-subinfo b {
-    font-size: 10px;
-  }
-  .inline-block {
-    display: block;
-  }
-  footer {
-    padding: 10px 20px;
-  }
-  .footer-desc {
-    width: 100%;
-  }
-  .footer-wrapper p {
-    margin-right: 0;
-  }
-}
-
-
-/*
-  Site title bar
-*/
-.jh-site-titlebar {
-  background-color: #455673;
-}
-
-.navbar-header {
-  display:table-cell;
-  float:none;
-  vertical-align: middle;
-  padding: 8px 40px 8px 40px;
-}
-
-.navbar-header a {
-  color: white;
-}
-
-.jh-page-logo a {
-  font-size: 40px;
-  white-space: nowrap;
-  text-decoration: none;
-}
-
-.jh-ticker {
-  display   :table-cell;
-  float     :none;
-  text-align: right;
-  color     : white;
-  font-size : 20px;
-  text-decoration: underline; 
-}
-
-/*
-  Page title
-*/
-.container.chart-toolbar {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-img.jh-page-logo {
-  padding: 20px 20px 25px;
-  align-self: flex-start;
-}
-
-div.jh-page-title {
-  font-size: 30px;
-  display: inline-block;
-  flex-grow: 1;
-  padding: 10px;
-}
-
-.btn-group {
-  align-self: flex-end; 
-  flex-shrink: 0;
-}
 /*
   Select currency modal
 */
@@ -338,7 +300,7 @@ div.jh-page-title {
 .jh_selector_wrapper a {
   margin: 10px;
   border: 2px solid transparent;
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 .jh_selector_wrapper a:hover {
   border: 2px solid #b0B0b0;
@@ -364,4 +326,50 @@ div.jh-page-title {
 
 .jh-close-modal {
   color: black;
+}
+
+
+
+
+/* MOBILE STYLES */
+
+@media (max-width: 768px) {
+  
+  .jh-website-name a {
+    font-size: 30px;
+    padding-left: 20px;
+  }
+  .jh-change-coin {
+    font-size : 18px;
+    padding-right: 20px;
+  }
+
+  .stats-block {
+    height: 50px;
+    line-height: 30px;
+    margin-bottom: 30px;
+  }
+  .stats-block .stats-title {
+    font-size: 10px;
+    line-height: 16px;
+  }
+  .stats-block .stats-content {
+    line-height: 50px;
+    letter-spacing: 0;
+    font-size: 20px;
+  }
+  span.price-change,
+  span.price-change.percent,
+  span.price-change.volume {
+    font-size: 12px;
+    line-height: 12px;
+    bottom: 16px;
+  }
+
+  .inline-block {
+    display: block;
+  }
+  footer {
+    padding: 10px 20px;
+  }
 }

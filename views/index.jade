@@ -6,8 +6,7 @@ html(lang='en')
 
     input#current_profile(type='hidden', value='#{current_profile.alt_ticker}')
 
-    .row.jh-site-titlebar
-      include ./includes/navigation.jade
+    include ./includes/navigation.jade
 
     .container
       .row
@@ -65,11 +64,11 @@ html(lang='en')
             span.stats-content.stats-dayhigh -
             span.price-change.btc-high -
     
-    .container
+    .container.calculator
       .row
         .col-xs-12.col-md-12
-          .col-xs-12.col-md-12(style="padding-bottom: 45px")
-            h2(style="margin: 25px auto; text-align: center;") #{converter_name} Price Calculator
+          .col-xs-12.col-md-12
+            h2 #{converter_name} Price Calculator
             form.form-inline(style="text-align: center;")
               .form-group
                 .form-group.input-group
@@ -86,13 +85,13 @@ html(lang='en')
                       if key != 'GBP'
                         option(value='#{key}') #{row}
       
-        .row
+        .row.calculator-text
           .col-xs-12.col-md-12
-            div(style="margin: 0 auto; max-width: 600px;")
-              h3(style="text-align: center;") About #{converter_name} price calculator
-              p(style="text-align: center; font-size: 16px;") This page allows you to see the #{converter_name} exchange rate and convert any amount of #{converter_name} to or from your preferred currency.
-              p(style="text-align: center; font-size: 16px;") The exchange rates on this site are for information purposes only. They are not guaranteed to be accurate and are subject to change without notice.
-              h3(style="text-align: center;") How it works
-              p(style="text-align: center; font-size: 16px;") We use 2 price conversions to calculate the price in the currency of your choice: We take the #{alt_ticker}-BTC market price from #[a(target="_blank" href="https://poloniex.com/") poloniex.com] and then calculate its price in USD using the BTC-USD exchange rate from #[a(target="_blank" href="https://www.bitstamp.net/") bitstamp.net]. We then convert the USD price to the currency of your choice using the exchange rate from #[a(target="_blank" href="http://fixer.io/") fixer.io].
+            div
+              h3 About #{converter_name} price calculator
+              p This page allows you to see the #{converter_name} exchange rate and convert any amount of #{converter_name} to or from your preferred currency.
+              p The exchange rates on this site are for information purposes only. They are not guaranteed to be accurate and are subject to change without notice.
+              h3 How it works
+              p We use 2 price conversions to calculate the price in the currency of your choice: We take the #{alt_ticker}-BTC market price from #[a(target="_blank" href="https://poloniex.com/") poloniex.com] and then calculate its price in USD using the BTC-USD exchange rate from #[a(target="_blank" href="https://www.bitstamp.net/") bitstamp.net]. We then convert the USD price to the currency of your choice using the exchange rate from #[a(target="_blank" href="http://fixer.io/") fixer.io].
     footer
       include ./includes/footer.jade
