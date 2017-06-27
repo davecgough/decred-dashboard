@@ -82,4 +82,6 @@ sudo ufw allow 80/tcp
 sudo ufw allow 443/tcp
 sudo ufw enable
 
+#startup (production only)
+pm2 startup ubuntu
 ```
